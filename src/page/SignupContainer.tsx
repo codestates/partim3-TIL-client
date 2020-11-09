@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '../components/atoms/Button'
 
+
 export default function SignupContainer() {
     return (
         <div>
