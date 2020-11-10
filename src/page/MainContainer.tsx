@@ -1,9 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export default function MainContainer() {
-    return (
-        <div>
-            haha
-        </div>
-    )
+  return <div>haha</div>;
 }
