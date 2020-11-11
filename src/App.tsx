@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
-import MainContainer from './page/MainContainer';
-import SignupContainer from './page/SignupContainer';
+import MainContainer from './components/templetes/MainContainer';
+import SignupContainer from './components/templetes/SignupContainer';
+import 'bootstrap/dist/css/bootstrap.min.css';
+//css를 불러와야 bootstrap이 적용됨.
 
 const a = 'abc';
 
 function App() {
-
   return (
     <div className="App">
       <Router>
@@ -20,7 +21,6 @@ function App() {
       </Router>
     </div>
   );
-
 }
 
 export default App;
