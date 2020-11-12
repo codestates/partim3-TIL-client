@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 interface InputProps {
   placeholder: string;
   type: string;
+  name: string;
   //?는 받아올지 말지 모를때
 }
 
