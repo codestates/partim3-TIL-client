@@ -68,3 +68,5 @@ function signup(state = initialState, action: SignUpProp) {
       return state;
   }
 }
+
+export default signup;
