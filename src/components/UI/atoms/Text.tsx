@@ -5,6 +5,8 @@ interface TextProps {
   //?는 받아올지 말지 모를때
 }
 
+const hi = 'hi';
+
 function Text({ text }: TextProps) {
   return <span>{text}</span>;
 }
