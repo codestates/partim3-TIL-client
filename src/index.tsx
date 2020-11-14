@@ -8,9 +8,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import reducers from './modules';
 
-// const loggerMiddleware = createLogger();
+import { composeWithDevTools } from 'redux-devtools-extension';
+const store = createStore(reducers, composeWithDevTools());
 
-const store = createStore(reducers);
+// const loggerMiddleware = createLogger();
 
 // const persistor = persistStore(store);
 
