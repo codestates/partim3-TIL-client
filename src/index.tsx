@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 
 import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import reducers from './modules';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
