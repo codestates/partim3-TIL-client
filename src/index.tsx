@@ -6,11 +6,12 @@ import { Provider } from 'react-redux';
 
 import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import reducers from './modules';
 
 // const loggerMiddleware = createLogger();
 
-const store = createStore(reducers);
+const store = createStore(reducers, composeWithDevTools());
 
 // const persistor = persistStore(store);
 

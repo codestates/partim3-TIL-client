@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import MainContainer from './components/templetes/MainContainer';
+import MypageContainer from './components/templetes/MypageContainer';
 import Signup from './components/pages/Signup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 //css를 불러와야 bootstrap이 적용됨.
@@ -16,6 +17,7 @@ function App() {
           {/* <Route path="/mypage" component={MypageContainer} />
             <Route path="/login" component={LoginContainer} /> */}
           <Route path="/signup" component={Signup} />
+          <Route path="/mypage" component={MypageContainer} />
           <Route exact path="/" component={MainContainer} />
         </Switch>
       </Router>
