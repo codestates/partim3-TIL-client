@@ -2,7 +2,7 @@
 const AUTH_LOGIN_START = 'AUTH_LOGIN_START';
 const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
 const AUTH_LOGIN_FAILURE = 'AUTH_LOGIN_FAILURE';
-export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+const AUTH_LOGOUT = 'AUTH_LOGOUT';
 
 /* 2. 액션생성자 함수 : 액션 객체(action 객체의 type 값은 "AUTH_login" 등등)를 리턴합니다. */
 
