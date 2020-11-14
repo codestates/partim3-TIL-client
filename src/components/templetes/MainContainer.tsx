@@ -30,7 +30,7 @@ export default function MainContainer() {
               <Button size="lg">Mypage</Button>
             </Link>
             <Link to="/login">
-             <Button size="lg">login</Button>
+              <Button size="lg">login</Button>
             </Link>
           </Col>
         </Row>
