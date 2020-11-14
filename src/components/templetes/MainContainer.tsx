@@ -29,6 +29,9 @@ export default function MainContainer() {
             <Link to="/mypage">
               <Button size="lg">Mypage</Button>
             </Link>
+            <Link to="/login">
+             <Button size="lg">login</Button>
+            </Link>
           </Col>
         </Row>
       </Container>
