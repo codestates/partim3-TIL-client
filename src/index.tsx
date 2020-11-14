@@ -12,11 +12,7 @@ import reducers from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 const store = createStore(reducers, composeWithDevTools());
 
-
-const store = createStore(reducers, composeWithDevTools());
-
 // const loggerMiddleware = createLogger();
-
 
 // const persistor = persistStore(store);
 
