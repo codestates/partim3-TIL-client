@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import MainContainer from './components/templetes/MainContainer';
-import MypageContainer from './components/templetes/MypageContainer';
+
+import Mypage from './components/pages/Mypage';
 import Signup from './components/pages/Signup';
 import Login from './components/pages/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,7 +17,7 @@ function App() {
           {/* <Route path="/mypage" component={MypageContainer} />
             <Route path="/login" component={LoginContainer} /> */}
           <Route path="/signup" component={Signup} />
-          <Route path="/mypage" component={MypageContainer} />
+          <Route path="/mypage" component={Mypage} />
           <Route path="/login" component={Login} />
           <Route exact path="/" component={MainContainer} />
         </Switch>
