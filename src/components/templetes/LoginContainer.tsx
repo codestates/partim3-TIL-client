@@ -1,4 +1,20 @@
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
+
+import { Container, Row, Col, Image, Form, Button } from 'react-bootstrap';
+import { BsFillAwardFill } from 'react-icons/bs';
+import ButtonBoot from '../UI/Atoms/ButtonBoot';
+
+import { loginStart, loginSuccess, loginFailure } from '../../modules/loginOut';
+
+import NaverLogin from './NaverLogin';
 import KakaoLogin from 'react-kakao-login';
+import { GoogleLogin } from 'react-google-login';
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 declare global {
   interface Window {
@@ -7,29 +23,12 @@ declare global {
 }
 const Kakao = window.Kakao;
 
-import { GoogleLogin } from 'react-google-login';
-
-import React, { useState } from 'react';
-import ButtonBoot from '../UI/Atoms/ButtonBoot';
-import { Link } from 'react-router-dom';
-
-import { Container, Row, Col, Image, Form, Button } from 'react-bootstrap';
-import { BsFillAwardFill } from 'react-icons/bs';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { loginStart, loginSuccess, loginFailure } from '../../modules/login';
-
-import NaverLogin from './NaverLogin';
-import dotenv from 'dotenv';
-dotenv.config();
-
-import axios from 'axios';
-
 export default function LoginContainer() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleChange = (
     event: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -52,8 +51,14 @@ export default function LoginContainer() {
     // 로그아웃시 토큰을 죽이겠다 -> 서버에서 이 토큰을 만료시키고 돌려주면
     // 클라이언트는 다음번의 모든 요청에다가 헤더를 죽여야함.
 
+    interface resData {
+      id: number;
+      nickname: string;
+      token: string;
+    }
+
     return axios
-      .post(
+      .post<resData>(
         `http://localhost:5000/users/login`,
         {
           email,
@@ -62,15 +67,11 @@ export default function LoginContainer() {
         { withCredentials: true },
       )
       .then(res => {
-        dispatch(loginSuccess());
-        // 서 : 서버에서 헤더에다가 토큰을 담아서 줌
-        // 클 : 토큰을 다음번의 모든 요청에다가 헤더에 담아서 던져야 함
-        // 서 : 서버는 이 요청마다 오는헤더를 검사해서 기존 토큰과 비교 검증하고 맞으면-> 틀ㄹ리면 에러
+        const { id, nickname, token } = res.data;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-        // 클 : 토큰을 죽이겠다 ->
-        // 서 : 검증 후 서버에서 이 토큰을 만료시키고, 돌려주면,
-        // 클 : 클라이언트는 다음번의 모든 요청에다가 헤더를 죽여야 함
-        alert('환영합니다');
+        dispatch(loginSuccess(id, nickname));
+        history.push('/');
       })
       .catch(err => {
         console.log(err);
@@ -193,7 +194,7 @@ export default function LoginContainer() {
               }}
             >
               <GoogleLogin
-                clientId="my-clientId" // 이거 채워야 하겠지?
+                clientId={`${process.env.REACT_APP_GOOGLE_LOGIN}`} // 이거 채워야 하겠지?
                 buttonText="Login"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}

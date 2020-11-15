@@ -8,6 +8,8 @@ const AUTH_LOGOUT = 'AUTH_LOGOUT';
 
 interface loginProp {
   type: string;
+  id?: number;
+  nickname?: string;
 }
 
 export function loginStart() {
@@ -16,9 +18,11 @@ export function loginStart() {
   };
 }
 
-export function loginSuccess() {
+export function loginSuccess(id: number, nickname: string) {
   return {
     type: AUTH_LOGIN_SUCCESS,
+    id,
+    nickname,
   };
 }
 
@@ -41,15 +45,15 @@ const initialState = {
     status: 'INIT',
   },
   status: {
-    valid: false,
     isLoggedIn: false,
     currentUser: null,
+    nickname: null,
   },
 };
 
 /* reducer func*/
 
-function login(state = initialState, action: loginProp) {
+function loginOut(state = initialState, action: loginProp) {
   switch (action.type) {
     case AUTH_LOGIN_START:
       return {
@@ -63,6 +67,12 @@ function login(state = initialState, action: loginProp) {
         ...state,
         login: {
           status: 'SUCCESS',
+        },
+        status: {
+          ...state.status,
+          isLoggedIn: true,
+          currentUser: action.id,
+          nickname: action.nickname,
         },
       };
     case AUTH_LOGIN_FAILURE:
@@ -79,6 +89,7 @@ function login(state = initialState, action: loginProp) {
           ...state.status,
           isLoggedIn: false,
           currentUser: null,
+          nickname: null,
         },
       };
 
@@ -87,4 +98,4 @@ function login(state = initialState, action: loginProp) {
   }
 }
 
-export default login;
+export default loginOut;
