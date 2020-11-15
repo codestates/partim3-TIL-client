@@ -10,7 +10,6 @@ interface ButtonProps {
 
 const ButtonBoot: React.FunctionComponent<ButtonProps> = ({ title, color, postSignupReq }) => {
   function postSignup() {
-    console.log(postSignupReq());
     postSignupReq();
   }
 
