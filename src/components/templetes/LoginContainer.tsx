@@ -18,6 +18,8 @@ import { BsFillAwardFill } from 'react-icons/bs';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../../modules/login';
 
+import NaverLogin from './NaverLogin';
+
 import axios from 'axios';
 
 export default function LoginContainer() {
@@ -40,6 +42,12 @@ export default function LoginContainer() {
 
   const handleLogin = (email: string, password: string) => {
     dispatch(loginStart());
+    // 서버에서 헤더에다가 토큰을 담아서 줌
+    // 토큰을 다음번의 모든 요청에다가 헤더에 담아서 던져야 함
+    // 서버는 이 요청마다 온느 헤더를 검사해서 기존의 토큰과 비교 검증하고 맞으면 통과, 틀리면 에러
+
+    // 로그아웃시 토큰을 죽이겠다 -> 서버에서 이 토큰을 만료시키고 돌려주면
+    // 클라이언트는 다음번의 모든 요청에다가 헤더를 죽여야함.
 
     return axios
       .post(
@@ -162,7 +170,8 @@ export default function LoginContainer() {
             /> */}
           </Row>
           <Row className="m-2">
-            <ButtonBoot title="naver" color="success"></ButtonBoot>
+            {/* <ButtonBoot title="naver" color="success"></ButtonBoot> */}
+            <NaverLogin />
           </Row>
           <Row className="m-2">
             <div
