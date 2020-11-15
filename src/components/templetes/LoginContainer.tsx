@@ -104,7 +104,32 @@ export default function LoginContainer() {
   // };
 
   const responseGoogle = (response: any) => {
-    console.log('google response : ', response);
+    if (response.error) {
+      alert('넌 이상해');
+      return;
+    }
+
+    dispatch(loginStart());
+
+    let idToken = response.tokenObj.id_token;
+
+    axios
+      .post(
+        'http://localhost:5000/users/social/google',
+        { idToken: idToken },
+        { withCredentials: true },
+      )
+      .then(res => {
+        const { id, nickname, token } = res.data;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        dispatch(loginSuccess(id, nickname));
+        history.push('/');
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(loginFailure());
+      });
   };
 
   const responseKaKao = (response: any) => {
@@ -194,11 +219,11 @@ export default function LoginContainer() {
               }}
             >
               <GoogleLogin
-                clientId={`${process.env.REACT_APP_GOOGLE_LOGIN}`} // 이거 채워야 하겠지?
+                clientId={`${process.env.REACT_APP_GOOGLE_LOGIN}`}
                 buttonText="Login"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
-                cookiePolicy={'single_host_origin'} // 이거 채워야 하겠지?
+                cookiePolicy={'single_host_origin'}
               />
             </div>
           </Row>
