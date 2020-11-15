@@ -1,4 +1,5 @@
-// import KakaoLogin from 'react-kakao-login';
+import KakaoLogin from 'react-kakao-login';
+
 declare global {
   interface Window {
     Kakao: any;
@@ -84,24 +85,33 @@ export default function LoginContainer() {
     }
   };
 
-  const handleKakaoLogin = () => {
-    if (!Kakao) {
-      console.log('서비스가 존재하지 않습니다');
-    }
-    Kakao.Auth.login({
-      success: (auth: any) => {
-        console.log('정상 로그인 되었습니다 : ' + auth);
-        console.log('auth : ', JSON.stringify(auth));
-      },
-      fail: function (err: any) {
-        console.error('err', err);
-      },
-    });
-  };
+  // const handleKakaoLogin = () => {
+  //   if (!Kakao) {
+  //     console.log('서비스가 존재하지 않습니다');
+  //   }
+  //   Kakao.Auth.login({
+  //     success: (auth: any) => {
+  //       console.log('정상 로그인 되었습니다 : ' + auth);
+  //       console.log('auth : ', JSON.stringify(auth));
+  //     },
+  //     fail: function (err: any) {
+  //       console.error('err', err);
+  //     },
+  //   });
+  // };
 
   const responseGoogle = (response: any) => {
     console.log('google response : ', response);
   };
+
+  const responseKaKao = (response: any) => {
+    console.log('kakao response : ', response);
+  };
+
+  const responseFail = (error: any) => {
+    console.log('kakao error : ', error);
+  };
+
   return (
     <Container className="py-5">
       <Row>
@@ -151,23 +161,20 @@ export default function LoginContainer() {
             }}
           />
           <Row className="m-2">
-            <Button className="p-0" onClick={handleKakaoLogin}>
-              <Image // 이미지를 버튼에 직접 넣는 방법을 찾아야 한다. 다르게 해서라도
-                src="https://kauth.kakao.com/public/widget/login/kr/kr_02_medium.png"
-                fluid={true}
-              />
-            </Button>
-            {/* <KakaoLogin
+            {/* Button 부트스트랩 컴포넌트에 아이콘 넣는게 나을 것 같다 */}
+            <KakaoLogin
               //styled component 통해 style을 입혀 줄 예정
-              jsKey="bebccbf8d4a69f61c0eadaa2d807fae1"
+              token="bebccbf8d4a69f61c0eadaa2d807fae1"
               //카카오에서 할당받은 jsKey를 입력
-              buttonText="카카오 계정으로 로그인"
-              //로그인 버튼의 text를 입력
               onSuccess={responseKaKao}
               //성공했을때 불러올 함수로서 fetch해서 localStorage에 저장할 함수를 여기로 저장
-              onFailure={responseFail}
-              getProfile={true}
-            /> */}
+              onFail={responseFail}
+            >
+              <Image // 이미지를 버튼에 직접 넣는 방법을 찾아야 한다. 다르게 해서라도
+                src="https://kauth.kakao.com/public/widget/login/kr/kr_02_medium.png"
+                fluid={false}
+              />
+            </KakaoLogin>
           </Row>
           <Row className="m-2">
             {/* <ButtonBoot title="naver" color="success"></ButtonBoot> */}
