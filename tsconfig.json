@@ -21,6 +21,8 @@
     "jsx": "react"
   },
   "include": [
-    "src", "molecules", "atoms", "atoms"
+    "src",
+    "molecules",
+    "atoms"
   ]
 }
