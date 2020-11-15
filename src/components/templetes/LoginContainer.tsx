@@ -20,6 +20,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../../modules/login';
 
 import NaverLogin from './NaverLogin';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import axios from 'axios';
 
@@ -164,7 +166,7 @@ export default function LoginContainer() {
             {/* Button 부트스트랩 컴포넌트에 아이콘 넣는게 나을 것 같다 */}
             <KakaoLogin
               //styled component 통해 style을 입혀 줄 예정
-              token="bebccbf8d4a69f61c0eadaa2d807fae1"
+              token={`${process.env.REACT_APP_KAKAO_LOGIN}`}
               //카카오에서 할당받은 jsKey를 입력
               onSuccess={responseKaKao}
               //성공했을때 불러올 함수로서 fetch해서 localStorage에 저장할 함수를 여기로 저장
