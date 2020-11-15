@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
-import ButtonBoot from '../UI/atoms/ButtonBoot';
+import ButtonBoot from '../UI/Atoms/ButtonBoot';
 import { Link } from 'react-router-dom';
 
-import FormBoot from '../UI/atoms/FormBoot';
+import FormBoot from '../UI/Atoms/FormBoot';
 
 import { Container, Row, Col, Image, Form, Button } from 'react-bootstrap';
 import { BsFillAwardFill } from 'react-icons/bs';

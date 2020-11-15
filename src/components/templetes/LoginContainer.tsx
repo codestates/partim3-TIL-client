@@ -9,7 +9,7 @@ const Kakao = window.Kakao;
 import { GoogleLogin } from 'react-google-login';
 
 import React, { useState } from 'react';
-import ButtonBoot from '../UI/atoms/ButtonBoot';
+import ButtonBoot from '../UI/Atoms/ButtonBoot';
 import { Link } from 'react-router-dom';
 
 import { Container, Row, Col, Image, Form, Button } from 'react-bootstrap';
