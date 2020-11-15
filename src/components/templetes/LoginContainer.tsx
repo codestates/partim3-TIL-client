@@ -1,3 +1,13 @@
+// import KakaoLogin from 'react-kakao-login';
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+const Kakao = window.Kakao;
+
+import { GoogleLogin } from 'react-google-login';
+
 import React, { useState } from 'react';
 import ButtonBoot from '../UI/atoms/ButtonBoot';
 import { Link } from 'react-router-dom';
@@ -50,6 +60,13 @@ export default function LoginContainer() {
       )
       .then(res => {
         dispatch(loginSuccess());
+        // 서 : 서버에서 헤더에다가 토큰을 담아서 줌
+        // 클 : 토큰을 다음번의 모든 요청에다가 헤더에 담아서 던져야 함
+        // 서 : 서버는 이 요청마다 오는헤더를 검사해서 기존 토큰과 비교 검증하고 맞으면-> 틀ㄹ리면 에러
+
+        // 클 : 토큰을 죽이겠다 ->
+        // 서 : 검증 후 서버에서 이 토큰을 만료시키고, 돌려주면,
+        // 클 : 클라이언트는 다음번의 모든 요청에다가 헤더를 죽여야 함
         alert('환영합니다');
       })
       .catch(err => {
@@ -67,6 +84,24 @@ export default function LoginContainer() {
     }
   };
 
+  const handleKakaoLogin = () => {
+    if (!Kakao) {
+      console.log('서비스가 존재하지 않습니다');
+    }
+    Kakao.Auth.login({
+      success: (auth: any) => {
+        console.log('정상 로그인 되었습니다 : ' + auth);
+        console.log('auth : ', JSON.stringify(auth));
+      },
+      fail: function (err: any) {
+        console.error('err', err);
+      },
+    });
+  };
+
+  const responseGoogle = (response: any) => {
+    console.log('google response : ', response);
+  };
   return (
     <Container className="py-5">
       <Row>
@@ -116,14 +151,46 @@ export default function LoginContainer() {
             }}
           />
           <Row className="m-2">
-            <ButtonBoot title="kakao" color="warning"></ButtonBoot>
+            <Button className="p-0" onClick={handleKakaoLogin}>
+              <Image // 이미지를 버튼에 직접 넣는 방법을 찾아야 한다. 다르게 해서라도
+                src="https://kauth.kakao.com/public/widget/login/kr/kr_02_medium.png"
+                fluid={true}
+              />
+            </Button>
+            {/* <KakaoLogin
+              //styled component 통해 style을 입혀 줄 예정
+              jsKey="bebccbf8d4a69f61c0eadaa2d807fae1"
+              //카카오에서 할당받은 jsKey를 입력
+              buttonText="카카오 계정으로 로그인"
+              //로그인 버튼의 text를 입력
+              onSuccess={responseKaKao}
+              //성공했을때 불러올 함수로서 fetch해서 localStorage에 저장할 함수를 여기로 저장
+              onFailure={responseFail}
+              getProfile={true}
+            /> */}
           </Row>
           <Row className="m-2">
             {/* <ButtonBoot title="naver" color="success"></ButtonBoot> */}
             <NaverLogin />
           </Row>
           <Row className="m-2">
-            <ButtonBoot title="google" color="danger"></ButtonBoot>
+            <div
+              style={{
+                display: 'flex',
+                flexFlow: 'column wrap',
+                textAlign: 'center',
+                height: '50px',
+                width: '200px',
+              }}
+            >
+              <GoogleLogin
+                clientId="my-clientId" // 이거 채워야 하겠지?
+                buttonText="Login"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={'single_host_origin'} // 이거 채워야 하겠지?
+              />
+            </div>
           </Row>
           <Row className="m-2">
             <ButtonBoot title="github" color="dark"></ButtonBoot>
