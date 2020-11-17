@@ -16,6 +16,8 @@ import { GoogleLogin } from 'react-google-login';
 import dotenv from 'dotenv';
 dotenv.config();
 
+console.log('수정');
+
 declare global {
   interface Window {
     Kakao: any;
