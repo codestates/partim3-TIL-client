@@ -1,8 +1,8 @@
 /* 1. ActionTypes - login */
-const AUTH_LOGIN_START = 'AUTH_LOGIN_START';
-const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
-const AUTH_LOGIN_FAILURE = 'AUTH_LOGIN_FAILURE';
-const AUTH_LOGOUT = 'AUTH_LOGOUT';
+const AUTH_LOGIN_START: string = 'AUTH_LOGIN_START';
+const AUTH_LOGIN_SUCCESS: string = 'AUTH_LOGIN_SUCCESS';
+const AUTH_LOGIN_FAILURE: string = 'AUTH_LOGIN_FAILURE';
+const AUTH_LOGOUT: string = 'AUTH_LOGOUT';
 
 /* 2. 액션생성자 함수 : 액션 객체(action 객체의 type 값은 "AUTH_login" 등등)를 리턴합니다. */
 

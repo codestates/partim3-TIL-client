@@ -23,6 +23,7 @@
   "include": [
     "src",
     "molecules",
-    "atoms"
+    "atoms",
+    "typescript_prac.tsx"
   ]
 }
