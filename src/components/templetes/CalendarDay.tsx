@@ -41,7 +41,7 @@ function CalendarDay() {
       .get(`http://localhost:5000/calendar/day`, {
         params: {
           userId: id,
-          date: date,
+          date: JSON.stringify(date),
         },
         withCredentials: true,
       })
