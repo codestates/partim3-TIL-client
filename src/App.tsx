@@ -8,6 +8,7 @@ import Mypage from './components/pages/Mypage';
 import Signup from './components/pages/Signup';
 import Login from './components/pages/Login';
 import CalendarDay from './components/pages/CalendarDay';
+import Date from './components/pages/Date';
 import 'bootstrap/dist/css/bootstrap.min.css';
 //css를 불러와야 bootstrap이 적용됨.
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/mypage" component={Mypage} />
           <Route path="/login" component={Login} />
           <Route path="/calendar/day" component={CalendarDay} />
+          <Route path="/calendar/d" component={Date} />
           <Route exact path="/" component={MainContainer} />
         </Switch>
       </Router>
