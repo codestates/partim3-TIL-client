@@ -1,6 +1,6 @@
 import UpdateUserInfoOrganism from './UpdateUserInfoOrganism';
 import Header from './Header';
-import TodoContainer from './TodoContainer';
-import Todo from './Todo';
+import Todos from './Todos';
+import Reviews from './Reviews';
 
-export { UpdateUserInfoOrganism, Header, TodoContainer, Todo };
+export { UpdateUserInfoOrganism, Header, Todos, Reviews };

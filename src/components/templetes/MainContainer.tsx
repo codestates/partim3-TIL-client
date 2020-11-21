@@ -67,9 +67,6 @@ export default function MainContainer() {
                 logout
               </Button>
             </Link>
-            <Link to="/calendar/d">
-              <Button size="lg">Date</Button>
-            </Link>
           </Col>
         </Row>
       </Container>

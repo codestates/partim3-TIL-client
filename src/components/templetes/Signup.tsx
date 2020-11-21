@@ -12,7 +12,7 @@ import { signupStart, signupSuccess, signupFailure } from '../../modules/signup'
 
 import axios from 'axios';
 
-export default function SignupContainer() {
+export default function Signup() {
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');

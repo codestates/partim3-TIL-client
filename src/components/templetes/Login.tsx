@@ -25,7 +25,7 @@ declare global {
 }
 const Kakao = window.Kakao;
 
-export default function LoginContainer() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
