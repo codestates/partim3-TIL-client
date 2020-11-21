@@ -1,16 +1,10 @@
 /* 1. ActionTypes - login */
-const AUTH_LOGIN_START: string = 'AUTH_LOGIN_START';
-const AUTH_LOGIN_SUCCESS: string = 'AUTH_LOGIN_SUCCESS';
-const AUTH_LOGIN_FAILURE: string = 'AUTH_LOGIN_FAILURE';
-const AUTH_LOGOUT: string = 'AUTH_LOGOUT';
+const AUTH_LOGIN_START = 'AUTH_LOGIN_START';
+const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
+const AUTH_LOGIN_FAILURE = 'AUTH_LOGIN_FAILURE';
+const AUTH_LOGOUT = 'AUTH_LOGOUT';
 
 /* 2. 액션생성자 함수 : 액션 객체(action 객체의 type 값은 "AUTH_login" 등등)를 리턴합니다. */
-
-interface loginProp {
-  type: string;
-  id?: number;
-  nickname?: string;
-}
 
 export function loginStart() {
   return {
@@ -39,8 +33,23 @@ export function logout() {
   };
 }
 
+interface loginType {
+  status: string;
+}
+
+interface statusType {
+  isLoggedIn: boolean;
+  currentUser: number | null;
+  nickname: string | null;
+}
+
+interface initialStateType {
+  login: loginType;
+  status: statusType;
+}
+
 /* 3. initialState 및 reducer 함수 */
-const initialState = {
+const initialState: initialStateType = {
   login: {
     status: 'INIT',
   },
@@ -53,12 +62,19 @@ const initialState = {
 
 /* reducer func*/
 
-function loginOut(state = initialState, action: loginProp) {
+interface loginProp {
+  type: string;
+  id: number | null;
+  nickname: string | null;
+}
+
+export default function loginOut(state = initialState, action: loginProp) {
   switch (action.type) {
     case AUTH_LOGIN_START:
       return {
         ...state,
         login: {
+          ...state.login,
           status: 'WAITING',
         },
       };
@@ -66,6 +82,7 @@ function loginOut(state = initialState, action: loginProp) {
       return {
         ...state,
         login: {
+          ...state.login,
           status: 'SUCCESS',
         },
         status: {
@@ -79,6 +96,7 @@ function loginOut(state = initialState, action: loginProp) {
       return {
         ...state,
         login: {
+          ...state.login,
           status: 'FAILURE',
         },
       };
@@ -97,5 +115,3 @@ function loginOut(state = initialState, action: loginProp) {
       return state;
   }
 }
-
-export default loginOut;

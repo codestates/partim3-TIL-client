@@ -27,7 +27,7 @@ export default function Mypage() {
 
   const userInfoState = useSelector((state: RootState) => state.handleUserInfo); // 끝에 [] 해줘야하는데 에러가 난다
 
-  // const loginState = useSelector((state: RootState) => state.loginLogout, []);
+  const loginState = useSelector((state: RootState) => state.loginOut);
 
   const history = useHistory();
   const dispatch = useDispatch();
