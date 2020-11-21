@@ -59,6 +59,9 @@ export default function MainContainer() {
             <Link to="/login">
               <Button size="lg">login</Button>
             </Link>
+            <Link to="/calendar/day">
+              <Button size="lg">calendarDay</Button>
+            </Link>
             <Link to="/">
               <Button size="lg" onClick={LogoutContainer}>
                 logout
