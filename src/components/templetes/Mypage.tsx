@@ -26,11 +26,21 @@ export default function Mypage() {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
 
   const userInfoState = useSelector((state: RootState) => state.handleUserInfo); // 끝에 [] 해줘야하는데 에러가 난다
+  // userInfo get 요청에 대응하는 API가 없으므로, 위 코드는 지금은 쓰이질 않고 있음
 
-  const loginState = useSelector((state: RootState) => state.loginOut);
+  const loginStatus = useSelector((state: RootState) => state.loginOut.status);
+  const currentUser = loginStatus.currentUser as number;
+  const currentNickname = loginStatus.nickname as string;
+  // 일단 이렇게 처리는 하는데, mypage의 userInfo get 요청을 통해 받아오는 nickname을 내려주도록 변경해야 한다.
+  // (userInfo get 요청에 대응하는 API를 서버에서 만들어주셔야 함)
 
   const history = useHistory();
   const dispatch = useDispatch();
+
+  if (!currentUser) {
+    alert('로그인하셔야 마이메이지에 접속하실 수 있습니다.');
+    history.push('./login');
+  }
 
   const handleChange = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -67,12 +77,12 @@ export default function Mypage() {
         if (nickname.length > 0) {
           (document.querySelector('.nickname') as HTMLInputElement).value = '';
           // updateUserInfo(currentUser, nickname, null, null);
-          updateUserInfo('1', nickname, null, null);
+          updateUserInfo(currentUser, nickname, null, null);
         } else {
           (document.querySelector('.oldPassword') as HTMLInputElement).value = '';
           (document.querySelector('.newPassword') as HTMLInputElement).value = '';
           (document.querySelector('.newPasswordConfirm') as HTMLInputElement).value = '';
-          updateUserInfo('1', null, oldPassword, newPassword);
+          updateUserInfo(currentUser, null, oldPassword, newPassword);
         }
       }
     }
@@ -96,7 +106,7 @@ export default function Mypage() {
   };
 
   const updateUserInfo = (
-    currentUser: string,
+    currentUser: number,
     nickname: string | null,
     password: string | null,
     newPassword: string | null,
@@ -192,7 +202,7 @@ export default function Mypage() {
           아이콘 및 기본정보(?)
         </Row>
 
-        <UpdateUserInfoOrganism handleChange={handleChange} />
+        <UpdateUserInfoOrganism handleChange={handleChange} currentNickname={currentNickname} />
       </Container>
     </>
   );

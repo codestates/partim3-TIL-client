@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import ButtonBoot from '../UI/Atoms/ButtonBoot';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { RootState } from '../../modules';
 
 import FormBoot from '../UI/Atoms/FormBoot';
 
@@ -19,6 +20,14 @@ export default function Signup() {
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+
+  if (currentUser) {
+    alert('로그인한 상태에서는 회원가입을 할 수 없습니다. 로그아웃 후 시도하세요');
+    history.push('/');
+  }
 
   const handleChange = (
     event: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -54,6 +63,7 @@ export default function Signup() {
       .then(res => {
         dispatch(signupSuccess());
         alert('환영합니다');
+        history.push('/login');
       })
       .catch(err => {
         alert(`잘못한거 같은데요!`);
@@ -85,7 +95,9 @@ export default function Signup() {
         <Col className="m-auto" xs={10} sm={8} md={6}>
           {/* 고양이 이미지 */}
           <Col className="m-auto pb-3">
-            <Image src="img/cat.jpeg" height="171" width="180" roundedCircle />
+            <Link to="/">
+              <Image src="img/cat.jpeg" height="171" width="180" roundedCircle />
+            </Link>
           </Col>
 
           {/* 이메일 */}
