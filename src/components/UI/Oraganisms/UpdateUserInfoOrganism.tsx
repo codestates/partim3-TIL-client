@@ -4,9 +4,13 @@ import { InputMolecule } from '../Molecules';
 
 interface UpdateUserInfoOrganismProps {
   handleChange(e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement }): void;
+  currentNickname: string;
 }
 
-export default function UpdateUserInfoOrganism({ handleChange }: UpdateUserInfoOrganismProps) {
+export default function UpdateUserInfoOrganism({
+  handleChange,
+  currentNickname,
+}: UpdateUserInfoOrganismProps) {
   return (
     <Form className="px-5 py-3 m-auto" style={{ width: '400px', boxSizing: 'content-box' }}>
       <InputMolecule
@@ -14,7 +18,7 @@ export default function UpdateUserInfoOrganism({ handleChange }: UpdateUserInfoO
         controlId="formBasicEmail"
         type="text"
         name="nickname"
-        placeholder="현재 닉네임을 띄울 자리"
+        placeholder={currentNickname}
         handleChange={handleChange}
         smLabel={4}
         smInput={8}

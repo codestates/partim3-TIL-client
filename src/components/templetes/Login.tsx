@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { RootState } from '../../modules';
 
 import { Container, Row, Col, Image, Form, Button } from 'react-bootstrap';
 import { BsFillAwardFill } from 'react-icons/bs';
@@ -31,6 +32,28 @@ export default function Login() {
 
   const dispatch = useDispatch();
   const history = useHistory();
+
+  /*  이미 로그인된 상태에서 /login에 접속하면 막아주는 장치인데, 
+      이 기능을 여기서 넣으니까 alert만 괜히 두번 뜬다
+      이 기능을 주지 않으면 로그인한 상태에서 /login에 접속이 가능해지므로, 처리하긴 해야 함
+
+      => 일단 로그인 버튼 자체를 안보이게 하자
+      => 그래도 주소 입력으로 접속하는 것은 막아야 하는데...
+
+    const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+
+    if (currentUser) {
+      alert('이미 로그인이 되어 있습니다.');
+      history.push('/calendar/day');
+    }
+
+  */
+  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+
+  // if (currentUser) {
+  //   alert('이미 로그인이 되어 있습니다.');
+  //   history.push('/calendar/day');
+  // }
 
   const handleChange = (
     event: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -70,10 +93,13 @@ export default function Login() {
       )
       .then(res => {
         const { id, nickname, token } = res.data;
+        console.log('token : ', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
         dispatch(loginSuccess(id, nickname));
-        history.push('/');
+        // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?
+        localStorage.setItem('token', token); // 일단 저장해봄...
+        alert('로그인에 성공하셨습니다.');
+        history.push('/calendar/day');
       })
       .catch(err => {
         console.log(err);
@@ -124,7 +150,8 @@ export default function Login() {
       .then(res => {
         const { id, nickname, token } = res.data;
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+        // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?
+        localStorage.setItem('token', token); // 일단 저장해봄...
         dispatch(loginSuccess(id, nickname));
         history.push('/');
       })
@@ -148,7 +175,9 @@ export default function Login() {
         <Col className="m-auto" xs={10} sm={8} md={6}>
           {/* 고양이 이미지 */}
           <Col className="m-auto pb-3">
-            <Image src="img/cat.jpeg" height="171" width="180" roundedCircle />
+            <Link to="/">
+              <Image src="img/cat.jpeg" height="171" width="180" roundedCircle />
+            </Link>
           </Col>
 
           {/* 이메일 */}
