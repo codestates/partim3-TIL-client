@@ -7,7 +7,13 @@ const CALENDAR_DAY_FAILURE: string = 'CALENDAR_DAY_FAILURE';
 interface calendarDayI {
   type: string;
   todos: Array<object>;
-  reviews: Array<object>;
+  reviews: Array<{
+    title: string | null;
+    context: string | null;
+    imageUrl: string | null;
+    scheduleTime: string | null;
+    id: number;
+  }>;
 }
 
 export function calendarStart() {
@@ -35,7 +41,13 @@ export function calendarFailure() {
 
 interface todosAndReviewsI {
   todos: Array<object>;
-  reviews: Array<object>;
+  reviews: Array<{
+    title: string | null;
+    context: string | null;
+    imageUrl: string | null;
+    scheduleTime: string | null;
+    id: number;
+  }>;
 }
 
 interface initialStateType {

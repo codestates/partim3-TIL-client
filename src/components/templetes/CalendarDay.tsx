@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Row, Col, Container } from 'react-bootstrap';
 import { Header, Todos, Reviews } from '../UI/Oraganisms';
 import { RootState } from '../../modules';
 import { useSelector, useDispatch } from 'react-redux';
+import date from '../UI/Atoms/todayF';
 import axios from 'axios';
 
 import calendarDay, {
@@ -13,28 +14,11 @@ import calendarDay, {
 
 function CalendarDay() {
   //userId,오늘 날짜를 서버로 보내야함
-  const today = new Date();
-
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const day = today.getDate();
-  const hour = today.getHours();
-  const min = today.getMinutes();
-
-  const date = {
-    year,
-    month,
-    day,
-    hour,
-    min,
-  };
-
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const { todos, reviews } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
 
   const dispatch = useDispatch();
 
-  const sendToday = (id: number) => {
+  const sendToday = (id: number | null) => {
     dispatch(calendarStart());
 
     return axios
