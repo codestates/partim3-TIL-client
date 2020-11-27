@@ -18,7 +18,7 @@ function CalendarDay() {
 
   const dispatch = useDispatch();
 
-  const sendToday = (id: number | null) => {
+  const sendToday = async (id: number | null) => {
     dispatch(calendarStart());
 
     return axios
