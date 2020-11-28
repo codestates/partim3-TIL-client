@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../modules';
 import { Modal, Button } from 'react-bootstrap';
 import sendReview from '../Atoms/sendReviewF';
+
+import date from '../Atoms/todayF';
+import axios from 'axios';
+
+import calendarDay, {
+  calendarStart,
+  calendarSuccess,
+  calendarFailure,
+} from '../../../modules/calendarM';
 
 //디자인은 추후 업데이트 해야함.
 
@@ -21,6 +30,32 @@ export default function ReviewModal(props: any) {
     setContext(e.target.value);
   };
 
+  const dispatch = useDispatch();
+  const reRender = (id: number | null) => {
+    dispatch(calendarStart());
+
+    return axios
+      .get(`http://localhost:5000/calendar/day`, {
+        params: {
+          userId: id,
+          date: JSON.stringify(date),
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        const { todos, reviews } = res.data;
+        dispatch(calendarSuccess(todos, reviews));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(calendarFailure());
+      });
+  };
+
+  useEffect(() => {
+    reRender(currentUser);
+  }, []);
+
   return (
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
@@ -35,10 +70,13 @@ export default function ReviewModal(props: any) {
       <Modal.Footer>
         <Button onClick={props.onHide}>cancel</Button>
         <Button
-          onClick={() => {
-            sendReview(title, context, currentUser, today);
-            alert('hoho');
+
+          onClick={async () => {
+            await sendReview(title, context, currentUser, today);
             props.onHide();
+            await reRender(currentUser);
+            await setTitle('');
+            await setContext('');
           }}
         >
           submit
