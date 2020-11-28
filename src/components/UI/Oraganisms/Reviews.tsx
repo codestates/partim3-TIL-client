@@ -1,46 +1,38 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../modules';
 import Review from '../Molecules/Review';
-import sendReview from '../Atoms/sendReviewF';
 import ReviewModal from '../Molecules/ReviewModal';
 
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 export default function Reviews() {
   const { reviews } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
+  const [modalShow, setModalShow] = React.useState(false);
 
   const reviewList = reviews.map(el => {
     return <Review key={el.id} list={el} />;
   });
 
-  const [modalShow, setModalShow] = React.useState(false);
-
   return (
     <Container fluid>
-      <Row className="m-auto">
-        <Col xs={4} sm={4} md={4}>
-          무얼 하고 있나?
+      <Row>
+        <Col>
+          <Row>
+            <Col>TIL-오늘 하루종일 무얼했나?</Col>
+            <Col>여기에 기록하기</Col>
+          </Row>
+          <Row>{reviewList}</Row>
         </Col>
-        <Col xs={8} sm={8} md={8}>
-          이 공간을 누르면 리뷰 생성??
-        </Col>
-      </Row>
-      <Row className="m-auto" xs={12} sm={12} md={12}>
-        {reviewList}
       </Row>
       <Row>
-        {/* <Button variant="primary" onClick={() => setModalShow(true)}>
-          Launch vertically centered modal
-        </Button> */}
-        {/* <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} /> */}
-        <div
+        <Col
           onClick={() => {
             setModalShow(true);
           }}
         >
-          빈공간을 어떻게 넣지.
-        </div>
+          이어서 쓰기
+        </Col>
         <ReviewModal show={modalShow} onHide={() => setModalShow(false)}></ReviewModal>
       </Row>
     </Container>
