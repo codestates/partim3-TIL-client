@@ -21,7 +21,6 @@ function CalendarDay() {
 
   const { today } = useSelector((state: RootState) => state.handleToday);
 
-
   const dispatch = useDispatch();
 
   const sendToday = (id: number | null, today: object) => {

@@ -6,6 +6,10 @@ import { RootState } from '../../../../modules';
 import { logout } from '../../../../modules/loginOut';
 import axios from 'axios';
 
+import { GoogleLogout } from 'react-google-login';
+import dotenv from 'dotenv';
+dotenv.config();
+
 export default function SidebarHeader() {
   const { currentUser, nickname } = useSelector((state: RootState) => state.loginOut.status);
   let val = 5.7;
@@ -13,11 +17,17 @@ export default function SidebarHeader() {
   const dispatch = useDispatch();
 
   //나중에 정리해야할듯. 함수가 반복사용되므로 분리하기.
-  const handleLogout = () => {
+  const handleLogout = (googleResponse?: any) => {
     if (!currentUser) {
       alert('로그인이 되어있지 않습니다.');
       return;
     }
+
+    if (googleResponse.error) {
+      alert('Google Social Logout에 실패하셨습니다. 다시 시도해 주세요.');
+      return;
+    }
+
     return axios
       .post(`http://localhost:5000/users/logout`, {}, { withCredentials: true })
       .then(() => {
@@ -42,6 +52,13 @@ export default function SidebarHeader() {
       <Row>
         <Col onClick={handleLogout}>
           <Button>logout</Button>
+        </Col>
+        <Col>
+          <GoogleLogout
+            clientId={`${process.env.REACT_APP_GOOGLE_LOGIN}`}
+            onLogoutSuccess={handleLogout}
+            onFailure={handleLogout}
+          />
         </Col>
         <Link to="/mypage">
           <Col>
