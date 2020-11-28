@@ -6,7 +6,11 @@ const CALENDAR_DAY_FAILURE: string = 'CALENDAR_DAY_FAILURE';
 /* 2. 액션생성자 함수 : 액션 객체(action 객체의 type 값은 "AUTH_login" 등등)를 리턴합니다. */
 interface calendarDayI {
   type: string;
-  todos: Array<object>;
+  todos: Array<{
+    todoTitle: string | null;
+    scheduleTime: string | null;
+    id: number;
+  }>;
   reviews: Array<{
     title: string | null;
     context: string | null;
@@ -40,7 +44,11 @@ export function calendarFailure() {
 /* 3. initialState 및 reducer 함수 */
 
 interface todosAndReviewsI {
-  todos: Array<object>;
+  todos: Array<{
+    todoTitle: string | null;
+    scheduleTime: string | null;
+    id: number;
+  }>;
   reviews: Array<{
     title: string | null;
     context: string | null;
