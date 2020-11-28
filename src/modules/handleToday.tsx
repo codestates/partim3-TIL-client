@@ -70,7 +70,11 @@ export default function handleToday(state = initialState, action: handleTodayPro
         status: 'SUCCESS',
         today: {
           ...state.today,
+          year: action.today.year,
+          month: action.today.month,
           day: action.today.day,
+          hour: action.today.hour,
+          min: action.today.min,
         },
       };
     case HANDLE_TODAY_FAILURE:
