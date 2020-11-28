@@ -4,10 +4,19 @@ import { Col } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import * as AiIcons from 'react-icons/ai';
-
 import './Header.css';
-
 import { sidebarStatus } from '../../../modules/sideBarM';
+import { NaviButton } from '../Molecules';
+import { ButtonAtom } from '../Atoms';
+import { RootState } from '../../../modules';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  handleTodayStart,
+  handleTodaySuccess,
+  handleTodayFailure,
+} from '../../../modules/handleToday';
+import date from '../../UI/Atoms/todayF';
+
 
 export default function Header() {
   const [sidebar, setSidebar] = useState(true);
@@ -18,15 +27,24 @@ export default function Header() {
     dispatch(sidebarStatus(sidebar, sW));
   };
 
-  //리덕스에 저장을 해야할까?
-  //리덕스에 저장을 하면 어디서든 접근이 가능하다. 따라서 상위에서 그리드 설정이 가능.
-  //햄버거 메뉴가 하위에 소속되어 있는데, 그리드 설정은 calDay에서 이루어지므로 리덕스에 상태값을 저장할 필요가 있다.
+
+  const { today } = useSelector((state: RootState) => state.handleToday);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const goToday = () => {
+    dispatch(handleTodayStart());
+
+    dispatch(handleTodaySuccess(date));
+  };
+
+  let todayView =
+    String(today.year) + '년 ' + String(today.month) + '월 ' + String(today.day) + '일';
+  
+ useEffect(() => {
     showSidebar();
   }, []);
+
 
   return (
     <>
@@ -37,13 +55,15 @@ export default function Header() {
         <Link to="/">logo(main page link?)</Link>
       </Col>
       <Col style={{ border: '1px solid black' }} xs={2}>
-        today button
+        <ButtonAtom text="today button" onClick={goToday} />
       </Col>
       <Col style={{ border: '1px solid black' }} xs={2}>
-        navi button
+        <NaviButton />
       </Col>
-      <Col style={{ border: '1px solid black' }} xs={4}>
-        month date year
+
+      <Col style={{ border: '1px solid black' }} xs={4} sm={5}>
+        {todayView}
+
       </Col>
     </>
   );

@@ -20,6 +20,7 @@ export default function ReviewModal(props: any) {
   const [title, setTitle] = useState('');
   const [context, setContext] = useState('');
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const { today } = useSelector((state: RootState) => state.handleToday);
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -30,14 +31,15 @@ export default function ReviewModal(props: any) {
   };
 
   const dispatch = useDispatch();
-  const reRender = (id: number | null) => {
+  const reRender = (id: number | null, today: object) => {
     dispatch(calendarStart());
 
     return axios
       .get(`http://localhost:5000/calendar/day`, {
         params: {
           userId: id,
-          date: JSON.stringify(date),
+          // date: JSON.stringify(date),
+          date: today,
         },
         withCredentials: true,
       })
@@ -52,7 +54,7 @@ export default function ReviewModal(props: any) {
   };
 
   useEffect(() => {
-    reRender(currentUser);
+    reRender(currentUser, today);
   }, []);
 
   return (
@@ -70,9 +72,9 @@ export default function ReviewModal(props: any) {
         <Button onClick={props.onHide}>cancel</Button>
         <Button
           onClick={async () => {
-            await sendReview(title, context, currentUser);
+            await sendReview(title, context, currentUser, today);
             props.onHide();
-            await reRender(currentUser);
+            await reRender(currentUser, today);
             await setTitle('');
             await setContext('');
           }}

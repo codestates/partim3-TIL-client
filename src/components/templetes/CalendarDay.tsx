@@ -16,18 +16,23 @@ import calendarDay, {
 function CalendarDay() {
   //userId,오늘 날짜를 서버로 보내야함
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+
   const { sidebar, sW } = useSelector((state: RootState) => state.sideBarM);
+
+  const { today } = useSelector((state: RootState) => state.handleToday);
+
 
   const dispatch = useDispatch();
 
-  const sendToday = async (id: number | null) => {
+  const sendToday = (id: number | null, today: object) => {
     dispatch(calendarStart());
 
     return axios
       .get(`http://localhost:5000/calendar/day`, {
         params: {
           userId: id,
-          date: JSON.stringify(date),
+          // date: JSON.stringify(date),
+          date: today,
         },
         withCredentials: true,
       })
@@ -43,9 +48,9 @@ function CalendarDay() {
 
   useEffect(() => {
     if (typeof currentUser === 'number') {
-      sendToday(currentUser);
+      sendToday(currentUser, today);
     }
-  }, []);
+  }, [currentUser, today]);
 
   // console.log('calsidebar', sidebar);
   // 구글 캘린더의 경우 사이드바의 너비를 항상 고정시킴. 이 방식대로 진행.

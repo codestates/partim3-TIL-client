@@ -1,15 +1,18 @@
 import Date from '../Atoms/todayF';
 import axios from 'axios';
 
-export default async function sendReview(
+
+export default function sendReview(
   title: string,
   context: string,
   currentUser: number | null,
+  today: object,
+
 ) {
   // dispatch(calendarStart());
   // return 이 없어도 axios는 잘 작동되는데 return이 필요한 이유?
   // 현재 유저를 매번 리덕스에서 확인하는 방식이 맞나..?
-
+  console.log('today : ', today);
   return axios
     .post(
       `http://localhost:5000/calendar/review`,
@@ -17,7 +20,8 @@ export default async function sendReview(
         title: title,
         context: context,
         imageUrl: '/wow.com',
-        scheduleTime: JSON.stringify(Date),
+        // scheduleTime: JSON.stringify(Date),
+        scheduleTime: JSON.stringify(today),
         id: currentUser,
       },
       { withCredentials: true },
