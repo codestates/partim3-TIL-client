@@ -5,11 +5,12 @@ interface ButtonAtomProps {
   text: string;
   color?: string;
   block?: boolean;
+  onClick?: (params?: any) => any;
 }
 
-function ButtonAtom({ text, color, block }: ButtonAtomProps) {
+function ButtonAtom({ text, color, block, onClick }: ButtonAtomProps) {
   return (
-    <Button variant={color} block={block}>
+    <Button variant={color} block={block} onClick={onClick}>
       {text}
     </Button>
   );

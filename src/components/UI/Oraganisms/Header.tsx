@@ -2,11 +2,34 @@ import React from 'react';
 import { Col } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { NaviButton } from '../Molecules';
+import { ButtonAtom } from '../Atoms';
+import { RootState } from '../../../modules';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  handleTodayStart,
+  handleTodaySuccess,
+  handleTodayFailure,
+} from '../../../modules/handleToday';
+import date from '../../UI/Atoms/todayF';
 
 export default function Header() {
   const handleSideBar = () => {
     alert('sideBar Open?');
   };
+
+  const { today } = useSelector((state: RootState) => state.handleToday);
+
+  const dispatch = useDispatch();
+
+  const goToday = () => {
+    dispatch(handleTodayStart());
+
+    dispatch(handleTodaySuccess(date));
+  };
+
+  let todayView =
+    String(today.year) + '년 ' + String(today.month) + '월 ' + String(today.day) + '일';
 
   return (
     <>
@@ -18,13 +41,13 @@ export default function Header() {
         <Link to="/">logo(main page link?)</Link>
       </Col>
       <Col style={{ border: '1px solid black' }} xs={2}>
-        today button
+        <ButtonAtom text="today button" onClick={goToday} />
       </Col>
       <Col style={{ border: '1px solid black' }} xs={2}>
-        navi button
+        <NaviButton />
       </Col>
       <Col style={{ border: '1px solid black' }} xs={4} sm={5}>
-        month date year
+        {todayView}
       </Col>
     </>
   );

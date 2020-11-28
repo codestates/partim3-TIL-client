@@ -11,6 +11,7 @@ export default function ReviewModal(props: any) {
   const [title, setTitle] = useState('');
   const [context, setContext] = useState('');
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const { today } = useSelector((state: RootState) => state.handleToday);
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -35,7 +36,7 @@ export default function ReviewModal(props: any) {
         <Button onClick={props.onHide}>cancel</Button>
         <Button
           onClick={() => {
-            sendReview(title, context, currentUser);
+            sendReview(title, context, currentUser, today);
             alert('hoho');
             props.onHide();
           }}
