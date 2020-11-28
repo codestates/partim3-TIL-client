@@ -4,6 +4,12 @@ import { Link, useHistory } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { logout } from '../../modules/loginOut';
 import { RootState } from '../../modules';
+import {
+  handleTodayStart,
+  handleTodaySuccess,
+  handleTodayFailure,
+} from '../../modules/handleToday';
+import date from '..//UI/Atoms/todayF';
 import axios from 'axios';
 
 // function LogoutContainer() {
@@ -38,6 +44,7 @@ export default function MainContainer() {
       .post(`http://localhost:5000/users/logout`, {}, { withCredentials: true })
       .then(() => {
         dispatch(logout());
+        dispatch(handleTodaySuccess(date));
         delete axios.defaults.headers.common['Authorization'];
         localStorage.removeItem('token');
         alert('로그아웃되었습니다.');

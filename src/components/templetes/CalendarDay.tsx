@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Sidebar from '../UI/Oraganisms/Sidebar';
 import date from '../UI/Atoms/todayF';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import calendarDay, {
   calendarStart,
@@ -21,8 +22,13 @@ function CalendarDay() {
 
   const { today } = useSelector((state: RootState) => state.handleToday);
 
-
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  if (!currentUser) {
+    alert('로그인하셔야 달력 페이지에 접속하실 수 있습니다.');
+    history.push('../login');
+  }
 
   const sendToday = (id: number | null, today: object) => {
     dispatch(calendarStart());

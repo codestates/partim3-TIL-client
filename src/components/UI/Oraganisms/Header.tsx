@@ -9,14 +9,13 @@ import { sidebarStatus } from '../../../modules/sideBarM';
 import { NaviButton } from '../Molecules';
 import { ButtonAtom } from '../Atoms';
 import { RootState } from '../../../modules';
-import { useSelector, useDispatch } from 'react-redux';
+
 import {
   handleTodayStart,
   handleTodaySuccess,
   handleTodayFailure,
 } from '../../../modules/handleToday';
 import date from '../../UI/Atoms/todayF';
-
 
 export default function Header() {
   const [sidebar, setSidebar] = useState(true);
@@ -26,7 +25,6 @@ export default function Header() {
     sidebar ? setSW(0) : setSW(2);
     dispatch(sidebarStatus(sidebar, sW));
   };
-
 
   const { today } = useSelector((state: RootState) => state.handleToday);
 
@@ -40,11 +38,10 @@ export default function Header() {
 
   let todayView =
     String(today.year) + '년 ' + String(today.month) + '월 ' + String(today.day) + '일';
-  
- useEffect(() => {
+
+  useEffect(() => {
     showSidebar();
   }, []);
-
 
   return (
     <>
@@ -60,10 +57,8 @@ export default function Header() {
       <Col style={{ border: '1px solid black' }} xs={2}>
         <NaviButton />
       </Col>
-
       <Col style={{ border: '1px solid black' }} xs={4} sm={5}>
         {todayView}
-
       </Col>
     </>
   );

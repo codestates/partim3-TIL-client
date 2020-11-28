@@ -7,7 +7,6 @@ import sideBarM from './sideBarM';
 
 import handleToday from './handleToday';
 
-
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import calendarDay from './calendarM';
@@ -29,12 +28,8 @@ const reducers = combineReducers({
   handleUserInfo,
   loginOut,
   calendarDay,
-
-
   sideBarM,
-
   handleToday,
-
 });
 
 export type RootState = ReturnType<typeof reducers>;
