@@ -21,21 +21,46 @@ export default function NaviButton() {
     dispatch(handleTodaySuccess(today));
   };
 
-  const getYesterday = () => {
-    let shiftedToday = JSON.parse(JSON.stringify(today));
-    shiftedToday.day--;
+  const getNextday = (direction: number) => {
+    let { year, month, day, hour, min } = today;
+
+    let currentTime = new Date();
+    let currentHour = currentTime.getHours();
+    let currentMin = currentTime.getMinutes();
+
+    let nextDay = new Date(year, month - 1, day, currentHour, currentMin);
+
+    let plusOrMinus;
+
+    if (direction === -1) {
+      plusOrMinus = nextDay.getDate() - 1;
+    } else if (direction === 1) {
+      plusOrMinus = nextDay.getDate() + 1;
+    }
+
+    nextDay = new Date(
+      nextDay.getFullYear(),
+      nextDay.getMonth(),
+      plusOrMinus,
+      nextDay.getHours(),
+      nextDay.getMinutes(),
+    );
+
+    let shiftedToday = {
+      year: nextDay.getFullYear(),
+      month: nextDay.getMonth() + 1,
+      day: nextDay.getDate(),
+      hour: nextDay.getHours(),
+      min: nextDay.getMinutes(),
+    };
+
     handleToday(shiftedToday);
   };
 
-  const getTomorrow = () => {
-    let shiftedToday = JSON.parse(JSON.stringify(today));
-    shiftedToday.day++;
-    handleToday(shiftedToday);
-  };
   return (
     <>
-      <ButtonAtom text="left" onClick={getYesterday} />{' '}
-      <ButtonAtom text="right" onClick={getTomorrow} />
+      <ButtonAtom text="left" onClick={() => getNextday(-1)} />{' '}
+      <ButtonAtom text="right" onClick={() => getNextday(1)} />
     </>
   );
 }
