@@ -39,7 +39,7 @@ interface initialStateType {
 }
 
 /* 3. initialState 및 reducer 함수 */
-const initialState = {
+const initialState: initialStateType = {
   status: 'INIT',
   today: date,
 };
