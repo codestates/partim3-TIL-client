@@ -1,13 +1,11 @@
 import Date from '../Atoms/todayF';
 import axios from 'axios';
 
-
 export default function sendReview(
   title: string,
   context: string,
   currentUser: number | null,
   today: object,
-
 ) {
   // dispatch(calendarStart());
   // return 이 없어도 axios는 잘 작동되는데 return이 필요한 이유?
