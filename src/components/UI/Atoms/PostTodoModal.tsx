@@ -3,6 +3,7 @@ import { Modal, Container, Row, Col, Button, Form, InputGroup, FormControl } fro
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../modules';
 import axios from 'axios';
+import DatePicker from 'react-datepicker';
 
 interface PostTodoModalProp {
   show: React.ReactNode;
@@ -11,7 +12,13 @@ interface PostTodoModalProp {
 
 export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(''); // 사용되지 않는 듯 한데...?
+  const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
+  const handleDate = (date: Date | null) => {
+    if (date !== null) {
+      setStartDate(date);
+    }
+  };
 
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
@@ -25,9 +32,13 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
   };
 
   const handleCloseModal = () => {
-    console.log('왜안됨??');
+    setStartDate(new Date()); // 모달을 닫을 때, 모달 안의 날짜선택 창을 '오늘'로 되돌리는 기능
     closeModal();
   };
+
+  let scheduleTime = `${startDate.getFullYear()}-${
+    startDate.getMonth() + 1
+  }-${startDate.getDate()}`;
 
   const PostNewTodo = (userId: number | null, title: string, scheduleTime: string) => {
     if (typeof userId !== 'number') {
@@ -46,7 +57,7 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
       )
       .then(res => {
         alert(`${res.data}`);
-        closeModal(); // 여기는 잘 작동한다.
+        handleCloseModal(); // 여기는 잘 작동한다.
       })
       .catch(err => {
         alert(`${err}`);
@@ -56,9 +67,9 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
   return (
     <Modal
       show={show}
-      onHide={closeModal}
-      backdrop="static"
-      keyboard={false}
+      onHide={handleCloseModal}
+      backdrop="static" // 모달 바깥의 배경 부분에 관여함
+      keyboard={true} // esc로 닫을 수 있는지 결정함
       aria-labelledby="contained-modal-title-vcenter"
     >
       <Modal.Header closeButton>
@@ -83,7 +94,11 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
             </InputGroup>
           </Row>
           <Row className="m-1" style={{ border: '1px solid black' }}>
-            언제 하실 일인가요? : https://reactdatepicker.com/ 를 사용하는 편이 어떨까요?
+            <div>
+              언제 하실 일인가요?{' '}
+              <DatePicker selected={startDate} onChange={handleDate} dateFormat="yyyy/MM/dd" />
+            </div>
+            <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>
           </Row>
           <Row className="m-1" style={{ border: '1px solid black' }}>
             tag 선택창 : tag 구현이 필요합니다.
@@ -94,8 +109,8 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => closeModal()}>Close Modal</Button>
-        <Button onClick={() => PostNewTodo(currentUser, title, '2020-11-22')}>
+        <Button onClick={handleCloseModal}>Close Modal</Button>
+        <Button onClick={() => PostNewTodo(currentUser, title, scheduleTime)}>
           Post new Todo!
         </Button>
       </Modal.Footer>
