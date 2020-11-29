@@ -57,7 +57,6 @@ export default function Header() {
       <Col style={{ border: '1px solid black' }} xs={2}>
         <NaviButton />
       </Col>
-
       <Col style={{ border: '1px solid black' }} xs={4} sm={5}>
         {todayView}
       </Col>

@@ -12,7 +12,8 @@ import { loginStart, loginSuccess, loginFailure } from '../../modules/loginOut';
 
 import NaverLogin from './NaverLogin';
 import KakaoLogin from 'react-kakao-login';
-import { GoogleLogin } from 'react-google-login';
+// import { GoogleLogin } from 'react-google-login';
+import { SocialLoginGoogle } from '../UI/Molecules';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -131,36 +132,6 @@ export default function Login() {
   //   });
   // };
 
-  const responseGoogle = (response: any) => {
-    if (response.error) {
-      alert('넌 이상해');
-      return;
-    }
-
-    dispatch(loginStart());
-
-    let idToken = response.tokenObj.id_token;
-
-    axios
-      .post(
-        'http://localhost:5000/users/social/google',
-        { idToken: idToken },
-        { withCredentials: true },
-      )
-      .then(res => {
-        const { id, nickname, token } = res.data;
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?
-        localStorage.setItem('token', token); // 일단 저장해봄...
-        dispatch(loginSuccess(id, nickname));
-        history.push('/');
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch(loginFailure());
-      });
-  };
-
   const responseKaKao = (response: any) => {
     console.log('kakao response : ', response);
   };
@@ -240,23 +211,7 @@ export default function Login() {
             <NaverLogin />
           </Row>
           <Row className="m-2">
-            <div
-              style={{
-                display: 'flex',
-                flexFlow: 'column wrap',
-                textAlign: 'center',
-                height: '50px',
-                width: '200px',
-              }}
-            >
-              <GoogleLogin
-                clientId={`${process.env.REACT_APP_GOOGLE_LOGIN}`}
-                buttonText="Login"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-                cookiePolicy={'single_host_origin'}
-              />
-            </div>
+            <SocialLoginGoogle />
           </Row>
           <Row className="m-2">
             <ButtonBoot title="github" color="dark"></ButtonBoot>
