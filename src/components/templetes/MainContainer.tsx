@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Image, Jumbotron } from 'react-bootstrap';
 import { logout } from '../../modules/loginOut';
 import { RootState } from '../../modules';
 import {
@@ -11,29 +11,15 @@ import {
 } from '../../modules/handleToday';
 import date from '..//UI/Atoms/todayF';
 import axios from 'axios';
+import MainHeader from '../UI/Oraganisms/MainHeader';
+import { relative } from 'path';
+import './MainContainer.css';
 
-// function LogoutContainer() {
-//   const state = useSelector(
-//     (state: RootState) =>
-//       // useSelector : redux store 안의 값들을 읽어온다. (selector function 을 전달하여, Context에 포함된 state 를 가져올 수 있다.)
-//       state.loginOut, // reducer 함수를 넣어줘야 하는 듯
-//     // [],
-//   );
-// }
-
-// let currentUser = state.status.currentUser;
-
-// return <Header handleLogout={handleLogout} currentUser={currentUser} />;
 export default function MainContainer() {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
   const history = useHistory();
   const dispatch = useDispatch();
-
-  // if (currentUser) {
-  //   alert('이미 로그인이 되어 있습니다.');
-  //   history.push('/calendar/day');
-  // }
 
   const handleLogout = () => {
     if (!currentUser) {
@@ -51,47 +37,44 @@ export default function MainContainer() {
         history.push('/');
       });
   };
+  const leapChar =
+    'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtIp3o%2FbtqOxsujKPg%2FOAL6EOrv8qe1gqNHSF2740%2Fimg.png';
+
+  //vh는 비율이다.
+  //https://webclub.tistory.com/356
 
   return (
-    <>
-      <Row className="py-3 m-0" style={{ border: '1px solid black' }}>
-        <Col>Header</Col>
+    <Container
+      fluid
+      style={{
+        height: '100vh',
+        background: '#8FBC8F',
+      }}
+    >
+      <Row>
+        <MainHeader />
       </Row>
-      <Container
-        fluid={true}
-        style={{
-          height: '900px',
-        }}
-      >
-        <Row
-          style={{
-            height: '100%',
-            border: '1px solid black',
-            backgroundImage: 'url(' + 'img/main.jpg' + ')',
-            backgroundSize: 'cover',
-          }}
-        >
-          <Col className="p-5">
-            <Link to="/signup">
-              <Button size="lg">Get Started!</Button>
-            </Link>
-            <Link to="/mypage">
-              <Button size="lg">Mypage</Button>
-            </Link>
-            <Link to="/login">
-              <Button size="lg">login</Button>
-            </Link>
-            <Link to="/calendar/day">
-              <Button size="lg">calendarDay</Button>
-            </Link>
-            <Link to="/">
-              <Button size="lg" onClick={handleLogout}>
-                logout
-              </Button>
-            </Link>
-          </Col>
-        </Row>
-      </Container>
-    </>
+      <Row>
+        <Col>
+          <Row>
+            <Col>
+              <Jumbotron fluid className="jumbo">
+                <Container>
+                  <Row xs={10} sm={12} md={12}>
+                    <Col xs={10} sm={12} md={7}>
+                      <div className="overlay"></div>
+                    </Col>
+                    <Col xs={10} sm={12} md={5}>
+                      <div>바로바로 의식의 흐름대로 리뷰할 수 있는 스케쥴러 TIL</div>
+                      <Link to="/signup">Get Started!</Link>
+                    </Col>
+                  </Row>
+                </Container>
+              </Jumbotron>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   );
 }

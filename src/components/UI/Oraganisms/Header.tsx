@@ -45,21 +45,19 @@ export default function Header() {
 
   return (
     <>
-      <Col style={{ border: '1px solid black' }} xs={2}>
+      <Col style={{ border: '1px solid black' }}>
         <GiHamburgerMenu size="3em" onClick={showSidebar} />
       </Col>
-      <Col style={{ border: '1px solid black' }} xs={2}>
+      <Col style={{ border: '1px solid black' }}>
         <Link to="/">logo(main page link?)</Link>
       </Col>
-      <Col style={{ border: '1px solid black' }} xs={2}>
+      <Col style={{ border: '1px solid black' }}>
         <ButtonAtom text="today button" onClick={goToday} />
       </Col>
-      <Col style={{ border: '1px solid black' }} xs={2}>
+      <Col style={{ border: '1px solid black' }}>
         <NaviButton />
       </Col>
-      <Col style={{ border: '1px solid black' }} xs={4} sm={5}>
-        {todayView}
-      </Col>
+      <Col style={{ border: '1px solid black' }}>{todayView}</Col>
     </>
   );
 }
