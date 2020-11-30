@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../modules';
 import { Container, Navbar, Nav, Col } from 'react-bootstrap';
+import { RootState } from '../../modules';
 
 export default function MainHeader() {
   const { currentUser, nickname } = useSelector((state: RootState) => state.loginOut.status);

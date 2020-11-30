@@ -5,17 +5,17 @@ import { Link, useHistory } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import * as AiIcons from 'react-icons/ai';
 import './Header.css';
-import { sidebarStatus } from '../../../modules/sideBarM';
-import { NaviButton } from '../Molecules';
-import { ButtonAtom } from '../Atoms';
-import { RootState } from '../../../modules';
+import { sidebarStatus } from '../../modules/sideBarM';
+import NaviButton from '../molecules/NaviButton';
+import { ButtonAtom } from '../atoms';
+import { RootState } from '../../modules';
 
 import {
   handleTodayStart,
   handleTodaySuccess,
   handleTodayFailure,
-} from '../../../modules/handleToday';
-import date from '../../UI/Atoms/todayF';
+} from '../../modules/handleToday';
+import date from '../utils/todayF';
 
 export default function Header() {
   const [sidebar, setSidebar] = useState(true);

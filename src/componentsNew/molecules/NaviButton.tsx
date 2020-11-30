@@ -1,14 +1,14 @@
 import React from 'react';
-import { ButtonAtom } from '../Atoms';
+import { ButtonAtom } from '../atoms';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../modules';
+import { RootState } from '../../modules';
 import {
   handleTodayStart,
   handleTodaySuccess,
   handleTodayFailure,
-} from '../../../modules/handleToday';
-import date from '../../UI/Atoms/todayF';
+} from '../../modules/handleToday';
+import date from '../utils/todayF';
 
 export default function NaviButton() {
   const dispatch = useDispatch();

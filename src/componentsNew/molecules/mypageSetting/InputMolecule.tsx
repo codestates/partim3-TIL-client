@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Row } from 'react-bootstrap';
-import { InputAtom, FormLabelAtom } from '../Atoms';
+import { InputAtom, FormLabelAtom } from '../../atoms';
 
 interface InputMoleculeProps {
   text: string;

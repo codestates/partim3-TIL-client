@@ -6,7 +6,7 @@ import {
   SidebarMyCal,
   SidebarOtherCal,
   SidebarTag,
-} from '../Molecules/sidebar';
+} from '../molecules/sidebar';
 
 export default function Sidebar() {
   return (

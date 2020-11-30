@@ -1,13 +1,13 @@
 import React from 'react';
-
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import './App.css';
-import MainContainer from './components/templetes/MainContainer';
 
-import Mypage from './components/templetes/Mypage';
-import Signup from './components/templetes/Signup';
-import Login from './components/templetes/Login';
-import CalendarDay from './components/templetes/CalendarDay';
+import MainContainer from './container/MainContainer';
+import MypageSettingContainer from './container/MypageSettingContainer';
+import SignupContainer from './container/SignupContainer';
+import LoginContainer from './container/LoginContainer';
+import CalendarDayContainer from './container/CalendarDayContainer';
+
+// import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 //css를 불러와야 bootstrap이 적용됨.
 
@@ -17,10 +17,11 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route path="/signup" component={Signup} />
-          <Route path="/mypage" component={Mypage} />
-          <Route path="/login" component={Login} />
-          <Route path="/calendar/day" component={CalendarDay} />
+          <Route path="/signup" component={SignupContainer} />
+          <Route path="/mypage" component={MypageSettingContainer} />
+          {/* mypage 종류가 3개로 나뉠 것이므로 이에 맞게 라우팅 수정 필요 */}
+          <Route path="/login" component={LoginContainer} />
+          <Route path="/calendar/day" component={CalendarDayContainer} />
           <Route exact path="/" component={MainContainer} />
         </Switch>
       </Router>

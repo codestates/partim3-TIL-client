@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../modules';
-import Review from '../Molecules/Review';
-import ReviewModal from '../Molecules/ReviewModal';
+import { RootState } from '../../modules';
+import Review from '../molecules/review/Review';
+import ReviewModal from '../molecules/review/ReviewModal';
 
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
