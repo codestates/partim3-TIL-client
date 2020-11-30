@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PostTodoModal from './PostTodoModal';
 import { Col } from 'react-bootstrap';
 
-export default function TodosDayAndPostModalMolecule() {
+export default function TodosDayAndPostModal() {
   const [modalShow, setModalShow] = useState(false);
 
   const openModal = () => {

@@ -12,27 +12,32 @@ import { relative } from 'path';
 import './MainContainer.css';
 
 export default function MainContainer() {
-  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  /* 지금은 로그아웃이 MainContainer에서 처리되지 않음. 따라서 필요없는 코드인 듯 
 
-  const history = useHistory();
-  const dispatch = useDispatch();
+    const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
-  const handleLogout = () => {
-    if (!currentUser) {
-      alert('로그인이 되어있지 않습니다.');
-      return;
-    }
-    return axios
-      .post(`http://localhost:5000/users/logout`, {}, { withCredentials: true })
-      .then(() => {
-        dispatch(handleTodaySuccess(date));
-        delete axios.defaults.headers.common['Authorization'];
-        localStorage.removeItem('token');
-        alert('로그아웃되었습니다.');
-        history.push('/');
-        dispatch(logout());
-      });
-  };
+    const history = useHistory();
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+      if (!currentUser) {
+        alert('로그인이 되어있지 않습니다.');
+        return;
+      }
+      return axios
+        .post(`http://localhost:5000/users/logout`, {}, { withCredentials: true })
+        .then(() => {
+          dispatch(handleTodaySuccess(date));
+          delete axios.defaults.headers.common['Authorization'];
+          localStorage.removeItem('token');
+          alert('로그아웃되었습니다.');
+          history.push('/');
+          dispatch(logout());
+        });
+    };
+
+  */
+
   const leapChar =
     'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtIp3o%2FbtqOxsujKPg%2FOAL6EOrv8qe1gqNHSF2740%2Fimg.png';
 

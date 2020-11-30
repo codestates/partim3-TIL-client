@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Col } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+
+import { Col } from 'react-bootstrap';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import * as AiIcons from 'react-icons/ai';
 import './Header.css';
-import { sidebarStatus } from '../../modules/sideBarM';
-import NaviButton from '../molecules/NaviButton';
-import { ButtonAtom } from '../atoms';
-import { RootState } from '../../modules';
 
+import { RootState } from '../../modules';
 import {
   handleTodayStart,
   handleTodaySuccess,
   handleTodayFailure,
 } from '../../modules/handleToday';
+
+import { sidebarStatus } from '../../modules/sideBarM';
+
+import NaviButton from '../molecules/NaviButton';
+import { ButtonAtom } from '../atoms';
+
 import date from '../utils/todayF';
 
 export default function Header() {

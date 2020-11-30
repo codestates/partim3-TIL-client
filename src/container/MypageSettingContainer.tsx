@@ -2,11 +2,10 @@
 // 상태관리 역시 최상단의 page(templete)에서 통합해서 해야하는 것이 아닌가?
 
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+
 import { RootState } from '../modules';
 import {
   getUserInfoStart,
@@ -16,10 +15,10 @@ import {
   updateUserInfoSuccess,
   updateUserInfoFailure,
 } from '../modules/handleUserInfo';
-import { TextAtom } from '../componentsNew/atoms';
-import { UserInfo } from '../componentsNew/oraganisms';
 
-export default function Mypage() {
+import MypageSetting from '../componentsNew/pages/MypageSetting';
+
+export default function MypageSettingContainer() {
   const [nickname, setNickname] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -146,64 +145,10 @@ export default function Mypage() {
   // }, []);
 
   return (
-    <>
-      <Row className="py-3 m-0" style={{ border: '1px solid black' }}>
-        <Col>
-          <Link to="/">
-            <TextAtom text="Header" />
-          </Link>
-        </Col>
-      </Row>
-      <Container
-        fluid={true}
-        style={{
-          height: '900px',
-        }}
-      >
-        {/* Setting 과 Done 버튼 */}
-        <Row
-          style={{
-            height: '15%',
-            border: '1px solid black',
-          }}
-        >
-          <Col
-            className="col-8"
-            style={{
-              border: '1px solid black',
-            }}
-          >
-            Setting
-          </Col>
-          <Col
-            className="col-4"
-            style={{
-              border: '1px solid black',
-            }}
-          >
-            <Button
-              className="w-100 mb-4"
-              variant="secondary"
-              type="button"
-              onClick={updateUserInfoReq}
-            >
-              회원정보 수정하기
-            </Button>
-          </Col>
-        </Row>
-        {/* 아이콘, 성명, 기타 본문 */}
-        <Row
-          className="row-2"
-          style={{
-            height: '15%',
-            border: '1px solid black',
-          }}
-        >
-          아이콘 및 기본정보(?)
-        </Row>
-
-        <UserInfo handleChange={handleChange} currentNickname={currentNickname} />
-      </Container>
-    </>
+    <MypageSetting
+      currentNickname={currentNickname}
+      updateUserInfoReq={updateUserInfoReq}
+      handleChange={handleChange}
+    />
   );
 }
