@@ -1,0 +1,20 @@
+
+
+.jumbo {
+    background: url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtIp3o%2FbtqOxsujKPg%2FOAL6EOrv8qe1gqNHSF2740%2Fimg.png');
+    background-size: cover;
+    position : relative;
+    height: 90vh;
+    /* z-index:-2; */
+}
+
+.overlay{
+    background-color: yellow;
+    opacity: 0.6;
+    position: relative;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    z-index: -1;
+}

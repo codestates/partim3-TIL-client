@@ -1,4 +1,3 @@
-import Date from '../Atoms/todayF';
 import axios from 'axios';
 
 export default function sendReview(

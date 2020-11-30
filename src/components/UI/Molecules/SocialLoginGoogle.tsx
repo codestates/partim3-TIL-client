@@ -34,7 +34,7 @@ export default function SocialLoginGoogle() {
         // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?
         localStorage.setItem('token', token); // 일단 저장해봄...
         dispatch(loginSuccess(id, nickname));
-        history.push('/');
+        history.push('/calendar/day');
       })
       .catch(err => {
         console.log(err);
