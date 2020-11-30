@@ -1,16 +1,13 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { InputMolecule } from '../Molecules';
+import InputMolecule from '../molecules/mypageSetting/InputMolecule';
 
-interface UpdateUserInfoOrganismProps {
+interface UserInfoProps {
   handleChange(e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement }): void;
   currentNickname: string;
 }
 
-export default function UpdateUserInfoOrganism({
-  handleChange,
-  currentNickname,
-}: UpdateUserInfoOrganismProps) {
+export default function UserInfo({ handleChange, currentNickname }: UserInfoProps) {
   return (
     <Form className="px-5 py-3 m-auto" style={{ width: '400px', boxSizing: 'content-box' }}>
       <InputMolecule

@@ -1,4 +1,4 @@
-import date from '../components/UI/Atoms/todayF';
+import date from '../componentsNew/utils/todayF';
 
 /* 1. ActionTypes - Signup */
 const HANDLE_TODAY_START = 'HANDLE_TODAY_START';

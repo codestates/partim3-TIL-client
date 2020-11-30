@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../modules';
+import { RootState } from '../../modules';
 import { Container, Row } from 'react-bootstrap';
-import { Todo } from '../Molecules';
-import { TodosDayAndPostModalMolecule } from '../Molecules';
+import Todo from '../molecules/todos/Todo';
+import TodosDayAndPostModalMolecule from '../molecules/todos/TodosDayAndPostModalMolecule';
 
 export default function Todos() {
   const { todos } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);

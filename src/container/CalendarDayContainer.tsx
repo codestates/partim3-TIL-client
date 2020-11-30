@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Row, Col, Container } from 'react-bootstrap';
-import { Header, Todos, Reviews } from '../UI/Oraganisms';
-import { RootState } from '../../modules';
+import { Header, Todos, Reviews } from '../componentsNew/oraganisms';
+import { RootState } from '../modules';
 import { useSelector, useDispatch } from 'react-redux';
-import Sidebar from '../UI/Oraganisms/Sidebar';
-import date from '../UI/Atoms/todayF';
+import Sidebar from '../componentsNew/oraganisms/Sidebar';
+import date from '../componentsNew/utils/todayF';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
-import calendarDay, {
-  calendarStart,
-  calendarSuccess,
-  calendarFailure,
-} from '../../modules/calendarM';
+import calendarDay, { calendarStart, calendarSuccess, calendarFailure } from '../modules/calendarM';
 
-function CalendarDay() {
+function CalendarDayContainer() {
   //userId,오늘 날짜를 서버로 보내야함
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
@@ -91,4 +87,4 @@ function CalendarDay() {
   );
 }
 
-export default CalendarDay;
+export default CalendarDayContainer;
