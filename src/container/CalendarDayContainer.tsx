@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Row, Col, Container } from 'react-bootstrap';
-import { Header, Todos, Reviews } from '../componentsNew/oraganisms';
-import { RootState } from '../modules';
 import { useSelector, useDispatch } from 'react-redux';
-import Sidebar from '../componentsNew/oraganisms/Sidebar';
-import date from '../componentsNew/utils/todayF';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
-import calendarDay, { calendarStart, calendarSuccess, calendarFailure } from '../modules/calendarM';
+import { RootState } from '../modules';
+
+import { calendarStart, calendarSuccess, calendarFailure } from '../modules/calendarM';
+import CalendarDay from '../componentsNew/pages/CalendarDay';
+
+// import date from '../componentsNew/utils/todayF';
 
 function CalendarDayContainer() {
   //userId,오늘 날짜를 서버로 보내야함
@@ -58,33 +58,7 @@ function CalendarDayContainer() {
   // 구글 캘린더의 경우 사이드바의 너비를 항상 고정시킴. 이 방식대로 진행.
   // 아주 작은 화면일 때는 사이드바의 불편함을 감수.
 
-  return (
-    <Container fluid style={{ border: '1px solid black' }}>
-      <Row>
-        {sidebar ? (
-          <Col xs={3.5} sm={3.5} md={3.5}>
-            <Sidebar />
-          </Col>
-        ) : (
-          <span></span>
-        )}
-
-        <Col>
-          <Row style={{ border: '1px solid black', height: '80px' }}>
-            <Header />
-          </Row>
-          <Row style={{ border: '1px solid black', height: '200px' }}>
-            <Col>
-              <Todos />
-            </Col>
-          </Row>
-          <Row style={{ border: '1px solid black' }}>
-            <Reviews />
-          </Row>
-        </Col>
-      </Row>
-    </Container>
-  );
+  return <CalendarDay sidebar={sidebar} />;
 }
 
 export default CalendarDayContainer;
