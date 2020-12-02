@@ -11,8 +11,6 @@ type Props = {
     id: number;
   };
 };
-//여기에서 결국 props를 정의해 주어야, 상위에서도 사용할 수 있다.
-//으으으.. 타입스크립트... 정말 이게 시간을 줄여준다는게 맞는건가..
 
 type parseStT = {
   year: number;

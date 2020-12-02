@@ -19,11 +19,12 @@
 // 위와 같이 하니까 매일매일 date값을 새롭게 변경해 주는지 의문임
 // date를 불러올때마다 new Date() 이하가 새롭게 실행되게 해야 하니까,
 // 함수로 해놓고 실행시키도록 하면 맞지 않을까?
+import { todayProps } from '../../types';
 
-const getToday = () => {
+export default function getToday() {
   const today = new Date();
 
-  let date = {
+  let date: todayProps = {
     year: today.getFullYear(),
     month: today.getMonth() + 1,
     day: today.getDate(),
@@ -32,6 +33,4 @@ const getToday = () => {
   };
 
   return date;
-};
-
-export default getToday();
+}

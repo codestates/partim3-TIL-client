@@ -5,7 +5,6 @@ import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 import sendReview from '../../utils/sendReviewF';
-import date from '../../utils/todayF';
 
 import { RootState } from '../../../modules';
 import calendarDay, {
@@ -14,9 +13,8 @@ import calendarDay, {
   calendarFailure,
 } from '../../../modules/calendarM';
 
-//디자인은 추후 업데이트 해야함.
+import BigModal from '../../atoms/BigModal';
 
-//modal에서 작성한 내용들을 서버로 보내기.
 export default function ReviewModal(props: any) {
   const [title, setTitle] = useState('');
   const [context, setContext] = useState('');
@@ -59,6 +57,7 @@ export default function ReviewModal(props: any) {
   }, []);
 
   return (
+    // <BigModal></BigModal>
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">Modal heading</Modal.Title>
