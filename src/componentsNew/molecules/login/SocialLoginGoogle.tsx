@@ -9,7 +9,7 @@ import {
   handleTodayFailure,
 } from '../../../modules/handleToday';
 import axios from 'axios';
-import date from '../../utils/todayF';
+import getToday from '../../utils/todayF';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -41,7 +41,7 @@ export default function SocialLoginGoogle() {
         localStorage.setItem('token', token); // 일단 저장해봄...
         dispatch(loginSuccess(id, nickname));
         dispatch(handleTodayStart());
-        dispatch(handleTodaySuccess(date));
+        dispatch(handleTodaySuccess(getToday()));
         history.push('/calendar/day');
       })
       .catch(err => {
