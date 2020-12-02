@@ -3,7 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import { loginStart, loginSuccess, loginFailure } from '../../../modules/loginOut';
+import {
+  handleTodayStart,
+  handleTodaySuccess,
+  handleTodayFailure,
+} from '../../../modules/handleToday';
 import axios from 'axios';
+import date from '../../utils/todayF';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -34,6 +40,8 @@ export default function SocialLoginGoogle() {
         // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?
         localStorage.setItem('token', token); // 일단 저장해봄...
         dispatch(loginSuccess(id, nickname));
+        dispatch(handleTodayStart());
+        dispatch(handleTodaySuccess(date));
         history.push('/calendar/day');
       })
       .catch(err => {
