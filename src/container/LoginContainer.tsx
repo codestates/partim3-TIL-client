@@ -8,7 +8,10 @@ import axios from 'axios';
 // import ButtonBoot from '../componentsNew/atoms/ButtonBoot';
 import { loginStart, loginSuccess, loginFailure } from '../modules/loginOut';
 
+import { handleTodayStart, handleTodaySuccess, handleTodayFailure } from '../modules/handleToday';
+
 import Login from '../componentsNew/pages/Login';
+import date from '../componentsNew/utils/todayF';
 
 export default function LoginContainer() {
   /*  이미 로그인된 상태에서 /login에 접속하면 막아주는 장치인데, 
@@ -74,6 +77,8 @@ export default function LoginContainer() {
         console.log('token : ', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         dispatch(loginSuccess(id, nickname));
+        dispatch(handleTodayStart());
+        dispatch(handleTodaySuccess(date));
         // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?
         localStorage.setItem('token', token); // 일단 저장해봄...
         alert('로그인에 성공하셨습니다.');
