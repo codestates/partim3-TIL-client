@@ -5,11 +5,9 @@ import { Row, Col, Container } from 'react-bootstrap';
 import { Header, Todos, Reviews } from '../oraganisms';
 import Sidebar from '../oraganisms/Sidebar';
 
-interface CalendarDayProps {
-  sidebar: boolean;
-}
+import { CalendarDayProps } from '../../types';
 
-export default function CalendarDay({ sidebar }: CalendarDayProps) {
+export default function CalendarDay({ sidebar, today }: CalendarDayProps) {
   return (
     <Container fluid style={{ border: '1px solid black' }}>
       <Row>
@@ -23,7 +21,7 @@ export default function CalendarDay({ sidebar }: CalendarDayProps) {
 
         <Col>
           <Row style={{ border: '1px solid black', height: '80px' }}>
-            <Header />
+            <Header {...today} />
           </Row>
           <Row style={{ border: '1px solid black', height: '200px' }}>
             <Col>

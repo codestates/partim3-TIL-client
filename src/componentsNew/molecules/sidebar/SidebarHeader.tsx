@@ -6,6 +6,9 @@ import { RootState } from '../../../modules';
 import { logout } from '../../../modules/loginOut';
 import axios from 'axios';
 
+import { handleTodaySuccess } from '../../../modules/handleToday';
+import resetDayF from '../../utils/reSetDayF';
+
 import { GoogleLogout } from 'react-google-login';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -37,6 +40,7 @@ export default function SidebarHeader() {
         alert('로그아웃되었습니다.');
         history.push('/');
         dispatch(logout());
+        dispatch(handleTodaySuccess(resetDayF()));
       });
   };
 

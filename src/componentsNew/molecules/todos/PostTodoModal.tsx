@@ -12,7 +12,6 @@ interface PostTodoModalProp {
 
 export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState(''); // 사용되지 않는 듯 한데...?
   const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
   const handleDate = (date: Date | null) => {
     if (date !== null) {

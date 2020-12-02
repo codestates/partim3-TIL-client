@@ -1,4 +1,6 @@
+import getToday from '../componentsNew/utils/todayF';
 import date from '../componentsNew/utils/todayF';
+import { todayProps } from '../types';
 
 /* 1. ActionTypes - Signup */
 const HANDLE_TODAY_START = 'HANDLE_TODAY_START';
@@ -29,19 +31,13 @@ export function handleTodayFailure() {
 
 interface initialStateType {
   status: string;
-  today: {
-    year: number;
-    month: number;
-    day: number;
-    hour: number;
-    min: number;
-  };
+  today: todayProps;
 }
 
 /* 3. initialState 및 reducer 함수 */
 const initialState: initialStateType = {
   status: 'INIT',
-  today: date,
+  today: getToday(),
 };
 
 interface handleTodayProp {

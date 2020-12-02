@@ -19,9 +19,10 @@ import { sidebarStatus } from '../../modules/sideBarM';
 import NaviButton from '../molecules/NaviButton';
 import { ButtonAtom } from '../atoms';
 
-import date from '../utils/todayF';
+import getToday from '../utils/todayF';
+import { todayProps } from '../../types';
 
-export default function Header() {
+export default function Header(today: todayProps) {
   const [sidebar, setSidebar] = useState(true);
   const [sW, setSW] = useState(2);
   const showSidebar = () => {
@@ -30,14 +31,14 @@ export default function Header() {
     dispatch(sidebarStatus(sidebar, sW));
   };
 
-  const { today } = useSelector((state: RootState) => state.handleToday);
+  // console.log(today);
+  // const { today } = useSelector((state: RootState) => state.handleToday);
 
   const dispatch = useDispatch();
 
   const goToday = () => {
     dispatch(handleTodayStart());
-
-    dispatch(handleTodaySuccess(date));
+    dispatch(handleTodaySuccess(getToday()));
   };
 
   let todayView =
