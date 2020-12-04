@@ -51,6 +51,7 @@ function CalendarDayContainer() {
       })
       .then(res => {
         const { todos, reviews } = res.data;
+        console.log({ res });
         dispatch(calendarSuccess(todos, reviews));
       })
       .catch(err => {

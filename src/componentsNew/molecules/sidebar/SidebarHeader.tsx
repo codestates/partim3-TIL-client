@@ -49,10 +49,13 @@ export default function SidebarHeader() {
       <Row>
         <Link to="/mypage">
           <Col className="m-auto pb-3">
-            <Image src="img/cat.jpeg" height="40" width="40" roundedCircle />
+            <Image src="/img/cat.jpeg" height="40" width="40" roundedCircle />
           </Col>
         </Link>
-        <Col>{nickname}</Col>
+        <Col>
+          <div>{nickname} 님</div>
+          <div> 환영합니다!</div>
+        </Col>
       </Row>
       <Row>
         <Col onClick={handleLogout}>
