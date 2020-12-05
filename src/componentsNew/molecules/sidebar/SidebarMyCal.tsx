@@ -51,7 +51,6 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
           userId: currentUser,
           name: newCalname,
           color: newCalcolor,
-
         },
         { withCredentials: true },
       )

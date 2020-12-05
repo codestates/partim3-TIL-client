@@ -46,7 +46,7 @@ export default function ReviewModal(props: any) {
         <Button onClick={props.onHide}>cancel</Button>
         <Button
           onClick={async () => {
-            await sendReview(title, context, currentUser, today);
+            await sendReview(title, context, today);
             // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
             props.setNewPosted(true);
             props.onHide();
