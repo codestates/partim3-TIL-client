@@ -6,13 +6,33 @@ import ReviewModal from '../molecules/reviews/ReviewModal';
 
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
-export default function Reviews() {
+interface ReviewsProps {
+  setNewPosted: (newPosted: boolean) => void;
+}
+
+export default function Reviews({ setNewPosted }: ReviewsProps) {
   const { reviews } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
   const [modalShow, setModalShow] = React.useState(false);
 
-  const reviewList = reviews.map(el => {
-    return <Review key={el.id} list={el} />;
-  });
+  let reviewList;
+
+  if (reviews === []) {
+    reviewList = '';
+  } else {
+    reviewList = reviews.map(el => {
+      const { id, title, context, imageUrl, scheduleTime } = el;
+      return (
+        <Review
+          key={id}
+          id={id}
+          title={title}
+          context={context}
+          imageUrl={imageUrl}
+          scheduleTime={scheduleTime}
+        />
+      );
+    });
+  }
 
   return (
     <Container fluid>
@@ -33,7 +53,11 @@ export default function Reviews() {
         >
           이어서 쓰기
         </Col>
-        <ReviewModal show={modalShow} onHide={() => setModalShow(false)}></ReviewModal>
+        <ReviewModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          setNewPosted={setNewPosted}
+        ></ReviewModal>
       </Row>
     </Container>
   );

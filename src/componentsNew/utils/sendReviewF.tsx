@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
+
 export default function sendReview(
   title: string,
   context: string,

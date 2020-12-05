@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import styled from 'styled-components';
 import { RootState } from '../../../modules';
+import { MakeNewCal, RenderCalendars } from './sidebarCalUnits';
 
-export default function SidebarMyCal() {
+interface SidebarMyCalProps {
+  setNewCalPosted: (trueOrFalse: boolean) => void;
+}
+
+export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
   // id, name, color
   // let nickName: string = 'a';
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const [calName, setCalName] = useState('');
-  let calName1: string = 'calendar name';
-  let calName2: string = 'calendar name2';
-  let calName3: string = 'calendar name3';
+  const [newCalname, setNewCalname] = useState('');
+  const [newCalcolor, setNewCalcolor] = useState('#0693e3');
+  const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
 
   const checked = (e: any) => {
     axios
@@ -21,66 +26,72 @@ export default function SidebarMyCal() {
         withCredentials: true,
       })
       .then(res => {
-        console.log(res.data);
+        console.log('체크 get 요청 : ', res.data);
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  const [addCalname, setAddCalname] = useState('');
-  const [addCalcolor, setAddCalcolor] = useState('');
-
-  const setAddCalName = (e: any) => {
-    setAddCalname(e.target.value);
+  const handleNewCalName = (
+    e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
+  ) => {
+    setNewCalname(e.target.value);
   };
-  const setAddCalColor = (e: any) => {
-    setAddCalcolor(e.target.value);
+  const handleNewCalColor = (color: string) => {
+    // console.log({ newCalcolor });
+    setNewCalcolor(color);
   };
 
   const addCalendar = () => {
-    addCalendarAxios(addCalname, addCalcolor);
-  };
-
-  const addCalendarAxios = (addCalname: string, addCalcolor: string) => {
     axios
       .post(
         `http://localhost:5000/calendar/addcalendar`,
         {
           userId: currentUser,
-          name: addCalname,
-          color: addCalcolor,
+          name: newCalname,
+          color: newCalcolor,
+
         },
         { withCredentials: true },
       )
       .then(res => {
         // history.push('/calendar/day');
+        setNewCalPosted(true);
+        // setNewCalname('');
       })
       .catch(err => {
         console.log(err);
       });
   };
 
+  // 로그아웃되면 캘린더색깔선택 부분을 초기화하려고 만든 코드인데, 새로고침만 해도 색깔이 알아서 초기화되고 있다.
+  // 새로고침 없이 로그아웃-로그인해도 초기화되긴 하는데, alert의 영향일 수 있으니 코드는 일단 남겨둠.
+  // useEffect(() => {
+  //   if (currentUser === null) {
+  //     setNewCalcolor('#0693E3');
+  //   }
+  // }, [currentUser]);
+
   return (
-    <div>
-      <div>내캘린더</div>
-      <div>
-        <input placeholder="캘린더 이름" onChange={setAddCalName}></input>
-        <input placeholder="캘린더 색깔" onChange={setAddCalColor}></input>
-        <button onClick={addCalendar}>새캘린더 만들기</button>
-      </div>
-      <div>
-        <input type="checkbox" onClick={checked} name={calName1} value={calName1}></input>
-        {calName1}
-      </div>
-      <div>
-        <input type="checkbox" onClick={checked} name={calName2} value={calName2}></input>
-        {calName2}
-      </div>
-      <div>
-        <input type="checkbox" onClick={checked} name={calName3} value={calName3}></input>
-        {calName3}
-      </div>
-    </div>
+    <SidebarMyCalWrap>
+      <div>내 캘린더</div>
+      <MakeNewCal
+        handleNewCalName={handleNewCalName}
+        handleNewCalColor={handleNewCalColor}
+        addCalendar={addCalendar}
+        currentColor={newCalcolor}
+      />
+      <RenderCalendars checked={checked} calendars={myCalendar} />
+    </SidebarMyCalWrap>
   );
 }
+
+const SidebarMyCalWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;

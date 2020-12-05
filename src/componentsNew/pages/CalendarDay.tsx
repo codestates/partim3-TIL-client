@@ -5,15 +5,27 @@ import { Row, Col, Container } from 'react-bootstrap';
 import { Header, Todos, Reviews } from '../oraganisms';
 import Sidebar from '../oraganisms/Sidebar';
 
-import { CalendarDayProps } from '../../types';
+import { todayProps } from '../../types';
 
-export default function CalendarDay({ sidebar, today }: CalendarDayProps) {
+interface CalendarDayProps {
+  sidebar: boolean;
+  today: todayProps;
+  setNewPosted: (newPosted: boolean) => void;
+  setNewCalPosted: (trueOrFalse: boolean) => void;
+}
+
+export default function CalendarDay({
+  sidebar,
+  today,
+  setNewPosted,
+  setNewCalPosted,
+}: CalendarDayProps) {
   return (
     <Container fluid style={{ border: '1px solid black' }}>
       <Row>
         {sidebar ? (
           <Col xs={3.5} sm={3.5} md={3.5}>
-            <Sidebar />
+            <Sidebar setNewCalPosted={setNewCalPosted} />
           </Col>
         ) : (
           <span></span>
@@ -25,10 +37,12 @@ export default function CalendarDay({ sidebar, today }: CalendarDayProps) {
           </Row>
           <Row style={{ border: '1px solid black', height: '200px' }}>
             <Col>
-              <Todos />
+              <Todos setNewPosted={setNewPosted} />
             </Col>
           </Row>
-          <Row style={{ border: '1px solid black' }}>{/* <Reviews /> */}</Row>
+          <Row style={{ border: '1px solid black' }}>
+            <Reviews setNewPosted={setNewPosted} />
+          </Row>
         </Col>
       </Row>
     </Container>

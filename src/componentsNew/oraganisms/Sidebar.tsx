@@ -1,5 +1,7 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+
+import { Container, Row } from 'react-bootstrap';
+
 import {
   SidebarCal,
   SidebarHeader,
@@ -8,7 +10,11 @@ import {
   SidebarTag,
 } from '../molecules/sidebar';
 
-export default function Sidebar() {
+interface SidebarProps {
+  setNewCalPosted: (trueOrFalse: boolean) => void;
+}
+
+export default function Sidebar({ setNewCalPosted }: SidebarProps) {
   return (
     <Container>
       <Row>
@@ -21,7 +27,7 @@ export default function Sidebar() {
         <SidebarCal></SidebarCal>
       </Row>
       <Row>
-        <SidebarMyCal></SidebarMyCal>
+        <SidebarMyCal setNewCalPosted={setNewCalPosted}></SidebarMyCal>
       </Row>
       <Row>
         <SidebarOtherCal></SidebarOtherCal>
