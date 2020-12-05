@@ -3,13 +3,11 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 //형태만 만든다고 하면 어떤 모양일까?
 type Props = {
-  list: {
-    title: string | null;
-    context: string | null;
-    imageUrl: string | null;
-    scheduleTime: string | null;
-    id: number;
-  };
+  title: string;
+  context: string;
+  imageUrl: string | null;
+  scheduleTime: string;
+  id: number;
 };
 
 type parseStT = {
@@ -19,9 +17,9 @@ type parseStT = {
   min: number;
 };
 
-export default function Review(props: Props) {
-  if (props.list.scheduleTime) {
-    const parseSt: parseStT = JSON.parse(props.list.scheduleTime);
+export default function Review({ id, title, context, imageUrl, scheduleTime }: Props) {
+  if (scheduleTime) {
+    const parseSt: parseStT = JSON.parse(scheduleTime);
 
     return (
       <Container fluid>
@@ -30,11 +28,11 @@ export default function Review(props: Props) {
             {parseSt.hour + ' : ' + parseSt.min}
           </Col>
           <Col className="m-auto" xs={7} sm={7} md={7}>
-            {props.list.title}
+            {title}
           </Col>
         </Row>
         <Row className="m-auto" xs={12} sm={12} md={12}>
-          {props.list.context}
+          {context}
         </Row>
       </Container>
     );

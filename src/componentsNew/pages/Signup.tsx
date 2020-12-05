@@ -32,7 +32,13 @@ export default function Signup({ handleChange, postSignupReq }: SignupProps) {
             </Col>
             <Col xs={10} sm={10} md={10}>
               {/* <FormBoot type="email" placeholder="email" name="email" onchange={}></FormBoot> */}
-              <Form.Control type="email" placeholder="email" name="email" onChange={handleChange} />
+              <Form.Control
+                type="email"
+                placeholder="email"
+                name="email"
+                onChange={handleChange}
+                autoFocus
+              />
             </Col>
           </Row>
 

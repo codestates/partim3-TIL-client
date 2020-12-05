@@ -7,6 +7,7 @@ import { logout } from '../../../modules/loginOut';
 import axios from 'axios';
 
 import { handleTodaySuccess } from '../../../modules/handleToday';
+import { getCalendarsSuccess } from '../../../modules/getAllCalendars';
 import resetDayF from '../../utils/reSetDayF';
 
 import { GoogleLogout } from 'react-google-login';
@@ -41,6 +42,7 @@ export default function SidebarHeader() {
         history.push('/');
         dispatch(logout());
         dispatch(handleTodaySuccess(resetDayF()));
+        dispatch(getCalendarsSuccess([], []));
       });
   };
 
@@ -49,10 +51,13 @@ export default function SidebarHeader() {
       <Row>
         <Link to="/mypage">
           <Col className="m-auto pb-3">
-            <Image src="img/cat.jpeg" height="40" width="40" roundedCircle />
+            <Image src="/img/cat.jpeg" height="40" width="40" roundedCircle />
           </Col>
         </Link>
-        <Col>{nickname}</Col>
+        <Col>
+          <div>{nickname} 님</div>
+          <div> 환영합니다!</div>
+        </Col>
       </Row>
       <Row>
         <Col onClick={handleLogout}>

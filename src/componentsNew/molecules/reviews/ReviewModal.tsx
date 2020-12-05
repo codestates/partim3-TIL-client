@@ -5,6 +5,7 @@ import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 import sendReview from '../../utils/sendReviewF';
+// 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
 
 import { RootState } from '../../../modules';
 import calendarDay, {
@@ -29,33 +30,6 @@ export default function ReviewModal(props: any) {
     setContext(e.target.value);
   };
 
-  const dispatch = useDispatch();
-  const reRender = (id: number | null, today: object) => {
-    dispatch(calendarStart());
-
-    return axios
-      .get(`http://localhost:5000/calendar/day`, {
-        params: {
-          userId: id,
-          // date: JSON.stringify(date),
-          date: today,
-        },
-        withCredentials: true,
-      })
-      .then(res => {
-        const { todos, reviews } = res.data;
-        dispatch(calendarSuccess(todos, reviews));
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch(calendarFailure());
-      });
-  };
-
-  useEffect(() => {
-    reRender(currentUser, today);
-  }, []);
-
   return (
     // <BigModal></BigModal>
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -73,8 +47,9 @@ export default function ReviewModal(props: any) {
         <Button
           onClick={async () => {
             await sendReview(title, context, currentUser, today);
+            // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
+            props.setNewPosted(true);
             props.onHide();
-            await reRender(currentUser, today);
             await setTitle('');
             await setContext('');
           }}

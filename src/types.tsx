@@ -1,8 +1,3 @@
-export interface CalendarDayProps {
-  sidebar: boolean;
-  today: todayProps;
-}
-
 export interface todayProps {
   year: number;
   month: number;

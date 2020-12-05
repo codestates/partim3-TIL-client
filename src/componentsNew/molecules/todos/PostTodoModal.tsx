@@ -8,11 +8,38 @@ import DatePicker from 'react-datepicker';
 interface PostTodoModalProp {
   show: React.ReactNode;
   closeModal: () => void;
+  setNewPosted: (newPosted: boolean) => void;
 }
 
-export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
+export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTodoModalProp) {
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
+  const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const [selectedCalendar, setSelectedCalendar] = useState(1); // startDate : Date 객체 상태임
+  // console.log({ myCalendar });
+
+  let myCalendersForSelectOptions;
+
+  if (myCalendar === []) {
+    myCalendersForSelectOptions = <option>먼저 캘린더를 만들어 주세요.</option>;
+  } else {
+    myCalendersForSelectOptions = myCalendar.map(calendar => {
+      return (
+        <option key={calendar.id} value={calendar.id}>
+          {calendar.name}
+        </option>
+      );
+    });
+  }
+
+  // = myCalendar[0].id
+
+  const handleSelectOption = (
+    e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
+  ) => {
+    setSelectedCalendar(Number(e.target.value));
+  };
+
   const handleDate = (date: Date | null) => {
     if (date !== null) {
       setStartDate(date);
@@ -20,6 +47,13 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
   };
 
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const { today } = useSelector((state: RootState) => state.handleToday);
+
+  let TodayForAxios = {
+    year: today.year,
+    month: today.month,
+    day: today.day,
+  };
 
   const handleTitleInput = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -39,9 +73,10 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
     startDate.getMonth() + 1
   }-${startDate.getDate()}`;
 
-  const PostNewTodo = (userId: number | null, title: string, scheduleTime: string) => {
-    if (typeof userId !== 'number') {
-      alert('로그인이 되어있지 않습니다.');
+  const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
+    console.log({ calendarId, title, scheduleDate });
+    if (typeof calendarId !== 'number') {
+      alert('컐린더가 선택되어 있지 않습니다.');
       return;
     }
     if (title.length === 0) {
@@ -51,11 +86,12 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
     return axios
       .post(
         `http://localhost:5000/calendar/todo`,
-        { userId, title, scheduleTime },
+        { calendarId, title, scheduleDate },
         { withCredentials: true },
       )
       .then(res => {
         alert(`${res.data}`);
+        setNewPosted(true);
         handleCloseModal(); // 여기는 잘 작동한다.
       })
       .catch(err => {
@@ -100,6 +136,12 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
             <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>
           </Row>
           <Row className="m-1" style={{ border: '1px solid black' }}>
+            <span>Calendar 선택 : </span>
+            <select className="selectedCalendar" onChange={handleSelectOption}>
+              {myCalendersForSelectOptions}
+            </select>
+          </Row>
+          <Row className="m-1" style={{ border: '1px solid black' }}>
             tag 선택창 : tag 구현이 필요합니다.
           </Row>
           <Row className="m-1" style={{ border: '1px solid black' }}>
@@ -109,7 +151,7 @@ export default function PostTodoModal({ show, closeModal }: PostTodoModalProp) {
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleCloseModal}>Close Modal</Button>
-        <Button onClick={() => PostNewTodo(currentUser, title, scheduleTime)}>
+        <Button onClick={() => PostNewTodo(selectedCalendar, title, JSON.stringify(TodayForAxios))}>
           Post new Todo!
         </Button>
       </Modal.Footer>
