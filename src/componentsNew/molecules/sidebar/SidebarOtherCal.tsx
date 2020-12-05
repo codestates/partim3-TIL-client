@@ -15,8 +15,7 @@ export default function SidebarOtherCal() {
   return (
     <SidebarOtherCalWrap>
       <div>공유캘린더</div>
-      {/* 임시로 죽였음 : 서버에서 개선이 필요한 듯? */}
-      {/* <RenderCalendars checked={checked} calendars={shareCalendar} /> */}
+      <RenderCalendars checked={checked} calendars={shareCalendar} />
     </SidebarOtherCalWrap>
   );
 }

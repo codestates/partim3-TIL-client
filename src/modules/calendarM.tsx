@@ -7,16 +7,20 @@ const CALENDAR_DAY_FAILURE: string = 'CALENDAR_DAY_FAILURE';
 interface calendarDayI {
   type: string;
   todos: Array<{
-    todoTitle: string | null;
-    scheduleTime: string | null;
+    title: string;
+    scheduleTime: string;
     id: number;
+    calendarId: number;
+    calendarColor: string;
   }>;
   reviews: Array<{
-    title: string | null;
-    context: string | null;
+    title: string;
+    context: string;
     imageUrl: string | null;
-    scheduleTime: string | null;
+    scheduleTime: string;
     id: number;
+    calendarId: number;
+    calendarColor: string;
   }>;
 }
 
@@ -45,21 +49,27 @@ export function calendarFailure() {
 
 interface todosAndReviewsI {
   todos: Array<{
-    todoTitle: string | null;
-    scheduleTime: string | null;
+    title: string;
+    scheduleTime: string;
     id: number;
+    calendarId: number;
+    calendarColor: string;
   }>;
   reviews: Array<{
-    title: string | null;
-    context: string | null;
+    title: string;
+    context: string;
     imageUrl: string | null;
-    scheduleTime: string | null;
+    scheduleTime: string;
     id: number;
+    calendarId: number;
+    calendarColor: string;
   }>;
 }
 
 interface initialStateType {
-  calendarDayStatus: object;
+  calendarDayStatus: {
+    status: string;
+  };
   todosAndReviews: todosAndReviewsI;
 }
 

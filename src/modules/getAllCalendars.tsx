@@ -11,11 +11,35 @@ interface actionType {
     id: number;
     name: string;
     color: string;
+    todos: Array<{
+      title: string;
+      scheduleTime: string;
+      id: number;
+    }>;
+    reviews: Array<{
+      title: string;
+      context: string;
+      imageUrl: string | null;
+      scheduleTime: string;
+      id: number;
+    }>;
   }>;
   shareCalendar: Array<{
     id: number;
     name: string;
     color: string;
+    todos: Array<{
+      title: string;
+      scheduleTime: string;
+      id: number;
+    }>;
+    reviews: Array<{
+      title: string;
+      context: string;
+      imageUrl: string | null;
+      scheduleTime: string;
+      id: number;
+    }>;
   }>;
 }
 
@@ -45,11 +69,35 @@ interface AllCalendarsType {
     id: number;
     name: string;
     color: string;
+    todos: Array<{
+      title: string;
+      scheduleTime: string;
+      id: number;
+    }>;
+    reviews: Array<{
+      title: string;
+      context: string;
+      imageUrl: string | null;
+      scheduleTime: string;
+      id: number;
+    }>;
   }>;
   shareCalendar: Array<{
     id: number;
     name: string;
     color: string;
+    todos: Array<{
+      title: string;
+      scheduleTime: string;
+      id: number;
+    }>;
+    reviews: Array<{
+      title: string;
+      context: string;
+      imageUrl: string | null;
+      scheduleTime: string;
+      id: number;
+    }>;
   }>;
 }
 

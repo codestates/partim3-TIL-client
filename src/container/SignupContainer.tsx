@@ -57,8 +57,29 @@ export default function SignupContainer() {
       )
       .then(res => {
         dispatch(signupSuccess());
-        alert('환영합니다');
-        history.push('/login');
+        let userId = res.data.userId;
+        // alert('환영합니다');
+        // history.push('/login');
+        axios
+          .post(
+            `http://localhost:5000/calendar/addcalendar`,
+            {
+              userId: userId,
+              name: 'basic calendar',
+              color: '#0693E3',
+            },
+            { withCredentials: true },
+          )
+          .then(res => {
+            // history.push('/calendar/day');
+            // setNewCalPosted(true);
+            // setNewCalname('');
+            alert('환영합니다');
+            history.push('/login');
+          })
+          .catch(err => {
+            console.log(err);
+          });
       })
       .catch(err => {
         alert(`잘못한거 같은데요!`);

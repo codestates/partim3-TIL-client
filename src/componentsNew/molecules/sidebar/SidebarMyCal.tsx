@@ -26,7 +26,7 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
         withCredentials: true,
       })
       .then(res => {
-        console.log(res.data);
+        console.log('체크 get 요청 : ', res.data);
       })
       .catch(err => {
         console.log(err);
@@ -37,7 +37,6 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
   ) => {
     setNewCalname(e.target.value);
-    setNewCalname('');
   };
   const handleNewCalColor = (color: string) => {
     // console.log({ newCalcolor });
@@ -58,6 +57,7 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
       .then(res => {
         // history.push('/calendar/day');
         setNewCalPosted(true);
+        // setNewCalname('');
       })
       .catch(err => {
         console.log(err);

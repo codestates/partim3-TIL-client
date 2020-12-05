@@ -7,6 +7,7 @@ import { logout } from '../../../modules/loginOut';
 import axios from 'axios';
 
 import { handleTodaySuccess } from '../../../modules/handleToday';
+import { getCalendarsSuccess } from '../../../modules/getAllCalendars';
 import resetDayF from '../../utils/reSetDayF';
 
 import { GoogleLogout } from 'react-google-login';
@@ -41,6 +42,7 @@ export default function SidebarHeader() {
         history.push('/');
         dispatch(logout());
         dispatch(handleTodaySuccess(resetDayF()));
+        dispatch(getCalendarsSuccess([], []));
       });
   };
 
