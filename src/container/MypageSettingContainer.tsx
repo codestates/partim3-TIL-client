@@ -114,9 +114,9 @@ export default function MypageSettingContainer() {
 
     return axios
       .put(
-        `http://localhost:5000/users/users/${currentUser}`,
+        `http://localhost:5000/users/userupdate`,
         {
-          id: currentUser,
+          userId: currentUser,
           nickname: nickname,
           password: password,
           newPassword: newPassword,

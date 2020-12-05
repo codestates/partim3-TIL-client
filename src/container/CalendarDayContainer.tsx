@@ -68,7 +68,6 @@ function CalendarDayContainer() {
         withCredentials: true,
       })
       .then(res => {
-
         let { myCalendars, shareCalendars } = res.data;
 
         dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
@@ -98,7 +97,6 @@ function CalendarDayContainer() {
         }
 
         dispatch(calendarSuccess(resTodo, resReviews));
-
       })
       .catch(err => {
         console.log(err);

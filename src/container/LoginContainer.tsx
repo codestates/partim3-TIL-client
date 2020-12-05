@@ -58,7 +58,7 @@ export default function LoginContainer() {
     // 클라이언트는 다음번의 모든 요청에다가 헤더를 죽여야함.
 
     interface resData {
-      id: number;
+      userId: number;
       nickname: string;
       token: string;
     }
@@ -73,10 +73,10 @@ export default function LoginContainer() {
         { withCredentials: true },
       )
       .then(res => {
-        const { id, nickname, token } = res.data;
+        const { userId, nickname, token } = res.data;
         console.log('token : ', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        dispatch(loginSuccess(id, nickname));
+        dispatch(loginSuccess(userId, nickname));
         dispatch(handleTodayStart());
         dispatch(handleTodaySuccess(getToday()));
         // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?

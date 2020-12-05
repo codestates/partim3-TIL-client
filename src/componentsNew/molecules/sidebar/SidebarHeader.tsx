@@ -34,7 +34,13 @@ export default function SidebarHeader() {
     }
 
     return axios
-      .post(`http://localhost:5000/users/logout`, {}, { withCredentials: true })
+      .post(
+        `http://localhost:5000/users/logout`,
+        {
+          userId: currentUser,
+        },
+        { withCredentials: true },
+      )
       .then(() => {
         delete axios.defaults.headers.common['Authorization'];
         localStorage.removeItem('token');

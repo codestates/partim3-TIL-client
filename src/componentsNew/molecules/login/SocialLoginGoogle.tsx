@@ -30,16 +30,16 @@ export default function SocialLoginGoogle() {
 
     axios
       .post(
-        'http://localhost:5000/users/social/google',
-        { idToken: idToken },
+        'http://localhost:5000/users/social',
+        { idToken: idToken, oauthType: 'google' },
         { withCredentials: true },
       )
       .then(res => {
-        const { id, nickname, token } = res.data;
+        const { userId, nickname, token } = res.data;
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?
         localStorage.setItem('token', token); // 일단 저장해봄...
-        dispatch(loginSuccess(id, nickname));
+        dispatch(loginSuccess(userId, nickname));
         dispatch(handleTodayStart());
         dispatch(handleTodaySuccess(getToday()));
         history.push('/calendar/day');
