@@ -33,7 +33,7 @@ export default function Todos({ setNewPosted }: TodosProps) {
         <TodosDayAndPostModal setNewPosted={setNewPosted} />
       </Row>
       <Row className="m-1" style={{ border: '1px solid black' }}>
-        {/* {todosList} */}
+        {todosList}
       </Row>
     </>
   );
