@@ -72,7 +72,12 @@ export default function MypageSetting({
         >
           아이콘 및 기본정보(?)
         </Row>
-
+        <Link to="/mypage/tags">
+          <button>Tags</button>
+        </Link>
+        <Link to="/mypage/calendar">
+          <button>Calendar</button>
+        </Link>
         <UserInfo handleChange={handleChange} currentNickname={currentNickname} />
       </Container>
     </>

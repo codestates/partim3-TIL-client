@@ -20,8 +20,9 @@ export default function sendReview(
         context: context,
         imageUrl: '/wow.com',
         // scheduleTime: JSON.stringify(Date),
-        scheduleTime: JSON.stringify(today),
+        scheduleDate: today,
         id: currentUser,
+        calendarId: 1,
       },
       { withCredentials: true },
     )
