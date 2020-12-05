@@ -1,5 +1,6 @@
 import React from 'react';
+import MypageCalendar from '../componentsNew/pages/MypageTags';
 
 export default function MypageCalendarContainer() {
-  return <div></div>;
+  return <MypageCalendar></MypageCalendar>;
 }

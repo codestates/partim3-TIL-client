@@ -47,9 +47,9 @@ export default function SidebarMyCal() {
       .post(
         `http://localhost:5000/calendar/addcalendar`,
         {
-          currentUser,
-          addCalname,
-          addCalcolor,
+          userId: currentUser,
+          name: addCalname,
+          color: addCalcolor,
         },
         { withCredentials: true },
       )

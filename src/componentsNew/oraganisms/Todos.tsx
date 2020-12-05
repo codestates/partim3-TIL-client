@@ -7,10 +7,10 @@ import TodosDayAndPostModal from '../molecules/todos/TodosDayAndPostModal';
 
 export default function Todos() {
   const { todos } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
-
-  const todosList = todos.map(todo => {
-    return <Todo todoTitle={todo.todoTitle} id={todo.id} key={todo.id} />;
-  });
+  // console.log(todos);
+  // const todosList = todos.map(todo => {
+  //   return <Todo todoTitle={todo.todoTitle} id={todo.id} key={todo.id} />;
+  // });
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function Todos() {
         <TodosDayAndPostModal />
       </Row>
       <Row className="m-1" style={{ border: '1px solid black' }}>
-        {todosList}
+        {/* {todosList} */}
       </Row>
     </>
   );

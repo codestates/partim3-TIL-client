@@ -50,6 +50,7 @@ function CalendarDayContainer() {
         withCredentials: true,
       })
       .then(res => {
+        console.log(res.data);
         const { todos, reviews } = res.data;
         dispatch(calendarSuccess(todos, reviews));
       })

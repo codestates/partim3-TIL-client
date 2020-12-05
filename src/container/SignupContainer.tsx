@@ -79,6 +79,7 @@ export default function SignupContainer() {
         );
       } else {
         handleRegister(email, nickname, password);
+
         return false;
       }
     }

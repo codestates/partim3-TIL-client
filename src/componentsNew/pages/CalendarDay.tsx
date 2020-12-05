@@ -28,9 +28,7 @@ export default function CalendarDay({ sidebar, today }: CalendarDayProps) {
               <Todos />
             </Col>
           </Row>
-          <Row style={{ border: '1px solid black' }}>
-            <Reviews />
-          </Row>
+          <Row style={{ border: '1px solid black' }}>{/* <Reviews /> */}</Row>
         </Col>
       </Row>
     </Container>
