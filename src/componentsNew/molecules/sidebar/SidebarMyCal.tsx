@@ -64,6 +64,30 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
       });
   };
 
+  const delCalendar = (calID: number, calName: string) => {
+    console.log({ calID, calName });
+
+    if (typeof currentUser !== 'number') {
+      alert('로그인 후 시도해 주세요.');
+      return;
+    }
+
+    // { withCredentials: true }, 부분에서, 인자가 너무 많다고 에러가 나옵니다.
+
+    // return axios
+    //   .delete(
+    //     `http://localhost:5000/calendar/deletecalendar`,
+    //     { userId: currentUser, calendarId: calID, withCredentials: true },
+    //     { withCredentials: true },
+    //   )
+    //   .then(res => {
+    //     alert(`${res.data}`);
+    //   })
+    //   .catch(err => {
+    //     alert(`${err}`);
+    //   });
+  };
+
   // 로그아웃되면 캘린더색깔선택 부분을 초기화하려고 만든 코드인데, 새로고침만 해도 색깔이 알아서 초기화되고 있다.
   // 새로고침 없이 로그아웃-로그인해도 초기화되긴 하는데, alert의 영향일 수 있으니 코드는 일단 남겨둠.
   // useEffect(() => {
@@ -81,7 +105,7 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
         addCalendar={addCalendar}
         currentColor={newCalcolor}
       />
-      <RenderCalendars checked={checked} calendars={myCalendar} />
+      <RenderCalendars checked={checked} calendars={myCalendar} delCalendar={delCalendar} />
     </SidebarMyCalWrap>
   );
 }

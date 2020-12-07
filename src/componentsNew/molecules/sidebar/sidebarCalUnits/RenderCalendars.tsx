@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { CalSettingButton, CalDeleteButton } from './';
 import './RenderCalendars.css';
 
 interface RenderCalendarsProps {
@@ -9,9 +10,10 @@ interface RenderCalendarsProps {
     name: string;
     color: string;
   }>;
+  delCalendar?: (calId: number, calName: string) => void;
 }
 // RenderCalendars : 체크박스 색깔 입히기 해야됨
-export default function RenderCalendars({ checked, calendars }: RenderCalendarsProps) {
+export default function RenderCalendars({ checked, calendars, delCalendar }: RenderCalendarsProps) {
   // console.log(calendars);
   let eachCalendars;
 
@@ -20,7 +22,17 @@ export default function RenderCalendars({ checked, calendars }: RenderCalendarsP
   } else {
     eachCalendars = calendars.map(eachCalendar => {
       return (
-        <div className="checkbox-container" key={eachCalendar.id}>
+        <div
+          className="checkbox-container"
+          key={eachCalendar.id}
+          style={{
+            display: 'flex',
+            flex: 1,
+            width: '100%',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+          }}
+        >
           <input
             id={`is-subscription-${eachCalendar.id}`}
             type="checkbox"
@@ -28,7 +40,18 @@ export default function RenderCalendars({ checked, calendars }: RenderCalendarsP
             name={eachCalendar.name}
             value={eachCalendar.name}
           />
-          <label htmlFor={`is-subscription-${eachCalendar.id}`}>{eachCalendar.name}</label>
+          <label
+            htmlFor={`is-subscription-${eachCalendar.id}`}
+            style={{ margin: '0px', width: '150px' }}
+          >
+            {eachCalendar.name}
+          </label>
+          <CalSettingButton />
+          <CalDeleteButton
+            calId={eachCalendar.id}
+            calName={eachCalendar.name}
+            delCalendar={delCalendar!}
+          />
         </div>
       );
     });
