@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Form, Row, Col } from 'react-bootstrap';
 import InputMolecule from '../molecules/mypageSetting/InputMolecule';
 
@@ -9,7 +10,7 @@ interface UserInfoProps {
 
 export default function UserInfo({ handleChange, currentNickname }: UserInfoProps) {
   return (
-    <Form className="px-5 py-3 m-auto" style={{ width: '400px', boxSizing: 'content-box' }}>
+    <UserInfoWrap>
       <InputMolecule
         text="닉네임"
         controlId="formBasicEmail"
@@ -17,8 +18,8 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
         name="nickname"
         placeholder={currentNickname}
         handleChange={handleChange}
-        smLabel={4}
-        smInput={8}
+        smLabel={1}
+        smInput={2}
       />
 
       <InputMolecule
@@ -27,8 +28,8 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
         type="password"
         name="oldPassword"
         handleChange={handleChange}
-        smLabel={4}
-        smInput={8}
+        smLabel={1}
+        smInput={2}
       />
 
       <InputMolecule
@@ -37,8 +38,8 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
         type="password"
         name="newPassword"
         handleChange={handleChange}
-        smLabel={4}
-        smInput={8}
+        smLabel={1}
+        smInput={2}
       />
 
       <InputMolecule
@@ -47,9 +48,15 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
         type="password"
         name="newPasswordConfirm"
         handleChange={handleChange}
-        smLabel={4}
-        smInput={8}
+        smLabel={1}
+        smInput={2}
       />
-    </Form>
+    </UserInfoWrap>
   );
 }
+
+const UserInfoWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0% 25%;
+`;

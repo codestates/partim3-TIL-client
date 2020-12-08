@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Row } from 'react-bootstrap';
-import { InputAtom, FormLabelAtom } from '../../atoms';
+import styled from 'styled-components';
+import { Input, Label } from '../../atoms';
 
 interface InputMoleculeProps {
   text: string;
@@ -24,16 +24,21 @@ export default function InputMolecule({
   handleChange,
 }: InputMoleculeProps) {
   return (
-    <Form.Group as={Row} controlId={controlId}>
-      <FormLabelAtom smLabel={smLabel} text={text} />
-
-      <InputAtom
+    <InputMoleculeWrap>
+      <Label smLabel={smLabel} text={text} />
+      <Input
         smInput={smInput}
         type={type}
         name={name}
         handleChange={handleChange}
         placeholder={placeholder}
       />
-    </Form.Group>
+    </InputMoleculeWrap>
   );
 }
+
+const InputMoleculeWrap = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+`;
