@@ -12,6 +12,7 @@ interface CalendarDayProps {
   today: todayProps;
   setNewPosted: (newPosted: boolean) => void;
   setNewCalPosted: (trueOrFalse: boolean) => void;
+  setCalDeleted: (trueOrFalse: boolean) => void;
 }
 
 export default function CalendarDay({
@@ -19,13 +20,14 @@ export default function CalendarDay({
   today,
   setNewPosted,
   setNewCalPosted,
+  setCalDeleted,
 }: CalendarDayProps) {
   return (
     <Container fluid style={{ border: '1px solid black' }}>
       <Row>
         {sidebar ? (
           <Col xs={3.5} sm={3.5} md={3.5}>
-            <Sidebar setNewCalPosted={setNewCalPosted} />
+            <Sidebar setNewCalPosted={setNewCalPosted} setCalDeleted={setCalDeleted} />
           </Col>
         ) : (
           <span></span>

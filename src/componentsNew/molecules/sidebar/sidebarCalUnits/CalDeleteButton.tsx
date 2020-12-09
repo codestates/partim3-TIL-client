@@ -5,12 +5,18 @@ import { TwitterPicker } from 'react-color';
 interface CalDeleteButtonProps {
   calId: number;
   calName: string;
-  delCalendar: (calId: number, calName: string) => void;
+  delCalendar: (calId: number) => void;
+  displayDeleteModal: boolean;
+  setDisplayDeleteModal: (trueOrFalse: boolean) => void;
 }
 
-export default function CalDeleteButton({ calId, calName, delCalendar }: CalDeleteButtonProps) {
-  const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
-
+export default function CalDeleteButton({
+  calId,
+  calName,
+  delCalendar,
+  displayDeleteModal,
+  setDisplayDeleteModal,
+}: CalDeleteButtonProps) {
   const handleClose = () => {
     setDisplayDeleteModal(false);
   };
@@ -39,7 +45,7 @@ export default function CalDeleteButton({ calId, calName, delCalendar }: CalDele
             <DeleteModalContents>
               <div>'{calName}' 캘린더를 삭제하시겠습니까?</div>
               <div style={{ marginTop: 'auto', marginLeft: 'auto' }}>
-                <button onClick={() => delCalendar(calId, calName)} style={{ margin: '5px' }}>
+                <button onClick={() => delCalendar(calId)} style={{ margin: '5px' }}>
                   삭제
                 </button>
                 <button onClick={handleClose} style={{ margin: '5px' }}>

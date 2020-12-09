@@ -7,15 +7,17 @@ import { MakeNewCal, RenderCalendars } from './sidebarCalUnits';
 
 interface SidebarMyCalProps {
   setNewCalPosted: (trueOrFalse: boolean) => void;
+  setCalDeleted: (trueOrFalse: boolean) => void;
 }
 
-export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
+export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: SidebarMyCalProps) {
   // id, name, color
   // let nickName: string = 'a';
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const [newCalname, setNewCalname] = useState('');
   const [newCalcolor, setNewCalcolor] = useState('#0693e3');
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 
   const checked = (e: any) => {
     axios
@@ -39,7 +41,6 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
     setNewCalname(e.target.value);
   };
   const handleNewCalColor = (color: string) => {
-    // console.log({ newCalcolor });
     setNewCalcolor(color);
   };
 
@@ -55,37 +56,37 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
         { withCredentials: true },
       )
       .then(res => {
-        // history.push('/calendar/day');
         setNewCalPosted(true);
-        // setNewCalname('');
+        setNewCalname(''); // state를 정리해 주고,
+        (document.querySelector('.MakeNewCal_Input') as HTMLInputElement).value = ''; // 실제 화면에서도 지워준다
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  const delCalendar = (calID: number, calName: string) => {
-    console.log({ calID, calName });
-
+  const delCalendar = (calID: number) => {
     if (typeof currentUser !== 'number') {
       alert('로그인 후 시도해 주세요.');
       return;
     }
 
-    // { withCredentials: true }, 부분에서, 인자가 너무 많다고 에러가 나옵니다.
-
-    // return axios
-    //   .delete(
-    //     `http://localhost:5000/calendar/deletecalendar`,
-    //     { userId: currentUser, calendarId: calID, withCredentials: true },
-    //     { withCredentials: true },
-    //   )
-    //   .then(res => {
-    //     alert(`${res.data}`);
-    //   })
-    //   .catch(err => {
-    //     alert(`${err}`);
-    //   });
+    return axios
+      .delete(`http://localhost:5000/calendar/deletecalendar`, {
+        data: {
+          userId: currentUser,
+          calendarId: calID,
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        alert(`${res.data}`);
+        setDisplayDeleteModal(false);
+        setCalDeleted(true);
+      })
+      .catch(err => {
+        alert(`${err}`);
+      });
   };
 
   // 로그아웃되면 캘린더색깔선택 부분을 초기화하려고 만든 코드인데, 새로고침만 해도 색깔이 알아서 초기화되고 있다.
@@ -105,7 +106,13 @@ export default function SidebarMyCal({ setNewCalPosted }: SidebarMyCalProps) {
         addCalendar={addCalendar}
         currentColor={newCalcolor}
       />
-      <RenderCalendars checked={checked} calendars={myCalendar} delCalendar={delCalendar} />
+      <RenderCalendars
+        checked={checked}
+        calendars={myCalendar}
+        delCalendar={delCalendar}
+        displayDeleteModal={displayDeleteModal}
+        setDisplayDeleteModal={setDisplayDeleteModal}
+      />
     </SidebarMyCalWrap>
   );
 }

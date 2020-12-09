@@ -20,6 +20,7 @@ export default function MakeNewCal({
   return (
     <MakeNewCalWrap>
       <input
+        className="MakeNewCal_Input"
         type="text"
         size={12}
         placeholder="새로운 캘린더 이름"

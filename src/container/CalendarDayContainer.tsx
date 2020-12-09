@@ -25,6 +25,7 @@ function CalendarDayContainer() {
 
   const [newPosted, setNewPosted] = useState(false);
   const [newCalPosted, setNewCalPosted] = useState(false);
+  const [calDeleted, setCalDeleted] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -108,10 +109,23 @@ function CalendarDayContainer() {
   useEffect(() => {
     if (typeof currentUser === 'number') {
       sendToday(currentUser, today);
-      setNewPosted(false);
-      setNewCalPosted(false);
     }
-  }, [currentUser, today, newPosted, newCalPosted, newCalPosted]);
+  }, [currentUser, today]);
+
+  useEffect(() => {
+    sendToday(currentUser, today);
+    setNewPosted(false);
+  }, [newPosted]);
+
+  useEffect(() => {
+    sendToday(currentUser, today);
+    setNewCalPosted(false);
+  }, [newCalPosted]);
+
+  useEffect(() => {
+    sendToday(currentUser, today);
+    setCalDeleted(false);
+  }, [calDeleted]);
 
   // console.log('calsidebar', sidebar);
   // 구글 캘린더의 경우 사이드바의 너비를 항상 고정시킴. 이 방식대로 진행.
@@ -123,6 +137,7 @@ function CalendarDayContainer() {
       today={today}
       setNewPosted={setNewPosted}
       setNewCalPosted={setNewCalPosted}
+      setCalDeleted={setCalDeleted}
     />
   );
 }
