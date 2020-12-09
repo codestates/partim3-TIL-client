@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../modules';
 import { TwitterPicker } from 'react-color';
 
 interface CalDeleteButtonProps {
@@ -17,9 +19,42 @@ export default function CalDeleteButton({
   displayDeleteModal,
   setDisplayDeleteModal,
 }: CalDeleteButtonProps) {
+  const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+
   const handleClose = () => {
     setDisplayDeleteModal(false);
   };
+
+  let DeleteModal;
+
+  if (myCalendar.length === 1) {
+    DeleteModal = (
+      <>
+        <div>1개 남은 캘린더는 삭제할 수 없습니다</div>
+        <div>새로운 캘린더를 먼저 만드신 뒤 삭제해 주세요.</div>
+        <div style={{ marginTop: 'auto', marginLeft: 'auto' }}>
+          <button onClick={handleClose} style={{ margin: '5px' }}>
+            확인
+          </button>
+        </div>
+      </>
+    );
+  } else {
+    DeleteModal = (
+      <>
+        {' '}
+        <div>'{calName}' 캘린더를 삭제하시겠습니까?</div>
+        <div style={{ marginTop: 'auto', marginLeft: 'auto' }}>
+          <button onClick={() => delCalendar(calId)} style={{ margin: '5px' }}>
+            삭제
+          </button>
+          <button onClick={handleClose} style={{ margin: '5px' }}>
+            취소
+          </button>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div>
@@ -27,7 +62,6 @@ export default function CalDeleteButton({
         type="button"
         style={{ border: 'none', padding: '0px' }}
         onClick={() => {
-          console.log(displayDeleteModal);
           setDisplayDeleteModal(!displayDeleteModal);
         }}
       >
@@ -35,30 +69,25 @@ export default function CalDeleteButton({
       </button>
 
       {displayDeleteModal ? (
-        <div
+        <DeleteModalWrap
           style={{
             position: 'absolute',
             zIndex: 1,
           }}
         >
           <DeleteModalBackground>
-            <DeleteModalContents>
-              <div>'{calName}' 캘린더를 삭제하시겠습니까?</div>
-              <div style={{ marginTop: 'auto', marginLeft: 'auto' }}>
-                <button onClick={() => delCalendar(calId)} style={{ margin: '5px' }}>
-                  삭제
-                </button>
-                <button onClick={handleClose} style={{ margin: '5px' }}>
-                  취소
-                </button>
-              </div>
-            </DeleteModalContents>
+            <DeleteModalContents>{DeleteModal}</DeleteModalContents>
           </DeleteModalBackground>
-        </div>
+        </DeleteModalWrap>
       ) : null}
     </div>
   );
 }
+
+const DeleteModalWrap = styled.div`
+  position: 'absolute';
+  z-index: 1;
+`;
 
 const DeleteModalBackground = styled.div`
   position: fixed;
