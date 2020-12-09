@@ -8,22 +8,13 @@ interface CalDeleteButtonProps {
   calId: number;
   calName: string;
   delCalendar: (calId: number) => void;
-  displayDeleteModal: boolean;
-  setDisplayDeleteModal: (trueOrFalse: boolean) => void;
 }
 
-export default function CalDeleteButton({
-  calId,
-  calName,
-  delCalendar,
-  displayDeleteModal,
-  setDisplayDeleteModal,
-}: CalDeleteButtonProps) {
+export default function CalDeleteButton({ calId, calName, delCalendar }: CalDeleteButtonProps) {
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 
-  const handleClose = () => {
-    setDisplayDeleteModal(false);
-  };
+  // console.log({ calId, calName });
 
   let DeleteModal;
 
@@ -33,7 +24,7 @@ export default function CalDeleteButton({
         <div>1개 남은 캘린더는 삭제할 수 없습니다</div>
         <div>새로운 캘린더를 먼저 만드신 뒤 삭제해 주세요.</div>
         <div style={{ marginTop: 'auto', marginLeft: 'auto' }}>
-          <button onClick={handleClose} style={{ margin: '5px' }}>
+          <button onClick={() => setDisplayDeleteModal(false)} style={{ margin: '5px' }}>
             확인
           </button>
         </div>
@@ -45,10 +36,19 @@ export default function CalDeleteButton({
         {' '}
         <div>'{calName}' 캘린더를 삭제하시겠습니까?</div>
         <div style={{ marginTop: 'auto', marginLeft: 'auto' }}>
-          <button onClick={() => delCalendar(calId)} style={{ margin: '5px' }}>
+          <button
+            onClick={() => {
+              delCalendar(calId);
+              setDisplayDeleteModal(false);
+              // then / catch 분기에 따라 다르게 처리하고 있지 않은데, 분기처리가 필요없다면 이렇게 마무리하면 됨
+              // 지금은 서버가 까져있어서 catch로 갔을 때, 'Error: Network Error' 라고 뜨고 모달이 꺼짐
+              // 다른 err가 뜨는 경우를 생각해 봐야 하지 않나?
+            }}
+            style={{ margin: '5px' }}
+          >
             삭제
           </button>
-          <button onClick={handleClose} style={{ margin: '5px' }}>
+          <button onClick={() => setDisplayDeleteModal(false)} style={{ margin: '5px' }}>
             취소
           </button>
         </div>
@@ -62,7 +62,7 @@ export default function CalDeleteButton({
         type="button"
         style={{ border: 'none', padding: '0px' }}
         onClick={() => {
-          setDisplayDeleteModal(!displayDeleteModal);
+          setDisplayDeleteModal(true);
         }}
       >
         <img src="/img/deleteIcon.png" alt="캘린더 삭제하기" width="23px" height="23px"></img>

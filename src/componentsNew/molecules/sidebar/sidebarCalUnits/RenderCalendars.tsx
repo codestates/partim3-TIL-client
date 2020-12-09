@@ -11,17 +11,9 @@ interface RenderCalendarsProps {
     color: string;
   }>;
   delCalendar?: (calId: number) => void;
-  displayDeleteModal?: boolean;
-  setDisplayDeleteModal?: (trueOrFalse: boolean) => void;
 }
 // RenderCalendars : 체크박스 색깔 입히기 해야됨
-export default function RenderCalendars({
-  checked,
-  calendars,
-  delCalendar,
-  displayDeleteModal,
-  setDisplayDeleteModal,
-}: RenderCalendarsProps) {
+export default function RenderCalendars({ checked, calendars, delCalendar }: RenderCalendarsProps) {
   // console.log(calendars);
   let eachCalendars;
 
@@ -59,8 +51,6 @@ export default function RenderCalendars({
             calId={eachCalendar.id}
             calName={eachCalendar.name}
             delCalendar={delCalendar!}
-            displayDeleteModal={displayDeleteModal as boolean}
-            setDisplayDeleteModal={setDisplayDeleteModal!}
           />
         </div>
       );
