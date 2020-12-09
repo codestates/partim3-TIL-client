@@ -1,6 +1,6 @@
 import TextAtom from './TextAtom';
-import InputAtom from './InputAtom';
-import FormLabelAtom from './FormLabelAtom';
+import Input from './Input';
+import Label from './Label';
 import ButtonAtom from './ButtonAtom';
 
-export { TextAtom, InputAtom, FormLabelAtom, ButtonAtom };
+export { TextAtom, Input, Label, ButtonAtom };
