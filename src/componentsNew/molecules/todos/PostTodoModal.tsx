@@ -15,7 +15,7 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
-  const [selectedCalendar, setSelectedCalendar] = useState(1); // startDate : Date 객체 상태임
+  const [selectedCalendar, setSelectedCalendar] = useState(myCalendar[0].id); // startDate : Date 객체 상태임
   // console.log({ myCalendar });
 
   let myCalendersForSelectOptions;
@@ -49,12 +49,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { today } = useSelector((state: RootState) => state.handleToday);
 
-  let TodayForAxios = {
-    year: today.year,
-    month: today.month,
-    day: today.day,
-  };
-
   const handleTitleInput = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
   ) => {
@@ -69,12 +63,22 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     closeModal();
   };
 
-  let scheduleTime = `${startDate.getFullYear()}-${
-    startDate.getMonth() + 1
-  }-${startDate.getDate()}`;
+  let TodayForAxios = {
+    year: today.year,
+    month: today.month,
+    day: today.day,
+  };
 
-  const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
-    console.log({ calendarId, title, scheduleDate });
+  const PostNewTodo = (
+    userId: number,
+    calendarId: number | null,
+    title: string,
+    scheduleDate: string,
+  ) => {
+    if (currentUser === null) {
+      alert('로그인이 되어있지 않습니다.');
+      return;
+    }
     if (typeof calendarId !== 'number') {
       alert('컐린더가 선택되어 있지 않습니다.');
       return;
@@ -86,7 +90,7 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     return axios
       .post(
         `http://localhost:5000/calendar/todo`,
-        { calendarId, title, scheduleDate },
+        { userId, calendarId, title, scheduleDate },
         { withCredentials: true },
       )
       .then(res => {
@@ -151,7 +155,11 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleCloseModal}>Close Modal</Button>
-        <Button onClick={() => PostNewTodo(selectedCalendar, title, JSON.stringify(TodayForAxios))}>
+        <Button
+          onClick={() =>
+            PostNewTodo(currentUser!, selectedCalendar, title, JSON.stringify(TodayForAxios))
+          }
+        >
           Post new Todo!
         </Button>
       </Modal.Footer>
