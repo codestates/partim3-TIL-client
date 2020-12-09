@@ -12,9 +12,10 @@ import {
 
 interface SidebarProps {
   setNewCalPosted: (trueOrFalse: boolean) => void;
+  setCalDeleted: (trueOrFalse: boolean) => void;
 }
 
-export default function Sidebar({ setNewCalPosted }: SidebarProps) {
+export default function Sidebar({ setNewCalPosted, setCalDeleted }: SidebarProps) {
   return (
     <Container>
       <Row>
@@ -27,7 +28,10 @@ export default function Sidebar({ setNewCalPosted }: SidebarProps) {
         <SidebarCal></SidebarCal>
       </Row>
       <Row>
-        <SidebarMyCal setNewCalPosted={setNewCalPosted}></SidebarMyCal>
+        <SidebarMyCal
+          setNewCalPosted={setNewCalPosted}
+          setCalDeleted={setCalDeleted}
+        ></SidebarMyCal>
       </Row>
       <Row>
         <SidebarOtherCal></SidebarOtherCal>
