@@ -12,7 +12,6 @@ export default function BigModal(props: any) {
   // const { today } = useSelector((state: RootState) => state.handleToday);
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
-  console.log(myCalendar);
 
   const [title, setTitle] = useState('');
   const [context, setContext] = useState('');
@@ -24,7 +23,6 @@ export default function BigModal(props: any) {
   // const [timeChange, settimeChange] = React.useState(false);
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setTitle(e.target.value);
   };
 
@@ -81,9 +79,10 @@ export default function BigModal(props: any) {
             //나중에 변수 명칭 통일해야 될 것 같다.. 너무 헷갈림.
             const userId = currentUser;
             const scheduleDate = { year: today.year, month: today.month, day: today.day };
-            const scheduleTime = {};
+            const scheduleTime = { hour: today.hour, min: today.min };
             const imageUrl = 'www.';
             const calendarId = selectedCalendar;
+            console.log(calendarId);
             await sendReview(
               userId,
               title,
