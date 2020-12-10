@@ -17,7 +17,6 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
   const [newCalname, setNewCalname] = useState('');
   const [newCalcolor, setNewCalcolor] = useState('#0693e3');
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
-  const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 
   const checked = (e: any) => {
     axios
@@ -45,6 +44,11 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
   };
 
   const addCalendar = () => {
+    if (newCalname === '') {
+      alert(`캘린더 이름이 입력되어 있지 않습니다.`);
+      return;
+    }
+
     axios
       .post(
         `http://localhost:5000/calendar/addcalendar`,
@@ -66,6 +70,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
   };
 
   const delCalendar = (calID: number) => {
+    console.log({ calID });
     if (typeof currentUser !== 'number') {
       alert('로그인 후 시도해 주세요.');
       return;
@@ -80,11 +85,11 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
         withCredentials: true,
       })
       .then(res => {
-        alert(`${res.data}`);
-        setDisplayDeleteModal(false);
+        console.log(`${calID}번 캘린더 삭제 요청의 결과 : `, res.data);
         setCalDeleted(true);
       })
       .catch(err => {
+        console.log({ err });
         alert(`${err}`);
       });
   };
@@ -106,13 +111,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
         addCalendar={addCalendar}
         currentColor={newCalcolor}
       />
-      <RenderCalendars
-        checked={checked}
-        calendars={myCalendar}
-        delCalendar={delCalendar}
-        displayDeleteModal={displayDeleteModal}
-        setDisplayDeleteModal={setDisplayDeleteModal}
-      />
+      <RenderCalendars checked={checked} calendars={myCalendar} delCalendar={delCalendar} />
     </SidebarMyCalWrap>
   );
 }
