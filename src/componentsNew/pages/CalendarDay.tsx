@@ -22,6 +22,7 @@ export default function CalendarDay({
   setNewCalPosted,
   setCalDeleted,
 }: CalendarDayProps) {
+  console.log('calendarDay');
   return (
     <Container fluid style={{ border: '1px solid black' }}>
       <Row>

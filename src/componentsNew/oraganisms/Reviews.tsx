@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import Review from '../molecules/reviews/Review';
 import ReviewModal from '../molecules/reviews/ReviewModal';
+import BigModal from '../atoms/BigModal';
 
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
@@ -53,11 +54,16 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
         >
           이어서 쓰기
         </Col>
-        <ReviewModal
+        {/* <ReviewModal
           show={modalShow}
           onHide={() => setModalShow(false)}
           setNewPosted={setNewPosted}
-        ></ReviewModal>
+        ></ReviewModal> */}
+        <BigModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          setNewPosted={setNewPosted}
+        ></BigModal>
       </Row>
     </Container>
   );

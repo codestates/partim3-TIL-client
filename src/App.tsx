@@ -24,10 +24,9 @@ function App() {
         <Switch>
           <Route path="/signup" component={SignupContainer} />
           <Route exact path="/mypage" component={Mypage} />
-          <Route path="/mypage/settings" component={MypageSettingContainer} />
+          <Route path="/mypage/profile" component={MypageSettingContainer} />
           <Route path="/mypage/tags" component={MypageTagsContainer} />
           <Route path="/mypage/calendar" component={MypageCalendarContainer} />
-
           <Route path="/login" component={LoginContainer} />
           <Route path="/calendar/day" component={CalendarDayContainer} />
           <Route exact path="/" component={MainContainer} />

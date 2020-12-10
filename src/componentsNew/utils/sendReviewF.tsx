@@ -2,26 +2,37 @@ import axios from 'axios';
 
 // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
 
-export default function sendReview(title: string, context: string, today: object) {
+export default function sendReview(
+  userId: number | null,
+  title: string,
+  context: string,
+  imageUrl: string,
+  scheduleDate: object,
+  scheduleTime: object,
+  calendarId: number,
+) {
   // dispatch(calendarStart());
   // return 이 없어도 axios는 잘 작동되는데 return이 필요한 이유?
   // 현재 유저를 매번 리덕스에서 확인하는 방식이 맞나..?
-  console.log('today : ', today);
+
   return axios
     .post(
       `http://localhost:5000/calendar/review`,
       {
-        title: title,
-        context: context,
-        imageUrl: '/wow.com',
+        userId,
+        title,
+        context,
+        imageUrl,
         // scheduleTime: JSON.stringify(Date),
-        scheduleDate: today,
-        calendarId: 1,
+        scheduleDate,
+        scheduleTime,
+        calendarId,
       },
       { withCredentials: true },
     )
     .then(res => {
       const { reviews } = res.data;
+      console.log(reviews);
       // dispatch(calendarSuccess(todos, reviews));
     })
     .catch(err => {

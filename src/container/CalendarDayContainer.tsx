@@ -130,6 +130,7 @@ function CalendarDayContainer() {
   // console.log('calsidebar', sidebar);
   // 구글 캘린더의 경우 사이드바의 너비를 항상 고정시킴. 이 방식대로 진행.
   // 아주 작은 화면일 때는 사이드바의 불편함을 감수.
+  console.log(today);
 
   return (
     <CalendarDay
