@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CalSettingButton, CalDeleteButton } from './';
-import './RenderCalendars.css';
+import { CalCheckBox, CalSettingButton, CalDeleteButton } from './';
 
 interface RenderCalendarsProps {
+  // checked 함수 : 명칭/코드 수정해서, CalCheckBox에 내려줄 것
   checked: (e: any) => void;
   calendars: Array<{
     id: number;
@@ -12,9 +12,8 @@ interface RenderCalendarsProps {
   }>;
   delCalendar?: (calId: number) => void;
 }
-// RenderCalendars : 체크박스 색깔 입히기 해야됨
+
 export default function RenderCalendars({ checked, calendars, delCalendar }: RenderCalendarsProps) {
-  // console.log(calendars);
   let eachCalendars;
 
   if (calendars === []) {
@@ -22,49 +21,36 @@ export default function RenderCalendars({ checked, calendars, delCalendar }: Ren
   } else {
     eachCalendars = calendars.map(eachCalendar => {
       return (
-        <div
-          className="checkbox-container"
-          key={eachCalendar.id}
-          style={{
-            display: 'flex',
-            flex: 1,
-            width: '100%',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-          }}
-        >
-          <input
-            id={`is-subscription-${eachCalendar.id}`}
-            type="checkbox"
-            onClick={checked}
-            name={eachCalendar.name}
-            value={eachCalendar.name}
+        <RenderCalendarsWrap key={eachCalendar.id}>
+          <CalCheckBox
+            eachCalendarId={eachCalendar.id}
+            eachCalendarColor={eachCalendar.color}
+            eachCalendarName={eachCalendar.name}
           />
-          <label
-            htmlFor={`is-subscription-${eachCalendar.id}`}
-            style={{ margin: '0px', width: '150px' }}
-          >
-            {eachCalendar.name}
-          </label>
           <CalSettingButton />
           <CalDeleteButton
             calId={eachCalendar.id}
             calName={eachCalendar.name}
             delCalendar={delCalendar!}
           />
-        </div>
+        </RenderCalendarsWrap>
       );
     });
   }
 
-  return <RenderCalendarsWrap>{eachCalendars}</RenderCalendarsWrap>;
+  return <>{eachCalendars}</>;
 }
 
-const RenderCalendarsWrap = styled.div`
+interface RenderCalendarsWrapProps {
+  key: number;
+}
+
+const RenderCalendarsWrap = styled.div.attrs((props: RenderCalendarsWrapProps) => ({
+  key: props.key,
+}))`
   flex: 1;
   display: flex;
   width: 100%;
-  flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   padding-left: 10px;

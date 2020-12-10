@@ -33,7 +33,6 @@ export default function CalDeleteButton({ calId, calName, delCalendar }: CalDele
   } else {
     DeleteModal = (
       <>
-        {' '}
         <div>'{calName}' 캘린더를 삭제하시겠습니까?</div>
         <div style={{ marginTop: 'auto', marginLeft: 'auto' }}>
           <button
@@ -57,7 +56,7 @@ export default function CalDeleteButton({ calId, calName, delCalendar }: CalDele
   }
 
   return (
-    <div>
+    <div style={{ flex: 1 }}>
       <button
         type="button"
         style={{ border: 'none', padding: '0px' }}
