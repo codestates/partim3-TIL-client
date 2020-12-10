@@ -20,6 +20,7 @@ export default function CalendarDay({
   setNewPosted,
   setNewCalPosted,
 }: CalendarDayProps) {
+  console.log('calendarDay');
   return (
     <Container fluid style={{ border: '1px solid black' }}>
       <Row>

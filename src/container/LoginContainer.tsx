@@ -74,7 +74,6 @@ export default function LoginContainer() {
       )
       .then(res => {
         const { userId, nickname, token } = res.data;
-        console.log('token : ', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         dispatch(loginSuccess(userId, nickname));
         dispatch(handleTodayStart());
