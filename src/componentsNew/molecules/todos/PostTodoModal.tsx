@@ -15,12 +15,22 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
-  const [selectedCalendar, setSelectedCalendar] = useState(1); // startDate : Date 객체 상태임
+  const [selectedCalendar, setSelectedCalendar] = useState(NaN); // startDate : Date 객체 상태임
   // console.log({ myCalendar });
+
+  let defaultmyCalendersForSelectOptions;
+
+  if (myCalendar === []) {
+    // myCalendar가 1개 남은 경우 이를 삭제할 수 없도록 막았으니까, 빈 배열일 경우는 고려할 필요가 없지 않나?
+    defaultmyCalendersForSelectOptions = '';
+  } else {
+    defaultmyCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
+  }
 
   let myCalendersForSelectOptions;
 
   if (myCalendar === []) {
+    // myCalendar가 1개 남은 경우 이를 삭제할 수 없도록 막았으니까, 빈 배열일 경우는 고려할 필요가 없지 않나?
     myCalendersForSelectOptions = <option>먼저 캘린더를 만들어 주세요.</option>;
   } else {
     myCalendersForSelectOptions = myCalendar.map(calendar => {
@@ -74,9 +84,9 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   }-${startDate.getDate()}`;
 
   const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
-    console.log({ calendarId, title, scheduleDate });
-    if (typeof calendarId !== 'number') {
-      alert('컐린더가 선택되어 있지 않습니다.');
+    // console.log({ calendarId, title, scheduleDate });
+    if (typeof calendarId !== 'number' || Number.isNaN(calendarId)) {
+      alert('캘린더가 선택되어 있지 않습니다.');
       return;
     }
     if (title.length === 0) {
@@ -138,6 +148,7 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
           <Row className="m-1" style={{ border: '1px solid black' }}>
             <span>Calendar 선택 : </span>
             <select className="selectedCalendar" onChange={handleSelectOption}>
+              {defaultmyCalendersForSelectOptions}
               {myCalendersForSelectOptions}
             </select>
           </Row>
