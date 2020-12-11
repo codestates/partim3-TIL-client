@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Image, Form, Button } from 'react-bootstrap';
-import { BsFillAwardFill } from 'react-icons/bs';
+import styled from 'styled-components';
 
-import ButtonBoot from '../atoms/ButtonBoot';
-// import FormBoot from '../atoms/FormBoot';
+import { SignupSocial, SignupGeneral } from '../oraganisms/';
 
 interface SignupProps {
   handleChange: (
@@ -15,108 +13,73 @@ interface SignupProps {
 
 export default function Signup({ handleChange, postSignupReq }: SignupProps) {
   return (
-    <Container className="py-5">
-      <Row>
-        <Col className="m-auto" xs={10} sm={8} md={6}>
+    <SignupPage>
+      <SignupWrap>
+        <div style={{ margin: '10px 0px' }}>
           {/* 고양이 이미지 */}
-          <Col className="m-auto pb-3">
-            <Link to="/">
-              <Image src="img/cat.jpeg" height="171" width="180" roundedCircle />
-            </Link>
-          </Col>
+          <Link to="/">
+            <img src="img/cat.jpeg" height="171" width="180" style={{ borderRadius: '50%' }} />
+          </Link>
+        </div>
 
-          {/* 이메일 */}
-          <Row className="m-auto">
-            <Col xs={2} sm={2} md={2}>
-              <BsFillAwardFill className="m-2"></BsFillAwardFill>
-            </Col>
-            <Col xs={10} sm={10} md={10}>
-              {/* <FormBoot type="email" placeholder="email" name="email" onchange={}></FormBoot> */}
-              <Form.Control
-                type="email"
-                placeholder="email"
-                name="email"
-                onChange={handleChange}
-                autoFocus
-              />
-            </Col>
-          </Row>
+        <div style={{ margin: '10px 0px', width: '100%' }}>
+          <SignupGeneral handleChange={handleChange} />
+        </div>
 
-          {/* 닉네임 */}
-          <Row className="m-auto">
-            <Col xs={2} sm={2} md={2}>
-              <BsFillAwardFill className="m-2"></BsFillAwardFill>
-            </Col>
-            <Col xs={10} sm={10} md={10}>
-              <Form.Control
-                type="nickname"
-                placeholder="nickname"
-                name="nickname"
-                onChange={handleChange}
-              ></Form.Control>
-            </Col>
-          </Row>
+        <div style={{ margin: '10px 0px', width: '100%' }}>
+          {/* 회원가입 버튼 */}
+          <ButtonWrap value="Get started!" color="skyblue" onClick={postSignupReq}>
+            Get Started!
+          </ButtonWrap>
+        </div>
 
-          {/* 패스워드 */}
-          <Row className="m-auto">
-            <Col xs={2} sm={2} md={2}>
-              <BsFillAwardFill className="m-2"></BsFillAwardFill>
-            </Col>
-            <Col xs={10} sm={10} md={10}>
-              <Form.Control
-                type="password"
-                placeholder="password"
-                name="password"
-                onChange={handleChange}
-              ></Form.Control>
-            </Col>
-          </Row>
+        <div style={{ margin: '10px 0px', width: '100%' }}>
+          {/* 가로선 */}
+          <hr style={{ height: 3, width: '300px', background: 'gray', margin: '0px' }}></hr>
+        </div>
 
-          {/* 패스워드확인 */}
-          <Row className="m-auto">
-            <Col xs={2} sm={2} md={2}>
-              <BsFillAwardFill className="m-2"></BsFillAwardFill>
-            </Col>
-            <Col xs={10} sm={10} md={10}>
-              <Form.Control
-                type="password"
-                placeholder="Confirm password"
-                name="passwordConfirm"
-                onChange={handleChange}
-              ></Form.Control>
-            </Col>
-          </Row>
+        <div style={{ margin: '10px 0px', width: '100%' }}>
+          <SignupSocial />
+        </div>
 
-          <Row className="m-2">
-            <ButtonBoot
-              title="Get start!"
-              color="success"
-              postSignupReq={postSignupReq}
-            ></ButtonBoot>
-          </Row>
-          <hr
-            style={{
-              backgroundColor: 'gray',
-              height: 2,
-            }}
-          />
-          <Row className="m-2">
-            <ButtonBoot title="kakao" color="warning"></ButtonBoot>
-          </Row>
-          <Row className="m-2">
-            <ButtonBoot title="naver" color="success"></ButtonBoot>
-          </Row>
-          <Row className="m-2">
-            <ButtonBoot title="google" color="danger"></ButtonBoot>
-          </Row>
-          <Row className="m-2">
-            <ButtonBoot title="github" color="dark"></ButtonBoot>
-          </Row>
-          <div className="mt-4">
-            <Link to="/login">회원이신가요?</Link>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+        <div
+          style={{
+            margin: '10px 0px',
+            width: '100%',
+            flexDirection: 'column',
+            display: 'flex',
+            alignItems: 'flex-end',
+          }}
+        >
+          <Link to="/login">회원이신가요?</Link>
+        </div>
+      </SignupWrap>
+    </SignupPage>
   );
 }
+
+const SignupPage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+`;
+
+const SignupWrap = styled.div`
+  flex: 1;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ButtonWrap = styled.button`
+  padding: 5px;
+  height: 40px;
+  width: 100%;
+  background-color: ${props => props.color};
+  border-radius: 5px;
+`;

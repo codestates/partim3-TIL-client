@@ -7,9 +7,17 @@ interface InputProps {
   placeholder?: string;
   smInput: number;
   handleChange(e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement }): void;
+  autoFocus?: boolean;
 }
 
-export default function Input({ smInput, type, name, handleChange, placeholder }: InputProps) {
+export default function Input({
+  smInput,
+  type,
+  name,
+  handleChange,
+  placeholder,
+  autoFocus,
+}: InputProps) {
   return (
     <InputWrap
       type={type}
@@ -17,6 +25,7 @@ export default function Input({ smInput, type, name, handleChange, placeholder }
       onChange={handleChange}
       placeholder={placeholder}
       smInput={smInput}
+      autoFocus={autoFocus}
     />
   );
 }
