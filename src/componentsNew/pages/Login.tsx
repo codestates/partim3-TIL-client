@@ -23,9 +23,16 @@ export default function Login({ handleChange, postLoginReq }: LoginProps) {
           </Link>
         </div>
 
-        <div style={{ margin: '10px 0px' }}>
+        <div style={{ margin: '10px 0px', width: '100%' }}>
           {/* 일반 로그인 */}
-          <LoginGeneral handleChange={handleChange} postLoginReq={postLoginReq} />
+          <LoginGeneral handleChange={handleChange} />
+        </div>
+
+        <div style={{ margin: '10px 0px', width: '100%' }}>
+          {/* 로그인 버튼 */}
+          <ButtonWrap value="Get started!" color="skyblue" onClick={postLoginReq}>
+            Log in!
+          </ButtonWrap>
         </div>
 
         <div>
@@ -70,4 +77,12 @@ const LoginWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const ButtonWrap = styled.button`
+  padding: 5px;
+  height: 40px;
+  width: 100%;
+  background-color: ${props => props.color};
+  border-radius: 5px;
 `;
