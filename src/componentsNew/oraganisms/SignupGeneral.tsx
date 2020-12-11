@@ -16,7 +16,7 @@ export default function SignupGeneral({ handleChange }: SignupGeneralProps) {
         {/* 이메일 */}
         <BsFillAwardFill></BsFillAwardFill>
         <Input
-          type="text"
+          type="email"
           name="email"
           handleChange={handleChange}
           placeholder="email"
