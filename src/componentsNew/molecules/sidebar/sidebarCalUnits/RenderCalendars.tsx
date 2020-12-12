@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CalCheckBox, CalSettingButton, CalDeleteButton } from './';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../../modules';
+import {
+  handleCheckedCalStart,
+  handleCheckedCalSuccess_add,
+  handleCheckedCalSuccess_del,
+  handleCheckedCalFailure,
+} from '../../../../modules/handleCheckedCal';
 
 interface RenderCalendarsProps {
-  // checked 함수 : 명칭/코드 수정해서, CalCheckBox에 내려줄 것
-  checked: (e: any) => void;
   calendars: Array<{
     id: number;
     name: string;
@@ -13,7 +19,21 @@ interface RenderCalendarsProps {
   delCalendar?: (calId: number) => void;
 }
 
-export default function RenderCalendars({ checked, calendars, delCalendar }: RenderCalendarsProps) {
+export default function RenderCalendars({ calendars, delCalendar }: RenderCalendarsProps) {
+  const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
+
+  const dispatch = useDispatch();
+
+  const handleCheckBox = (checkedCal: number, isChecked: boolean) => {
+    if (checkedCalArray.indexOf(checkedCal) === -1 && isChecked === true) {
+      dispatch(handleCheckedCalStart());
+      dispatch(handleCheckedCalSuccess_add(checkedCal));
+    } else {
+      dispatch(handleCheckedCalStart());
+      dispatch(handleCheckedCalSuccess_del(checkedCalArray.indexOf(checkedCal)));
+    }
+  };
+
   let eachCalendars;
 
   if (calendars === []) {
@@ -26,6 +46,7 @@ export default function RenderCalendars({ checked, calendars, delCalendar }: Ren
             eachCalendarId={eachCalendar.id}
             eachCalendarColor={eachCalendar.color}
             eachCalendarName={eachCalendar.name}
+            handleCheckBox={handleCheckBox}
           />
           <CalSettingButton />
           <CalDeleteButton

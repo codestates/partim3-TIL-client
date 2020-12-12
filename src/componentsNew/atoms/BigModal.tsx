@@ -339,9 +339,9 @@ const Hour = styled.span`
   background: white;
 `;
 const MonthAndDay = styled.div`
-width:70px;
-background: yellowgreen
-justify-self: flex-start;
+  width: 70px;
+  background: yellowgreen;
+  justify-self: flex-start;
 `;
 const HourInput = styled.input<{ show?: boolean; hover?: string }>`
   display: ${props => (props.show ? 'block' : 'none')};

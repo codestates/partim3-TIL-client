@@ -38,7 +38,7 @@ export default function CalendarDay({
           <Row style={{ border: '1px solid black', height: '80px' }}>
             <Header {...today} />
           </Row>
-          <Row style={{ border: '1px solid black', height: '200px' }}>
+          <Row style={{ border: '1px solid black', height: '200px', overflow: 'auto' }}>
             <Col>
               <Todos setNewPosted={setNewPosted} />
             </Col>

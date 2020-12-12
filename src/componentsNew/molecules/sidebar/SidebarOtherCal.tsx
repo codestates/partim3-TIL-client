@@ -7,15 +7,10 @@ import { RenderCalendars } from './sidebarCalUnits';
 export default function SidebarOtherCal() {
   const { shareCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
 
-  const checked = (e: any) => {
-    console.log(e.target.checked);
-    console.log(e.target.value);
-  };
-
   return (
     <SidebarOtherCalWrap>
       <div>공유캘린더</div>
-      <RenderCalendars checked={checked} calendars={shareCalendar} />
+      <RenderCalendars calendars={shareCalendar} />
     </SidebarOtherCalWrap>
   );
 }
