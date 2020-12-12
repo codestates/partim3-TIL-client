@@ -89,9 +89,12 @@ function CalendarDayContainer() {
         for (let j in myCalendars) {
           let calendarId = myCalendars[j].id;
           let calendarColor = myCalendars[j].color;
-          for (let jj = 0; jj < myCalendars[j].todos.length; jj++) {
-            myCalendars[j].todos[jj]['calendarId'] = calendarId;
-            myCalendars[j].todos[jj]['calendarColor'] = calendarColor;
+          for (let jj = 0; jj < myCalendars[j].reviews.length; jj++) {
+            let shortcut = myCalendars[j].reviews[jj];
+            shortcut['calendarId'] = calendarId;
+            shortcut['calendarColor'] = calendarColor;
+            shortcut['scheduleDate'] = JSON.parse(shortcut['scheduleDate']);
+            shortcut['scheduleTime'] = JSON.parse(shortcut['scheduleTime']);
           }
           resReviews = resReviews.concat(myCalendars[j].reviews);
         }

@@ -5,8 +5,8 @@ import Review from '../molecules/reviews/Review';
 import ReviewModal from '../molecules/reviews/ReviewModal';
 import BigModal from '../atoms/BigModal';
 import getToday from '../../componentsNew/utils/todayF';
-
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import styled from 'styled-components';
+import { BiGame } from 'react-icons/bi';
 
 interface ReviewsProps {
   setNewPosted: (newPosted: boolean) => void;
@@ -21,8 +21,26 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
   if (reviews === []) {
     reviewList = '';
   } else {
-    reviewList = reviews.map(el => {
-      const { id, title, context, imageUrl, scheduleTime } = el;
+    //시간 순서대로 랜더링.. 후..
+    //시간과 분을 숫자로 변환
+    // console.log('reviews');
+
+    let addTotalTime = reviews.map((el: any) => {
+      let date = el.scheduleDate;
+      let time = el.scheduleTime;
+      let total = date.year + '/' + date.month + '/' + date.day + ' ' + time.hour + ':' + time.min;
+      let parseTime = Date.parse(total);
+      el['totalTime'] = parseTime;
+      return el;
+    });
+    let sortedList = addTotalTime.sort(function (a, b) {
+      return parseFloat(a.totalTime) - parseFloat(b.totalTime);
+    });
+
+    reviewList = sortedList.map((el: any) => {
+      const { id, title, context, imageUrl, scheduleDate, scheduleTime } = el;
+      //  {/* <BiGame style={{ flex: 1, zIndex: 100, background: 'red' }}></BiGame> */}
+      //       {/* <TimeLine></TimeLine> */}
       return (
         <Review
           key={id}
@@ -30,46 +48,44 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
           title={title}
           context={context}
           imageUrl={imageUrl}
+          scheduleDate={scheduleDate}
           scheduleTime={scheduleTime}
-        />
+        ></Review>
       );
     });
   }
 
   return (
-    <Container fluid>
-      <Row>
-        <Col>
-          <Row>
-            <Col>TIL-오늘 하루종일 무얼했나?</Col>
-            <Col>여기에 기록하기</Col>
-          </Row>
-          <Row>{reviewList}</Row>
-        </Col>
-      </Row>
-      <Row>
-        <Col
-          onClick={() => {
-            setModalShow(true);
-          }}
-        >
-          이어서 쓰기
-        </Col>
-        {/* <ReviewModal
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-          setNewPosted={setNewPosted}
-        ></ReviewModal> */}
-        <BigModal
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-          setNewPosted={setNewPosted}
-          time={getToday()}
-        ></BigModal>
-      </Row>
-    </Container>
+    <Box>
+      <div>TIL-오늘 하루종일 무얼했나?</div>
+      <div>{reviewList}</div>
+      <div
+        onClick={() => {
+          setModalShow(true);
+        }}
+      >
+        이어서 쓰기
+      </div>
+      <BigModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        setNewPosted={setNewPosted}
+        time={getToday()}
+      ></BigModal>
+    </Box>
   );
 }
+
+const Box = styled.div`
+  flex: 1;
+`;
+const TimeLine = styled.div`
+  width: 1vw;
+  background: yellow;
+  margin-left: 10px;
+  border-left: 2px solid black;
+  z-index: 1;
+`;
 
 // render review get요청으로 받아와서, 화면에 리뷰들을 뿌려주는 부분을 구현해야함.
 // molecules로 review를 구현

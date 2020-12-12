@@ -4,11 +4,22 @@ const CALENDAR_DAY_SUCCESS: string = 'CALENDAR_DAY_SUCCESS';
 const CALENDAR_DAY_FAILURE: string = 'CALENDAR_DAY_FAILURE';
 
 /* 2. 액션생성자 함수 : 액션 객체(action 객체의 type 값은 "AUTH_login" 등등)를 리턴합니다. */
+interface scheduleDateI {
+  year: number;
+  month: number;
+  day: number;
+}
+
+interface scheduleTimeI {
+  hour: number;
+  min: number;
+}
+
 interface calendarDayI {
   type: string;
   todos: Array<{
     title: string;
-    scheduleTime: string;
+    scheduleDate: scheduleDateI;
     id: number;
     calendarId: number;
     calendarColor: string;
@@ -17,7 +28,8 @@ interface calendarDayI {
     title: string;
     context: string;
     imageUrl: string | null;
-    scheduleTime: string;
+    scheduleDate: scheduleDateI;
+    scheduleTime: scheduleTimeI;
     id: number;
     calendarId: number;
     calendarColor: string;
@@ -50,7 +62,7 @@ export function calendarFailure() {
 interface todosAndReviewsI {
   todos: Array<{
     title: string;
-    scheduleTime: string;
+    scheduleDate: scheduleDateI;
     id: number;
     calendarId: number;
     calendarColor: string;
@@ -59,7 +71,8 @@ interface todosAndReviewsI {
     title: string;
     context: string;
     imageUrl: string | null;
-    scheduleTime: string;
+    scheduleDate: scheduleDateI;
+    scheduleTime: scheduleTimeI;
     id: number;
     calendarId: number;
     calendarColor: string;

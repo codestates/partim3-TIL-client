@@ -4,10 +4,8 @@ import sendReview from '../utils/sendReviewF';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import getToday from '../../componentsNew/utils/todayF';
-import { time } from 'console';
 
 export default function BigModal(props: any) {
-  type primary = string;
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
 
@@ -138,9 +136,7 @@ export default function BigModal(props: any) {
             {/* <Tri></Tri> */}
           </ModalAndArrow>
           <SpaceErr2></SpaceErr2>
-          <CloseBtn onClick={handleCloseBtn} primary>
-            X
-          </CloseBtn>
+          <CloseBtn onClick={handleCloseBtn}>X</CloseBtn>
         </CloseBtnAndErrModal>
 
         <TimeHeader>
@@ -183,37 +179,40 @@ export default function BigModal(props: any) {
           placeholder="쓰고 싶은 내용을 자유롭게 남겨주세요"
           onChange={contextChange}
         ></ContextArea>
-        <SubmitBtn
-          onClick={async () => {
-            const today = getToday();
-            const userId = currentUser;
-            const scheduleDate = {
-              year: today.year,
-              month: today.month,
-              day: today.day,
-            };
-            const scheduleTime = { hour: hour, min: min };
-            const imageUrl = 'www.';
-            const calendarId = selectedCalendar;
-            await sendReview(
-              userId,
-              title,
-              context,
-              imageUrl,
-              scheduleDate,
-              scheduleTime,
-              calendarId,
-            );
-            //scheduleTime, calendarId
-            // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
-            props.setNewPosted(true);
-            props.onHide();
-            await setTitle('');
-            await setContext('');
-          }}
-        >
-          submit
-        </SubmitBtn>
+        <div>
+          <span>Add tags!</span>
+          <SubmitBtn
+            onClick={async () => {
+              const today = getToday();
+              const userId = currentUser;
+              const scheduleDate = {
+                year: today.year,
+                month: today.month,
+                day: today.day,
+              };
+              const scheduleTime = { hour: hour, min: min };
+              const imageUrl = 'www.';
+              const calendarId = selectedCalendar;
+              await sendReview(
+                userId,
+                title,
+                context,
+                imageUrl,
+                scheduleDate,
+                scheduleTime,
+                calendarId,
+              );
+              //scheduleTime, calendarId
+              // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
+              props.setNewPosted(true);
+              props.onHide();
+              await setTitle('');
+              await setContext('');
+            }}
+          >
+            submit
+          </SubmitBtn>
+        </div>
       </Modal>
     </ModalMask>
   );
@@ -286,14 +285,12 @@ const Modal = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
-const CloseBtn = styled.button<{ primary?: boolean }>`
-  background: ${props => (props.primary ? 'palevioletred' : 'white')};
-  color: ${props => (props.primary ? 'white' : 'palevioletred')};
+const CloseBtn = styled.button`
   flex: 0.1;
+  background: 'pink';
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
-  border: 2px solid palevioletred;
   border-radius: 3px;
   align-self: flex-end;
 `;
@@ -313,7 +310,7 @@ const ContextArea = styled.textarea`
   border-radius: 3px;
   background-color: white;
 `;
-const SubmitBtn = styled.button<{ primary?: boolean }>`
+const SubmitBtn = styled.button`
   flex: 1;
   width: 100px;
   height: 5vh;
@@ -324,6 +321,7 @@ const SubmitBtn = styled.button<{ primary?: boolean }>`
   padding: 0.25em 1em;
   border: 2px solid green;
   border-radius: 3px;
+  justify-self: flex-end;
   align-self: flex-end;
 `;
 
