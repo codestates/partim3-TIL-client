@@ -18,7 +18,13 @@ export default function BigModal(props: any) {
   const [hour, setHour] = useState(today.hour);
   const [min, setMin] = useState(today.min);
 
-  const [selectedCalendar, setSelectedCalendar] = useState(myCalendar[0].id); // startDate : Date 객체 상태임
+  // clearInput();
+
+  // const [selectedCalendar, setSelectedCalendar] = useState(myCalendar[0].id); // startDate : Date 객체 상태임
+
+  const [selectedCalendar, setSelectedCalendar] = useState(NaN);
+  console.log('myCalendar', myCalendar);
+  console.log({ selectedCalendar });
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
   // const [timeChange, settimeChange] = React.useState(false);
 
@@ -50,18 +56,77 @@ export default function BigModal(props: any) {
     setSelectedCalendar(Number(e.target.value));
   };
 
+  const [errShow, setShow] = useState(false);
+  const handleHour = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const regex = /^[0-9]$/;
+    // console.log(e.target.value);
+    // if (regex.test(e.target.value)) {
+    //   console.log('regex');
+    // }
+    let newhour = Number(e.target.value);
+    if (!newhour && newhour !== 0) {
+      // 정규표현식을 해주지 않아도 텍스트 입력은 여기서 방어가 됨.
+      clearInput();
+      setShow(!errShow);
+    }
+    if (newhour > 24 || newhour < 0) {
+      clearInput();
+      setShow(!errShow);
+    } else {
+      setHour(newhour);
+    }
+  };
+
+  const handleMin = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const regex = /^[0-9]$/;
+    // console.log(e.target.value);
+    // if (regex.test(e.target.value)) {
+    //   console.log('regex');
+    // }
+    let newMin = Number(e.target.value);
+    if (!newMin && newMin !== 0) {
+      // 정규표현식을 해주지 않아도 텍스트 입력은 여기서 방어가 됨.
+      clearInput();
+      setShow(!errShow);
+    }
+    if (newMin > 60 || newMin < 0) {
+      clearInput();
+      setShow(!errShow);
+    } else {
+      setMin(newMin);
+    }
+  };
+
+  const clearInput = () => {
+    setHour(today.hour);
+    setMin(today.min);
+  };
+
+  // useEffect(() => {
+  //   clearInput();
+  // }, []);
+
   return (
     <ModalMask show={props.show}>
       <Modal>
-        <CloseBtn onClick={props.onHide} primary>
-          X
-        </CloseBtn>
+        <CloseBtnAndErrModal>
+          <SpaceErr></SpaceErr>
+          <ModalAndArrow show={errShow}>
+            <ErrModal>시간은 1~24사이의 숫자로 넣어주세요</ErrModal>
+            {/* <Tri></Tri> */}
+          </ModalAndArrow>
+          <SpaceErr2></SpaceErr2>
+          <CloseBtn onClick={props.onHide} primary>
+            X
+          </CloseBtn>
+        </CloseBtnAndErrModal>
+
         <TimeHeader>
           <MonthAndDay>{`${today.month}월 ${today.day}일`}</MonthAndDay>
           {/* <Hour>{`${hour}시`}</Hour> */}
-          <HourInput></HourInput>
+          <HourInput value={`${hour}`} onChange={handleHour}></HourInput>
           <SpaceTime>시</SpaceTime>
-          <MinInput></MinInput>
+          <MinInput value={`${min}`} onChange={handleMin}></MinInput>
           <span>분</span>
           <Space></Space>
           <SelectCal onChange={handleSelectOption}>{myCalendersForSelectOptions}</SelectCal>
@@ -106,6 +171,48 @@ export default function BigModal(props: any) {
     </ModalMask>
   );
 }
+
+const CloseBtnAndErrModal = styled.div`
+  flex: 1;
+  width: 80vw;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+`;
+
+const ErrModal = styled.span`
+  flex: 1;
+  text-align: center;
+  background: black;
+  color: white;
+  margin-bottom: 10px;
+`;
+const Tri = styled.div`
+  flex: 0.5;
+  width: 7px;
+  border-top: 2vh solid black;
+  border-left: 2vh solid yellowgreen;
+  border-right: 2vh solid yellowgreen;
+  border-bottom: 0px solid yello;
+`;
+const ModalAndArrow = styled.span<{ show?: boolean }>`
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 30px;
+  visibility: ${props => (props.show ? 'visible' : 'hidden')};
+  background: black;
+  color: white;
+`;
+
+const SpaceErr = styled.span`
+  flex: 1;
+`;
+const SpaceErr2 = styled.span`
+  flex: 3;
+`;
+
 const ModalMask = styled.div<{ show?: boolean }>`
   display: ${props => (props.show ? 'grid' : 'none')};
   background-color: rgba(0, 0, 0, 0.6);
@@ -130,7 +237,7 @@ const Modal = styled.div`
 const CloseBtn = styled.button<{ primary?: boolean }>`
   background: ${props => (props.primary ? 'palevioletred' : 'white')};
   color: ${props => (props.primary ? 'white' : 'palevioletred')};
-  flex: 1;
+  flex: 0.1;
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
@@ -184,9 +291,7 @@ width:70px;
 background: yellowgreen
 justify-self: flex-start;
 `;
-const HourInput = styled.input.attrs({
-  placeholder: `${today.hour}`,
-})`
+const HourInput = styled.input`
   width: 30px;
   background: yellowgreen;
   border: 0px;

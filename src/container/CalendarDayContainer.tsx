@@ -18,6 +18,7 @@ import CalendarDay from '../componentsNew/pages/CalendarDay';
 // import date from '../componentsNew/utils/todayF';
 
 function CalendarDayContainer() {
+  console.log('calDayCon');
   //userId,오늘 날짜를 서버로 보내야함
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { sidebar } = useSelector((state: RootState) => state.sideBarM);
@@ -70,7 +71,6 @@ function CalendarDayContainer() {
       })
       .then(res => {
         let { myCalendars, shareCalendars } = res.data;
-
         dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
 
         let resTodo = new Array();
