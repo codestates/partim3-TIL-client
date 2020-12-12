@@ -18,22 +18,6 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
   const [newCalcolor, setNewCalcolor] = useState('#0693e3');
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
 
-  const checked = (e: any) => {
-    axios
-      .get(`http://localhost:5000/calendar`, {
-        params: {
-          userId: currentUser,
-        },
-        withCredentials: true,
-      })
-      .then(res => {
-        console.log('체크 get 요청 : ', res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   const handleNewCalName = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
   ) => {
@@ -111,7 +95,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
         addCalendar={addCalendar}
         currentColor={newCalcolor}
       />
-      <RenderCalendars checked={checked} calendars={myCalendar} delCalendar={delCalendar} />
+      <RenderCalendars calendars={myCalendar} delCalendar={delCalendar} />
     </SidebarMyCalWrap>
   );
 }

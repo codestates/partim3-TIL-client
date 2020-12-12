@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../modules';
 import styled from 'styled-components';
 
 interface CalCheckBoxProps {
   eachCalendarId: number;
   eachCalendarColor: string;
   eachCalendarName: string;
+  handleCheckBox: (checkedCal: number, isChecked: boolean) => void;
 }
 
 interface CheckboxProps {
@@ -21,8 +24,19 @@ export default function CalCheckBox({
   eachCalendarId,
   eachCalendarColor,
   eachCalendarName,
+  handleCheckBox,
 }: CalCheckBoxProps) {
-  const [isChecked, setIsChecked] = useState(false);
+  const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
+
+  let isCheckedDefault;
+  if (checkedCalArray.indexOf(eachCalendarId) !== -1) {
+    isCheckedDefault = true;
+  } else {
+    isCheckedDefault = false;
+  }
+
+  const [isChecked, setIsChecked] = useState(isCheckedDefault);
+  // 기본값을 true로 줘야하는게 아닐까?
 
   const Checkbox = ({ className, calColor, checked, ...props }: CheckboxProps) => (
     <CheckboxContainer className={className}>
@@ -37,6 +51,8 @@ export default function CalCheckBox({
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
+    handleCheckBox(eachCalendarId, e.target.checked);
+    // console.log(e.target.checked);
   };
 
   return (

@@ -23,8 +23,8 @@ export default function BigModal(props: any) {
   // const [selectedCalendar, setSelectedCalendar] = useState(myCalendar[0].id); // startDate : Date 객체 상태임
 
   const [selectedCalendar, setSelectedCalendar] = useState(NaN);
-  console.log('myCalendar', myCalendar);
-  console.log({ selectedCalendar });
+  // console.log('myCalendar', myCalendar);
+  // console.log({ selectedCalendar });
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
   // const [timeChange, settimeChange] = React.useState(false);
 
@@ -287,9 +287,9 @@ const Hour = styled.span`
   background: white;
 `;
 const MonthAndDay = styled.div`
-width:70px;
-background: yellowgreen
-justify-self: flex-start;
+  width: 70px;
+  background: yellowgreen;
+  justify-self: flex-start;
 `;
 const HourInput = styled.input`
   width: 30px;

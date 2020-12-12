@@ -16,6 +16,8 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const [selectedCalendar, setSelectedCalendar] = useState(NaN); // startDate : Date 객체 상태임
+  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const { today } = useSelector((state: RootState) => state.handleToday);
   // console.log({ myCalendar });
 
   let defaultmyCalendersForSelectOptions;
@@ -56,9 +58,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     }
   };
 
-  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const { today } = useSelector((state: RootState) => state.handleToday);
-
   let TodayForAxios = {
     year: today.year,
     month: today.month,
@@ -96,13 +95,14 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     return axios
       .post(
         `http://localhost:5000/calendar/todo`,
-        { calendarId, title, scheduleDate },
+        { userId: currentUser, title, scheduleDate, calendarId },
         { withCredentials: true },
       )
       .then(res => {
         alert(`${res.data}`);
         setNewPosted(true);
         handleCloseModal(); // 여기는 잘 작동한다.
+        setSelectedCalendar(NaN);
       })
       .catch(err => {
         alert(`${err}`);
