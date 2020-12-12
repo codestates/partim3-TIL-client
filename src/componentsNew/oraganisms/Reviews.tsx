@@ -4,6 +4,7 @@ import { RootState } from '../../modules';
 import Review from '../molecules/reviews/Review';
 import ReviewModal from '../molecules/reviews/ReviewModal';
 import BigModal from '../atoms/BigModal';
+import getToday from '../../componentsNew/utils/todayF';
 
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
@@ -63,6 +64,7 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
           show={modalShow}
           onHide={() => setModalShow(false)}
           setNewPosted={setNewPosted}
+          time={getToday()}
         ></BigModal>
       </Row>
     </Container>

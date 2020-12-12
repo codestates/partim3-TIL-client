@@ -1,46 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import sendReview from '../utils/sendReviewF';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import getToday from '../../componentsNew/utils/todayF';
-
-const today = getToday();
+import { time } from 'console';
 
 export default function BigModal(props: any) {
   type primary = string;
-  // const { today } = useSelector((state: RootState) => state.handleToday);
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
 
   const [title, setTitle] = useState('');
   const [context, setContext] = useState('');
-  const [hour, setHour] = useState(today.hour);
-  const [min, setMin] = useState(today.min);
-
-  // clearInput();
-
-  // const [selectedCalendar, setSelectedCalendar] = useState(myCalendar[0].id); // startDate : Date 객체 상태임
+  const [hour, setHour] = useState(getToday().hour);
+  const [min, setMin] = useState(getToday().min);
 
   const [selectedCalendar, setSelectedCalendar] = useState(NaN);
-  console.log('myCalendar', myCalendar);
-  console.log({ selectedCalendar });
+
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
   // const [timeChange, settimeChange] = React.useState(false);
 
-  const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const contextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContext(e.target.value);
-  };
-
+  let defaultmyCalendersForSelectOptions;
   let myCalendersForSelectOptions;
 
   if (myCalendar === []) {
+    defaultmyCalendersForSelectOptions = '';
     myCalendersForSelectOptions = <option>먼저 캘린더를 만들어 주세요.</option>;
   } else {
+    defaultmyCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
     myCalendersForSelectOptions = myCalendar.map(calendar => {
       return (
         <option key={calendar.id} value={calendar.id}>
@@ -57,79 +45,137 @@ export default function BigModal(props: any) {
   };
 
   const [errShow, setShow] = useState(false);
+
+  // 에러를 2번 반복해야 에러메세지가 사라짐.
+  // 에러가 한번 일어난 후, 전부 지우면 에러메세지를 지워주기.
   const handleHour = (e: React.ChangeEvent<HTMLInputElement>) => {
     // const regex = /^[0-9]$/;
     // console.log(e.target.value);
     // if (regex.test(e.target.value)) {
     //   console.log('regex');
     // }
+
     let newhour = Number(e.target.value);
-    if (!newhour && newhour !== 0) {
+
+    if (isNaN(newhour)) {
       // 정규표현식을 해주지 않아도 텍스트 입력은 여기서 방어가 됨.
-      clearInput();
-      setShow(!errShow);
+      console.log(newhour);
+      setShow(true);
+      return;
     }
     if (newhour > 24 || newhour < 0) {
-      clearInput();
-      setShow(!errShow);
+      // clearInput();
+      // 잘못된 시간은 아예 입력 방지
+      setShow(true);
+      return;
     } else {
+      setShow(false);
       setHour(newhour);
     }
   };
-
+  // 서버로 보낼때 한번 검증이 필요함.
   const handleMin = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const regex = /^[0-9]$/;
-    // console.log(e.target.value);
-    // if (regex.test(e.target.value)) {
-    //   console.log('regex');
-    // }
     let newMin = Number(e.target.value);
     if (!newMin && newMin !== 0) {
-      // 정규표현식을 해주지 않아도 텍스트 입력은 여기서 방어가 됨.
-      clearInput();
       setShow(!errShow);
     }
-    if (newMin > 60 || newMin < 0) {
-      clearInput();
+    if (newMin > 59 || newMin < 0) {
       setShow(!errShow);
     } else {
       setMin(newMin);
     }
   };
 
-  const clearInput = () => {
-    setHour(today.hour);
-    setMin(today.min);
+  const handleCloseBtn = () => {
+    setShow(false);
+
+    props.onHide();
   };
 
   // useEffect(() => {
-  //   clearInput();
+  //   setHour(String(getToday().hour));
   // }, []);
+
+  const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const contextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContext(e.target.value);
+  };
+
+  const [divHour, setDivHour] = useState(true);
+  const [inputHour, setInputHour] = useState(false);
+  const [divMin, setDivMin] = useState(true);
+  const [inputMin, setInputMin] = useState(false);
+
+  const hideInput = () => {
+    // 범위는 나중에 고민해 봐야할듯 하다..
+    setDivHour(true);
+    setInputHour(false);
+    setDivMin(true);
+    setInputMin(false);
+  };
+  const renderInputHour = () => {
+    console.log('hi');
+    setDivHour(false);
+    setInputHour(true);
+  };
+
+  const renderInputMin = () => {
+    console.log('ho');
+    setDivMin(false);
+    setInputMin(true);
+  };
 
   return (
     <ModalMask show={props.show}>
       <Modal>
-        <CloseBtnAndErrModal>
+        <CloseBtnAndErrModal onClick={hideInput}>
           <SpaceErr></SpaceErr>
-          <ModalAndArrow show={errShow}>
-            <ErrModal>시간은 1~24사이의 숫자로 넣어주세요</ErrModal>
+          <ModalAndArrow>
+            <ErrModal show={errShow}>잘못된 시간</ErrModal>
             {/* <Tri></Tri> */}
           </ModalAndArrow>
           <SpaceErr2></SpaceErr2>
-          <CloseBtn onClick={props.onHide} primary>
+          <CloseBtn onClick={handleCloseBtn} primary>
             X
           </CloseBtn>
         </CloseBtnAndErrModal>
 
         <TimeHeader>
-          <MonthAndDay>{`${today.month}월 ${today.day}일`}</MonthAndDay>
-          {/* <Hour>{`${hour}시`}</Hour> */}
-          <HourInput value={`${hour}`} onChange={handleHour}></HourInput>
+          <MonthAndDay>{`${getToday().month}월 ${getToday().day}일`}</MonthAndDay>
+          <HourInput
+            value={`${getToday().hour}`}
+            onClick={renderInputHour}
+            show={divHour}
+            hover={'yellowgreen'}
+            readOnly
+          ></HourInput>
+          <HourInput
+            defaultValue={`${getToday().hour}`}
+            show={inputHour}
+            onChange={handleHour}
+          ></HourInput>
           <SpaceTime>시</SpaceTime>
-          <MinInput value={`${min}`} onChange={handleMin}></MinInput>
+          <MinInput
+            value={`${getToday().min}`}
+            onClick={renderInputMin}
+            show={divMin}
+            hover={'yellowgreen'}
+            readOnly
+          ></MinInput>
+          <MinInput
+            defaultValue={`${getToday().min}`}
+            show={inputMin}
+            onChange={handleMin}
+          ></MinInput>
           <span>분</span>
           <Space></Space>
-          <SelectCal onChange={handleSelectOption}>{myCalendersForSelectOptions}</SelectCal>
+          <SelectCal onChange={handleSelectOption}>
+            {defaultmyCalendersForSelectOptions}
+            {myCalendersForSelectOptions}
+          </SelectCal>
           <Space></Space>
         </TimeHeader>
         <TitleInput placeholder="제목" onChange={titleChange}></TitleInput>
@@ -139,15 +185,16 @@ export default function BigModal(props: any) {
         ></ContextArea>
         <SubmitBtn
           onClick={async () => {
-            //리뷰를 작성할 때 해당일자를 선택했을 것이므로.
-            //scheduleDate는 today로.
-            //나중에 변수 명칭 통일해야 될 것 같다.. 너무 헷갈림.
+            const today = getToday();
             const userId = currentUser;
-            const scheduleDate = { year: today.year, month: today.month, day: today.day };
-            const scheduleTime = { hour: today.hour, min: today.min };
+            const scheduleDate = {
+              year: today.year,
+              month: today.month,
+              day: today.day,
+            };
+            const scheduleTime = { hour: hour, min: min };
             const imageUrl = 'www.';
             const calendarId = selectedCalendar;
-            console.log(calendarId);
             await sendReview(
               userId,
               title,
@@ -180,12 +227,16 @@ const CloseBtnAndErrModal = styled.div`
   align-items: flex-end;
 `;
 
-const ErrModal = styled.span`
-  flex: 1;
-  text-align: center;
+const ErrModal = styled.span<{ show?: boolean }>`
+  width: 13vw;
+  border-bottom: 2px solid red;
+  height: 5vh;
+  padding-top: 3px;
+  padding-left: 5px;
+  text-align: left;
   background: black;
   color: white;
-  margin-bottom: 10px;
+  visibility: ${props => (props.show ? 'visible' : 'hidden')};
 `;
 const Tri = styled.div`
   flex: 0.5;
@@ -195,22 +246,23 @@ const Tri = styled.div`
   border-right: 2vh solid yellowgreen;
   border-bottom: 0px solid yello;
 `;
-const ModalAndArrow = styled.span<{ show?: boolean }>`
-  flex: 4;
+const ModalAndArrow = styled.span`
+  width: 10vw;
+  flex: 1;
   display: flex;
   flex-direction: column;
   text-align: center;
   height: 30px;
-  visibility: ${props => (props.show ? 'visible' : 'hidden')};
-  background: black;
+
+  background: yellowgreen;
   color: white;
 `;
 
 const SpaceErr = styled.span`
-  flex: 1;
+  width: 3vw;
 `;
 const SpaceErr2 = styled.span`
-  flex: 3;
+  flex: 1;
 `;
 
 const ModalMask = styled.div<{ show?: boolean }>`
@@ -291,9 +343,10 @@ width:70px;
 background: yellowgreen
 justify-self: flex-start;
 `;
-const HourInput = styled.input`
+const HourInput = styled.input<{ show?: boolean; hover?: string }>`
+  display: ${props => (props.show ? 'block' : 'none')};
+  background: ${props => (props.hover ? props.hover : 'white')};
   width: 30px;
-  background: yellowgreen;
   border: 0px;
   border-bottom: 1px solid green;
   outline: none;
@@ -301,11 +354,10 @@ const HourInput = styled.input`
     color: black;
   }
 `;
-const MinInput = styled.input.attrs({
-  placeholder: `${today.min}`,
-})`
+const MinInput = styled.input<{ show?: boolean; hover?: string }>`
+  display: ${props => (props.show ? 'block' : 'none')};
+  background: ${props => (props.hover ? props.hover : 'white')};
   width: 30px;
-  background: yellowgreen;
   border: 0px;
   border-bottom: 1px solid green;
   outline: none;
