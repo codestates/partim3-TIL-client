@@ -14,6 +14,7 @@ import Login from '../componentsNew/pages/Login';
 import getToday from '../componentsNew/utils/todayF';
 
 export default function LoginContainer() {
+  console.log('loginCon');
   /*  이미 로그인된 상태에서 /login에 접속하면 막아주는 장치인데, 
       이 기능을 여기서 넣으니까 alert만 괜히 두번 뜬다
       이 기능을 주지 않으면 로그인한 상태에서 /login에 접속이 가능해지므로, 처리하긴 해야 함
