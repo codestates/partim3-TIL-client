@@ -79,13 +79,6 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
 const Box = styled.div`
   flex: 1;
 `;
-const TimeLine = styled.div`
-  width: 1vw;
-  background: yellow;
-  margin-left: 10px;
-  border-left: 2px solid black;
-  z-index: 1;
-`;
 
 // render review get요청으로 받아와서, 화면에 리뷰들을 뿌려주는 부분을 구현해야함.
 // molecules로 review를 구현

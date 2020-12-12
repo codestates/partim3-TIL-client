@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BiGame } from 'react-icons/bi';
-import { Container } from 'react-bootstrap';
 
 // VscCircleOutline
 

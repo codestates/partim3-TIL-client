@@ -237,14 +237,7 @@ const ErrModal = styled.span<{ show?: boolean }>`
   color: white;
   visibility: ${props => (props.show ? 'visible' : 'hidden')};
 `;
-const Tri = styled.div`
-  flex: 0.5;
-  width: 7px;
-  border-top: 2vh solid black;
-  border-left: 2vh solid yellowgreen;
-  border-right: 2vh solid yellowgreen;
-  border-bottom: 0px solid yello;
-`;
+
 const ModalAndArrow = styled.span`
   width: 10vw;
   flex: 1;
@@ -272,6 +265,7 @@ const ModalMask = styled.div<{ show?: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 200;
   place-items: center;
 `;
 
@@ -284,6 +278,8 @@ const Modal = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  position: absolute;
+  z-index: 500;
 `;
 const CloseBtn = styled.button`
   flex: 0.1;
