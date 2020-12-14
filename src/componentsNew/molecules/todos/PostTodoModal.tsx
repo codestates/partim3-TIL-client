@@ -18,7 +18,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   const [selectedCalendar, setSelectedCalendar] = useState(NaN); // startDate : Date 객체 상태임
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { today } = useSelector((state: RootState) => state.handleToday);
-  // console.log({ myCalendar });
 
   let defaultmyCalendersForSelectOptions;
 
@@ -44,8 +43,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     });
   }
 
-  // = myCalendar[0].id
-
   const handleSelectOption = (
     e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
   ) => {
@@ -59,9 +56,9 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   };
 
   let TodayForAxios = {
-    year: today.year,
-    month: today.month,
-    day: today.day,
+    year: startDate.getFullYear(),
+    month: startDate.getMonth() + 1,
+    day: startDate.getDate(),
   };
 
   const handleTitleInput = (
@@ -83,7 +80,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   }-${startDate.getDate()}`;
 
   const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
-    // console.log({ calendarId, title, scheduleDate });
     if (typeof calendarId !== 'number' || Number.isNaN(calendarId)) {
       alert('캘린더가 선택되어 있지 않습니다.');
       return;
