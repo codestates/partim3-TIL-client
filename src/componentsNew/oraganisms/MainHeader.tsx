@@ -16,7 +16,7 @@ export default function MainHeader() {
 
   const logoutMypageView = (
     <Nav>
-      <Nav.Link href="/mypage">마이페이지</Nav.Link>
+      <Nav.Link href="/mypage/profile">마이페이지</Nav.Link>
       <Nav.Link href="/calendar/day">내 캘린더</Nav.Link>
       {/* <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link> */}
     </Nav>
