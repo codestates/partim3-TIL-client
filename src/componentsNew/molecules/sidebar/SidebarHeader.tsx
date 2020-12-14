@@ -55,7 +55,7 @@ export default function SidebarHeader() {
   return (
     <Col>
       <Row>
-        <Link to="/mypage">
+        <Link to="/mypage/profile">
           <Col className="m-auto pb-3">
             <Image src="/img/cat.jpeg" height="40" width="40" roundedCircle />
           </Col>
@@ -76,7 +76,7 @@ export default function SidebarHeader() {
             onFailure={handleLogout}
           />
         </Col> */}
-        <Link to="/mypage">
+        <Link to="/mypage/profile">
           <Col>
             <Button>setting</Button>
           </Col>

@@ -7,6 +7,7 @@ import { RootState } from '../modules';
 import { tagsSuccess, tagsFailure } from '../modules/tagsM';
 
 import MypageTags from '../componentsNew/pages/MypageTags';
+import { MypageHeaderAndSidebar } from '../componentsNew/oraganisms';
 
 export default function MypageTagsContainer() {
   const [nickname, setNickname] = useState('');
@@ -66,5 +67,7 @@ export default function MypageTagsContainer() {
   //   tags: Array<object>;
   // }
 
-  return <MypageTags userId={currentUser} createTag={createTag} tags={tags} />;
+  let childComponent = <MypageTags userId={currentUser} createTag={createTag} tags={tags} />;
+
+  return <MypageHeaderAndSidebar childComponent={childComponent}></MypageHeaderAndSidebar>;
 }
