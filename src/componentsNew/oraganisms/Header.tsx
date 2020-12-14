@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { Col } from 'react-bootstrap';
+import styled from 'styled-components';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import * as AiIcons from 'react-icons/ai';
 import './Header.css';
 
-import { RootState } from '../../modules';
 import {
   handleTodayStart,
   handleTodaySuccess,
@@ -17,7 +15,6 @@ import {
 import { sidebarStatus } from '../../modules/sideBarM';
 
 import NaviButton from '../molecules/NaviButton';
-import { ButtonAtom } from '../atoms';
 
 import getToday from '../utils/todayF';
 import { todayProps } from '../../types';
@@ -49,20 +46,37 @@ export default function Header(today: todayProps) {
   }, []);
 
   return (
-    <>
-      <Col style={{ border: '1px solid black' }}>
+    <HeaderWrap>
+      <div style={{ flex: 1, border: '1px solid black' }}>
         <GiHamburgerMenu size="3em" onClick={showSidebar} />
-      </Col>
-      <Col style={{ border: '1px solid black' }}>
-        <Link to="/">logo(main page link?)</Link>
-      </Col>
-      <Col style={{ border: '1px solid black' }}>
-        <ButtonAtom text="today button" onClick={goToday} />
-      </Col>
-      <Col style={{ border: '1px solid black' }}>
+      </div>
+      <div style={{ flex: 1, border: '1px solid black' }}>
+        <Link to="/">(logo)</Link>
+      </div>
+      <div style={{ flex: 1, border: '1px solid black' }}>
+        <TodayButton onClick={goToday}>today btn</TodayButton>
+      </div>
+      <div style={{ flex: 1, border: '1px solid black' }}>
         <NaviButton />
-      </Col>
-      <Col style={{ border: '1px solid black' }}>{todayView}</Col>
-    </>
+      </div>
+      <div style={{ flex: 1, border: '1px solid black' }}>
+        <h4>{todayView}</h4>
+      </div>
+    </HeaderWrap>
   );
 }
+
+const HeaderWrap = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+`;
+
+const TodayButton = styled.button`
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: skyblue;
+`;
