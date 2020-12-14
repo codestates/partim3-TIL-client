@@ -35,10 +35,10 @@ export default function CalendarDay({
         )}
 
         <Col>
-          <Row style={{ border: '1px solid black', height: '80px' }}>
+          <Row style={{ border: '1px solid black', height: '50px' }}>
             <Header {...today} />
           </Row>
-          <Row style={{ border: '1px solid black', height: '200px', overflow: 'auto' }}>
+          <Row style={{ border: '1px solid black', height: '300px', overflow: 'auto' }}>
             <Col>
               <Todos setNewPosted={setNewPosted} />
             </Col>
