@@ -7,9 +7,10 @@ import TodosDayAndPostModal from '../molecules/todos/TodosDayAndPostModal';
 
 interface TodosProps {
   setNewPosted: (newPosted: boolean) => void;
+  setTodoDeletedOrUpdated: (todoDeleted: boolean) => void;
 }
 
-export default function Todos({ setNewPosted }: TodosProps) {
+export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosProps) {
   const { todos } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
   const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
 
@@ -26,7 +27,16 @@ export default function Todos({ setNewPosted }: TodosProps) {
         if (checkedCalArray.indexOf(todo.calendarId) !== -1) {
           let title = todo.title as string;
           let id = todo.id as number;
-          return <Todo title={title} id={id} key={id} />;
+          let calendarId = todo.calendarId as number;
+          return (
+            <Todo
+              title={title}
+              id={id}
+              key={id}
+              calendarId={calendarId}
+              setTodoDeletedOrUpdated={setTodoDeletedOrUpdated}
+            />
+          );
         }
       });
     }
@@ -43,7 +53,10 @@ export default function Todos({ setNewPosted }: TodosProps) {
       <Row className="m-1" style={{ border: '1px solid black' }}>
         <TodosDayAndPostModal setNewPosted={setNewPosted} />
       </Row>
-      <Row className="m-1" style={{ border: '1px solid yellow', overflow: 'auto' }}>
+      <Row
+        className="m-1"
+        style={{ border: '1px solid yellow', overflow: 'auto', flexDirection: 'column' }}
+      >
         {todosList}
       </Row>
     </>
