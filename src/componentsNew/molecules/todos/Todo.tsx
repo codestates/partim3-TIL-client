@@ -4,24 +4,47 @@ import { RootState } from '../../../modules';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Input } from '../../atoms';
+import DatePicker from 'react-datepicker';
+
+interface scheduleDateType {
+  year: number;
+  month: number;
+  day: number;
+}
 
 interface TodoProps {
   title: string;
   id: number;
   key: number;
   calendarId: number;
+  scheduleDate: scheduleDateType;
   setTodoDeletedOrUpdated: (todoDeleted: boolean) => void;
 }
 
-export default function Todo({ title, id, calendarId, setTodoDeletedOrUpdated }: TodoProps) {
+export default function Todo({
+  title,
+  id,
+  calendarId,
+  scheduleDate,
+  setTodoDeletedOrUpdated,
+}: TodoProps) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const [displayFixOrDelTodoModal, setDisplayFixOrDelTodoModal] = useState(false);
-  const [newTitle, setNewTitle] = useState('');
+  const [newTitle, setNewTitle] = useState(title);
+  const [startDate, setStartDate] = useState(
+    new Date(`${scheduleDate.year} ${scheduleDate.month} ${scheduleDate.day}`),
+  ); // startDate : Date 객체 상태임
 
   const handleChange = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
   ) => {
     setNewTitle(e.target.value);
+  };
+
+  const handleDate = (date: Date | null) => {
+    if (date !== null) {
+      setStartDate(date);
+    }
   };
 
   const deleteTodo = (todoId: number) => {
@@ -49,6 +72,16 @@ export default function Todo({ title, id, calendarId, setTodoDeletedOrUpdated }:
   };
 
   const updateTodo = (todoId: number, newTitle: string) => {
+    if (newTitle === '') {
+      newTitle = title; // newTitle을 비워서 요청하면, 기존 title을 넣어준다
+    }
+
+    let TodayForAxios = {
+      year: startDate.getFullYear(),
+      month: startDate.getMonth() + 1,
+      day: startDate.getDate(),
+    };
+
     if (currentUser === null) {
       alert('로그인이 되어있지 않습니다.');
       return;
@@ -58,14 +91,21 @@ export default function Todo({ title, id, calendarId, setTodoDeletedOrUpdated }:
           `http://localhost:5000/calendar/updatetodo`,
           {
             userId: currentUser,
-            todoId: todoId,
-            title: newTitle,
             calendarId: calendarId,
+            title: newTitle,
+            scheduleDate: JSON.stringify(TodayForAxios),
+            todoId: todoId,
           },
           { withCredentials: true },
         )
         .then(res => {
-          alert(`'${title}' todo가 '${newTitle}' todo로 수정되었습니다.`);
+          alert(
+            `'${title}(${scheduleDate.year}/${scheduleDate.month}/${
+              scheduleDate.day
+            })' todo가 '${newTitle}(${startDate.getFullYear()}/${
+              startDate.getMonth() + 1
+            }/${startDate.getDate()})' todo로 수정되었습니다.`,
+          );
           setDisplayFixOrDelTodoModal(false);
           setTodoDeletedOrUpdated(true);
         })
@@ -89,54 +129,84 @@ export default function Todo({ title, id, calendarId, setTodoDeletedOrUpdated }:
         <main
           style={{
             display: 'flex',
+            flexDirection: 'column',
             alignContent: 'center',
             justifyContent: 'center',
           }}
         >
-          <label
+          <div
             style={{
+              margin: '5px',
               flex: 1,
-              margin: 0,
-              flexDirection: 'column',
               display: 'flex',
-              alignContent: 'center',
-              justifyContent: 'center',
-              marginLeft: '5px',
-              marginRight: '5px',
             }}
           >
-            title :{' '}
-          </label>
-          <Input
-            type="text"
-            name="title"
-            placeholder={title}
-            smInput={7}
-            handleChange={handleChange}
-            autoFocus={true}
-          />
-          <button
-            onClick={() => updateTodo(id, newTitle)}
+            <label
+              style={{
+                flex: 1,
+                margin: 0,
+                flexDirection: 'column',
+                display: 'flex',
+                alignContent: 'center',
+                justifyContent: 'center',
+                marginLeft: '5px',
+                marginRight: '5px',
+              }}
+            >
+              title :{' '}
+            </label>
+            <Input
+              type="text"
+              name="title"
+              placeholder={title}
+              smInput={7}
+              handleChange={handleChange}
+              autoFocus={true}
+            />
+          </div>
+          <div
             style={{
-              flex: 3,
-              marginLeft: '5px',
-              marginRight: '5px',
-              padding: '0',
+              margin: '5px',
+              flex: 1,
+              // display: 'flex',
             }}
           >
-            todo 수정하기
-          </button>
+            <div>
+              언제 하실 일인가요?{' '}
+              <DatePicker selected={startDate} onChange={handleDate} dateFormat="yyyy/MM/dd" />
+            </div>
+            <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>
+          </div>
         </main>
         <hr style={{ borderColor: 'black' }}></hr>
         <footer
           style={{
             display: 'flex',
             alignContent: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-end',
           }}
         >
-          <button onClick={() => deleteTodo(id)}>todo 삭제하기</button>
-          <button onClick={() => setDisplayFixOrDelTodoModal(false)}>닫기</button>
+          <button
+            onClick={() => updateTodo(id, newTitle)}
+            // style={{
+            //   flex: 3,
+            //   marginLeft: '5px',
+            //   marginRight: '5px',
+            //   padding: '0',
+            // }}
+            style={{ marginLeft: '5px', marginRight: '5px' }}
+          >
+            todo 수정하기
+          </button>
+          <button onClick={() => deleteTodo(id)} style={{ marginLeft: '5px', marginRight: '5px' }}>
+            todo 삭제하기
+          </button>
+          <button
+            onClick={() => setDisplayFixOrDelTodoModal(false)}
+            style={{ marginLeft: '5px', marginRight: '5px' }}
+          >
+            닫기
+          </button>
         </footer>
       </div>
     );

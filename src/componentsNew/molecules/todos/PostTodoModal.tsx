@@ -75,10 +75,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     closeModal();
   };
 
-  let scheduleTime = `${startDate.getFullYear()}-${
-    startDate.getMonth() + 1
-  }-${startDate.getDate()}`;
-
   const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
     if (typeof calendarId !== 'number' || Number.isNaN(calendarId)) {
       alert('캘린더가 선택되어 있지 않습니다.');
