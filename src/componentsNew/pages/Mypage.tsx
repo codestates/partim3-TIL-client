@@ -1,19 +1,25 @@
-// 실제로는 이쪽으로 들어오지 않도록 막아놨음
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../modules';
+
+// 실제로는 이쪽으로 들어오지 않도록 막아놨음
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import MypageTagsContainer from '../../container/MypageTagsContainer';
 import MypageCalendar from './MypageCalendar';
 import MypageSettingContainer from '../../container/MypageSettingContainer';
+import MypageCalSidebar from '../oraganisms/MypageCalSidebar';
 
 export default function Mypage() {
-  const [curComponent, setcurComponent] = useState(<MypageTagsContainer></MypageTagsContainer>);
+  const [curComponent, setcurComponent] = useState(
+    <MypageSettingContainer></MypageSettingContainer>,
+  );
+  const [curCal, setCurCal] = useState('curCal');
+
   const goProfile = (component: any) => {
     setcurComponent(component);
   };
-
-  let mypageCalendar = <MypageCalendar></MypageCalendar>;
   let mypageSetting = <MypageSettingContainer></MypageSettingContainer>;
   let mypageTags = <MypageTagsContainer></MypageTagsContainer>;
 
@@ -41,13 +47,11 @@ export default function Mypage() {
           >
             Tags
           </Text>
-          <Text
-            onClick={() => {
-              goProfile(mypageCalendar);
-            }}
-          >
-            Calendar
-          </Text>
+          <Text>Calendar</Text>
+          {/* 하위에서 useEffect 때문에 curCal이 바뀌면 해당 페이지가 랜더링이 됨 */}
+          {/* 처음에는 세팅이 되었다가, 하위에서 curCal이 세팅이 되면서 useEffect가 실행되면 컴포넌트가 바뀌어버림 */}
+          {/* goProfile을 useEffect에서 제거해주면 문제가 해결됨 */}
+          <MypageCalSidebar goProfile={goProfile}></MypageCalSidebar>
         </Sidebar>
         <Main>{curComponent}</Main>
       </Body>
@@ -97,7 +101,7 @@ const Body = styled.div`
 // 미디어 쿼리를 써야하나?
 // 사이드바의 명칭을 더 명확히 하는게 좋을까?
 const Sidebar = styled.div`
-  flex: 1;
+  width: 200px;
   border-right: 0.1px solid gray;
 `;
 const Text = styled.h5`

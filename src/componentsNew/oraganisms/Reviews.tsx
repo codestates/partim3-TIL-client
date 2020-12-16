@@ -36,21 +36,26 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
     let sortedList = addTotalTime.sort(function (a, b) {
       return parseFloat(a.totalTime) - parseFloat(b.totalTime);
     });
+    const hadleModalShow = () => {
+      setModalShow(true);
+    };
 
     reviewList = sortedList.map((el: any) => {
       const { id, title, context, imageUrl, scheduleDate, scheduleTime } = el;
       //  {/* <BiGame style={{ flex: 1, zIndex: 100, background: 'red' }}></BiGame> */}
       //       {/* <TimeLine></TimeLine> */}
       return (
-        <Review
-          key={id}
-          id={id}
-          title={title}
-          context={context}
-          imageUrl={imageUrl}
-          scheduleDate={scheduleDate}
-          scheduleTime={scheduleTime}
-        ></Review>
+        <div>
+          <Review
+            key={id}
+            id={id}
+            title={title}
+            context={context}
+            imageUrl={imageUrl}
+            scheduleDate={scheduleDate}
+            scheduleTime={scheduleTime}
+          ></Review>
+        </div>
       );
     });
   }
