@@ -10,6 +10,12 @@ interface TodosProps {
   setTodoDeletedOrUpdated: (todoDeleted: boolean) => void;
 }
 
+interface scheduleDateType {
+  year: number;
+  month: number;
+  day: number;
+}
+
 export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosProps) {
   const { todos } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
   const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
@@ -28,12 +34,14 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
           let title = todo.title as string;
           let id = todo.id as number;
           let calendarId = todo.calendarId as number;
+          let scheduleDate: scheduleDateType = JSON.parse(todo.scheduleDate);
           return (
             <Todo
               title={title}
               id={id}
               key={id}
               calendarId={calendarId}
+              scheduleDate={scheduleDate}
               setTodoDeletedOrUpdated={setTodoDeletedOrUpdated}
             />
           );

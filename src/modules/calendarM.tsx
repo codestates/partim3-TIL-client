@@ -19,7 +19,7 @@ interface calendarDayI {
   type: string;
   todos: Array<{
     title: string;
-    scheduleDate: scheduleDateI;
+    scheduleDate: string;
     id: number;
     calendarId: number;
     calendarColor: string;
@@ -62,7 +62,7 @@ export function calendarFailure() {
 interface todosAndReviewsI {
   todos: Array<{
     title: string;
-    scheduleDate: scheduleDateI;
+    scheduleDate: string;
     id: number;
     calendarId: number;
     calendarColor: string;
