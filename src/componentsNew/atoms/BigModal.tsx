@@ -4,6 +4,7 @@ import sendReview from '../utils/sendReviewF';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import getToday from '../../componentsNew/utils/todayF';
+import { useForm } from 'react-hook-form';
 
 export default function BigModal(props: any) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
@@ -15,7 +16,7 @@ export default function BigModal(props: any) {
   const [min, setMin] = useState(getToday().min);
 
   const [selectedCalendar, setSelectedCalendar] = useState(NaN);
-
+  const { register, handleSubmit, reset, errors } = useForm();
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
   // const [timeChange, settimeChange] = React.useState(false);
 
@@ -46,7 +47,8 @@ export default function BigModal(props: any) {
 
   // 에러를 2번 반복해야 에러메세지가 사라짐.
   // 에러가 한번 일어난 후, 전부 지우면 에러메세지를 지워주기.
-  const handleHour = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleHour = (e: any) => {
+    //React.ChangeEvent<HTMLInputElement>
     // const regex = /^[0-9]$/;
     // console.log(e.target.value);
     // if (regex.test(e.target.value)) {
@@ -86,7 +88,7 @@ export default function BigModal(props: any) {
 
   const handleCloseBtn = () => {
     setShow(false);
-
+    setHour(0);
     props.onHide();
   };
 
@@ -109,6 +111,7 @@ export default function BigModal(props: any) {
 
   const hideInput = () => {
     // 범위는 나중에 고민해 봐야할듯 하다..
+    reset();
     setDivHour(true);
     setInputHour(false);
     setDivMin(true);
@@ -116,6 +119,7 @@ export default function BigModal(props: any) {
   };
   const renderInputHour = () => {
     console.log('hi');
+    reset();
     setDivHour(false);
     setInputHour(true);
   };
@@ -142,17 +146,14 @@ export default function BigModal(props: any) {
         <TimeHeader>
           <MonthAndDay>{`${getToday().month}월 ${getToday().day}일`}</MonthAndDay>
           <HourInput
+            ref={register}
             value={`${getToday().hour}`}
             onClick={renderInputHour}
             show={divHour}
             hover={'yellowgreen'}
             readOnly
           ></HourInput>
-          <HourInput
-            defaultValue={`${getToday().hour}`}
-            show={inputHour}
-            onChange={handleHour}
-          ></HourInput>
+          <HourInput ref={register} show={inputHour} onChange={handleHour}></HourInput>
           <SpaceTime>시</SpaceTime>
           <MinInput
             value={`${getToday().min}`}
@@ -161,11 +162,7 @@ export default function BigModal(props: any) {
             hover={'yellowgreen'}
             readOnly
           ></MinInput>
-          <MinInput
-            defaultValue={`${getToday().min}`}
-            show={inputMin}
-            onChange={handleMin}
-          ></MinInput>
+          <MinInput show={inputMin} onChange={handleMin}></MinInput>
           <span>분</span>
           <Space></Space>
           <SelectCal onChange={handleSelectOption}>

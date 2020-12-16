@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BiGame } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
+import BigModal from '../../atoms/BigModal';
 
 // VscCircleOutline
 
@@ -34,7 +36,18 @@ export default function Review({
   scheduleTime,
 }: Props) {
   console.log(context.length);
+  const [origin, setOrigin] = useState(true);
+  const [newTitle, setNewTitle] = useState(false);
+  const editOrigin = () => {
+    setOrigin(false);
+    setNewTitle(true);
+  };
+  const editNew = () => {
+    setOrigin(true);
+    setNewTitle(false);
+  };
   // style={{ flex: 8, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}
+
   return (
     <Box>
       {/* <TimeLine></TimeLine> */}
@@ -52,7 +65,15 @@ export default function Review({
         <TimeLine>
           <TimeAndTitle>
             <Time>{scheduleTime.hour + ':' + scheduleTime.min}</Time>
-            <Title>{title}</Title>
+            <Title onClick={editOrigin} show={origin}>
+              {/* <Link to="/reviewUpdate">{title}</Link> */}
+              {title}
+            </Title>
+            <TitleEdit defaultValue={title} show={newTitle}></TitleEdit>
+            <Link to="/reviewUpdate">
+              <button onClick={editNew}>수정</button>
+            </Link>
+            <button onClick={editNew}>삭제</button>
           </TimeAndTitle>
           <ContexAndLine show={context.length === 0 ? false : true}>
             <Context>{context}</Context>
@@ -79,7 +100,9 @@ const ReviewBox = styled.div`
 `;
 
 const TimeAndTitle = styled.div`
-  flex: 1;
+  width: 50vw;
+  border: 0;
+  backgroud: blue;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -92,13 +115,21 @@ const Time = styled.div`
   position: block;
   text-align: center;
 `;
-const Title = styled.div`
+const Title = styled.div<{ show?: boolean }>`
+  display: ${props => (props.show ? 'flex' : 'none')};
   flex: 5;
   font-weight: bold;
   width: 5vw;
-  display: flex;
   flex-direction: column;
 `;
+const TitleEdit = styled.input<{ show?: boolean }>`
+  display: ${props => (props.show ? 'flex' : 'none')};
+  flex: 5;
+  font-weight: bold;
+  width: 5vw;
+  flex-direction: column;
+`;
+
 const ContexAndLine = styled.div<{ show?: boolean }>`
   display: ${props => (props.show ? 'flex' : 'none')};
 `;
