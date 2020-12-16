@@ -1,42 +1,40 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
 interface ModalAlertProps {
   message: string;
-  trueOrFalse: boolean;
-  closeModal: (trueOrFalse: boolean) => void;
+  handleCloseModal: () => void;
 }
 
-// 모달 불러올 때 :
-// closeModal 함수를 여기로 넘겨주기,
-// openModal 함수 및 열고닫는 상태를 상위 컴포넌트에서 만들기
+/*  ModalAlert 사용법 (이 모달은 단순히 확인창을 띄우기 위한 용도입니다.)
 
-export default function ModalAlert({ message, trueOrFalse, closeModal }: ModalAlertProps) {
-  console.log('여기?');
-  let modalAlert = (
-    <div>
-      <div>
-        <h5>{message}</h5>
-      </div>
-      <hr style={{ borderColor: 'black' }}></hr>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button onClick={() => closeModal(false)} style={{ margin: '5px' }}>
-          확인
-        </button>
-      </div>
-    </div>
-  );
+  * ModalAlert을 사용할 상위 컴포넌트에서 이 컴포넌트를 불러오기 (import ... )
+  * 상위 컴포넌트에서 useState 활용하여 모달 open/close 처리하기
+    - 상위 컴포넌트에서 모달 열기 기능 넣기
+  * ModalAlert에 내려줄 props는 다음과 같습니다.
+    - props.message (string) : 모달에 표시할 메세지
+    - props.handleCloseModal (function) : 확인버튼 클릭 후 실행될 내용들 (모달 닫기 기능 넣기)
 
+*/
+
+export default function ModalAlert({ message, handleCloseModal }: ModalAlertProps) {
   return (
-    <ModalAlertWrap
-      style={{
-        position: 'absolute',
-        zIndex: 1,
-      }}
-    >
+    <ModalAlertWrap>
       <ModalAlertBackground>
-        <ModalAlertContents>{modalAlert}</ModalAlertContents>
+        <ModalAlertContents>
+          <div>
+            <div>
+              <h5>{message}</h5>
+            </div>
+            <hr style={{ borderColor: 'black' }}></hr>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button onClick={() => handleCloseModal()} style={{ margin: '5px' }}>
+                확인
+              </button>
+            </div>
+          </div>
+        </ModalAlertContents>
       </ModalAlertBackground>
     </ModalAlertWrap>
   );

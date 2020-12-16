@@ -21,9 +21,13 @@ export default function SidebarHeader() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  // const modalCallback = () => {
-
-  // }
+  const handleCloseModal = () => {
+    setLogoutModalOpen(false);
+    history.push('/');
+    dispatch(logout());
+    dispatch(handleTodaySuccess(resetDayF()));
+    dispatch(getCalendarsSuccess([], []));
+  };
 
   //나중에 정리해야할듯. 함수가 반복사용되므로 분리하기.
   const handleLogout = (googleResponse?: any) => {
@@ -50,36 +54,17 @@ export default function SidebarHeader() {
         delete axios.defaults.headers.common['Authorization'];
         localStorage.removeItem('token');
         setLogoutModalOpen(true);
-        // alert('로그아웃되었습니다.');
-        // 여기서 멈추기?
-        if (logoutModalOpen === false) {
-          history.push('/');
-          dispatch(logout());
-          dispatch(handleTodaySuccess(resetDayF()));
-          dispatch(getCalendarsSuccess([], []));
-        }
+        // 이 뒤의 처리는, 모달창을 닫는 확인버튼 클릭으로 실행될 handleCloseModal 에서 진행
       })
       .catch(err => console.log({ err }));
   };
 
   let logoutModal =
     logoutModalOpen === true ? (
-      <ModalAlert
-        message="로그아웃 되었습니다."
-        trueOrFalse={logoutModalOpen}
-        closeModal={setLogoutModalOpen}
-      />
+      <ModalAlert message="로그아웃 되었습니다." handleCloseModal={handleCloseModal} />
     ) : (
       ''
     );
-
-  // let logoutModal = (
-  //   <ModalAlert
-  //     message="로그아웃되었습니다."
-  //     trueOrFalse={logoutModalOpen}
-  //     closeModal={setLogoutModalOpen}
-  //   />
-  // );
 
   return (
     <Col>
