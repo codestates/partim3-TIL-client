@@ -1,19 +1,34 @@
 import React from 'react';
-import { Row } from 'react-bootstrap';
+import styled from 'styled-components';
 
 import NaverLogin from '../molecules/login/NaverLogin';
 import SocialLoginGoogle from '../molecules/login/SocialLoginGoogle';
 
 export default function LoginSocial() {
   return (
-    <>
-      <Row className="m-2">
-        {/* <ButtonBoot title="naver" color="success"></ButtonBoot> */}
+    <LoginSocialWrap>
+      <ButtonWrap>
         <NaverLogin />
-      </Row>
-      <Row className="m-2">
+      </ButtonWrap>
+      <ButtonWrap>
         <SocialLoginGoogle />
-      </Row>
-    </>
+      </ButtonWrap>
+    </LoginSocialWrap>
   );
 }
+
+const LoginSocialWrap = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ButtonWrap = styled.div`
+  margin: 10px;
+  /* height: 40px; */
+  width: 100%;
+  background-color: ${props => props.color};
+  border-radius: 5px;
+`;

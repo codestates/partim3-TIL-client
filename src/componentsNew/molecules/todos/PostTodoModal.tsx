@@ -15,12 +15,23 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
-  const [selectedCalendar, setSelectedCalendar] = useState(myCalendar[0].id); // startDate : Date 객체 상태임
-  // console.log({ myCalendar });
+  const [selectedCalendar, setSelectedCalendar] = useState(NaN); // startDate : Date 객체 상태임
+  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const { today } = useSelector((state: RootState) => state.handleToday);
+
+  let defaultmyCalendersForSelectOptions;
+
+  if (myCalendar === []) {
+    // myCalendar가 1개 남은 경우 이를 삭제할 수 없도록 막았으니까, 빈 배열일 경우는 고려할 필요가 없지 않나?
+    defaultmyCalendersForSelectOptions = '';
+  } else {
+    defaultmyCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
+  }
 
   let myCalendersForSelectOptions;
 
   if (myCalendar === []) {
+    // myCalendar가 1개 남은 경우 이를 삭제할 수 없도록 막았으니까, 빈 배열일 경우는 고려할 필요가 없지 않나?
     myCalendersForSelectOptions = <option>먼저 캘린더를 만들어 주세요.</option>;
   } else {
     myCalendersForSelectOptions = myCalendar.map(calendar => {
@@ -31,8 +42,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
       );
     });
   }
-
-  // = myCalendar[0].id
 
   const handleSelectOption = (
     e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
@@ -46,8 +55,11 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     }
   };
 
-  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const { today } = useSelector((state: RootState) => state.handleToday);
+  let TodayForAxios = {
+    year: startDate.getFullYear(),
+    month: startDate.getMonth() + 1,
+    day: startDate.getDate(),
+  };
 
   const handleTitleInput = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -69,18 +81,10 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     day: today.day,
   };
 
-  const PostNewTodo = (
-    userId: number,
-    calendarId: number | null,
-    title: string,
-    scheduleDate: string,
-  ) => {
-    if (currentUser === null) {
-      alert('로그인이 되어있지 않습니다.');
-      return;
-    }
-    if (typeof calendarId !== 'number') {
-      alert('컐린더가 선택되어 있지 않습니다.');
+  const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
+    if (typeof calendarId !== 'number' || Number.isNaN(calendarId)) {
+      alert('캘린더가 선택되어 있지 않습니다.');
+
       return;
     }
     if (title.length === 0) {
@@ -90,13 +94,16 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     return axios
       .post(
         `http://localhost:5000/calendar/todo`,
-        { userId, calendarId, title, scheduleDate },
+
+        { userId: currentUser, title, scheduleDate, calendarId },
+
         { withCredentials: true },
       )
       .then(res => {
         alert(`${res.data}`);
         setNewPosted(true);
         handleCloseModal(); // 여기는 잘 작동한다.
+        setSelectedCalendar(NaN);
       })
       .catch(err => {
         alert(`${err}`);
@@ -142,6 +149,7 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
           <Row className="m-1" style={{ border: '1px solid black' }}>
             <span>Calendar 선택 : </span>
             <select className="selectedCalendar" onChange={handleSelectOption}>
+              {defaultmyCalendersForSelectOptions}
               {myCalendersForSelectOptions}
             </select>
           </Row>

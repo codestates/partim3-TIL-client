@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import styled from 'styled-components';
 
-import { TextAtom } from '../atoms';
 import { UserInfo } from '../oraganisms';
 
 interface MypageSettingProps {
@@ -17,60 +15,73 @@ export default function MypageSetting({
   handleChange,
 }: MypageSettingProps) {
   return (
-    <Container
-      fluid={true}
-      style={{
-        height: '900px',
-      }}
-    >
-      {/* Setting 과 Done 버튼 */}
-      <Row
+    <MypageSettingWrap>
+      {/* 상단 2개 구역 - 필요할까? */}
+      <div
         style={{
+          display: 'flex',
           height: '15%',
           border: '1px solid black',
         }}
       >
-        <Col
-          className="col-8"
+        <div
           style={{
+            flex: 8,
             border: '1px solid black',
           }}
         >
           Setting
-        </Col>
-        <Col
-          className="col-4"
+        </div>
+        <div
           style={{
+            flex: 4,
             border: '1px solid black',
           }}
-        >
-          <Button
-            className="w-100 mb-4"
-            variant="secondary"
-            type="button"
-            onClick={updateUserInfoReq}
-          >
-            회원정보 수정하기
-          </Button>
-        </Col>
-      </Row>
-      {/* 아이콘, 성명, 기타 본문 */}
-      <Row
-        className="row-2"
+        ></div>
+      </div>
+
+      {/* 중간 1개 구역 - 필요할까? */}
+      <div
         style={{
+          display: 'flex',
           height: '15%',
           border: '1px solid black',
         }}
       >
         아이콘 및 기본정보(?)
-      </Row>
-      <Link to="/mypage/tags">
-        <button>Tags</button>
-      </Link>
-      <Link to="/mypage/calendar">
-        <button>Calendar</button>
-      </Link>
+      </div>
+
+      {/* 개인정보 수정 부분 */}
       <UserInfo handleChange={handleChange} currentNickname={currentNickname} />
-    </Container>
+      <div
+        style={{
+          display: 'flex',
+          border: '1px solid black',
+          justifyContent: 'center',
+
+          alignItems: 'center',
+        }}
+      >
+        <UpdateUserInfoReqButton type="button" onClick={updateUserInfoReq}>
+          회원정보 수정하기
+        </UpdateUserInfoReqButton>
+      </div>
+    </MypageSettingWrap>
   );
 }
+
+const MypageSettingWrap = styled.div`
+  height: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const UpdateUserInfoReqButton = styled.button`
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+  width: 200px;
+  height: 40px;
+  margin: 5px;
+`;

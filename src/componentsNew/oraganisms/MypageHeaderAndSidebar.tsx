@@ -1,22 +1,12 @@
-// 실제로는 이쪽으로 들어오지 않도록 막아놨음
-
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import MypageTagsContainer from '../../container/MypageTagsContainer';
-import MypageCalendar from './MypageCalendar';
-import MypageSettingContainer from '../../container/MypageSettingContainer';
 
-export default function Mypage() {
-  const [curComponent, setcurComponent] = useState(<MypageTagsContainer></MypageTagsContainer>);
-  const goProfile = (component: any) => {
-    setcurComponent(component);
-  };
+interface MypageHeaderAndSidebarProps {
+  childComponent: React.ReactNode;
+}
 
-  let mypageCalendar = <MypageCalendar></MypageCalendar>;
-  let mypageSetting = <MypageSettingContainer></MypageSettingContainer>;
-  let mypageTags = <MypageTagsContainer></MypageTagsContainer>;
-
+export default function MypageHeaderAndSidebar({ childComponent }: MypageHeaderAndSidebarProps) {
   return (
     <Container>
       <Header>
@@ -27,29 +17,17 @@ export default function Mypage() {
       </Header>
       <Body>
         <Sidebar>
-          <Text
-            onClick={() => {
-              goProfile(mypageSetting);
-            }}
-          >
-            Profile
+          <Text>
+            <Link to="/mypage/profile">Profile</Link>
           </Text>
-          <Text
-            onClick={() => {
-              goProfile(mypageTags);
-            }}
-          >
-            Tags
+          <Text>
+            <Link to="/mypage/tags">Tags</Link>
           </Text>
-          <Text
-            onClick={() => {
-              goProfile(mypageCalendar);
-            }}
-          >
-            Calendar
+          <Text>
+            <Link to="/mypage/calendar">Calendar</Link>
           </Text>
         </Sidebar>
-        <Main>{curComponent}</Main>
+        <Main>{childComponent}</Main>
       </Body>
     </Container>
   );

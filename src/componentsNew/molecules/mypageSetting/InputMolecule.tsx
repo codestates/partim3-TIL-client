@@ -11,6 +11,8 @@ interface InputMoleculeProps {
   smLabel: number;
   smInput: number;
   handleChange(e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement }): void;
+  autoFocus?: boolean;
+  className?: string;
 }
 
 export default function InputMolecule({
@@ -22,16 +24,20 @@ export default function InputMolecule({
   smLabel,
   smInput,
   handleChange,
+  autoFocus,
+  className,
 }: InputMoleculeProps) {
   return (
     <InputMoleculeWrap>
       <Label smLabel={smLabel} text={text} />
       <Input
+        className={className}
         smInput={smInput}
         type={type}
         name={name}
         handleChange={handleChange}
         placeholder={placeholder}
+        autoFocus={autoFocus}
       />
     </InputMoleculeWrap>
   );

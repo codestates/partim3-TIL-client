@@ -12,6 +12,7 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
   return (
     <UserInfoWrap>
       <InputMolecule
+        className="newNickname"
         text="닉네임"
         controlId="formBasicEmail"
         type="text"
@@ -23,6 +24,7 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
       />
 
       <InputMolecule
+        className="oldPassword"
         text="기존 비밀번호"
         controlId="formBasicPassword"
         type="password"
@@ -33,6 +35,7 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
       />
 
       <InputMolecule
+        className="newPassword"
         text="새 비밀번호"
         controlId="formBasicPassword"
         type="password"
@@ -43,6 +46,7 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
       />
 
       <InputMolecule
+        className="newPasswordConfirm"
         text="새 비밀번호 확인"
         controlId="formBasicPassword"
         type="password"

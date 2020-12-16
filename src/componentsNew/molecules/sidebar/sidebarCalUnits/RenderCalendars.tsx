@@ -1,28 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { CalSettingButton, CalDeleteButton } from './';
-import './RenderCalendars.css';
+import { CalCheckBox, CalSettingButton, CalDeleteButton } from './';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../../modules';
+import {
+  handleCheckedCalStart,
+  handleCheckedCalSuccess_add,
+  handleCheckedCalSuccess_del,
+  handleCheckedCalFailure,
+} from '../../../../modules/handleCheckedCal';
 
 interface RenderCalendarsProps {
-  checked: (e: any) => void;
   calendars: Array<{
     id: number;
     name: string;
     color: string;
   }>;
   delCalendar?: (calId: number) => void;
-  displayDeleteModal?: boolean;
-  setDisplayDeleteModal?: (trueOrFalse: boolean) => void;
 }
-// RenderCalendars : 체크박스 색깔 입히기 해야됨
-export default function RenderCalendars({
-  checked,
-  calendars,
-  delCalendar,
-  displayDeleteModal,
-  setDisplayDeleteModal,
-}: RenderCalendarsProps) {
-  // console.log(calendars);
+
+export default function RenderCalendars({ calendars, delCalendar }: RenderCalendarsProps) {
+  const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
+
+  const dispatch = useDispatch();
+
+  const handleCheckBox = (checkedCal: number, isChecked: boolean) => {
+    if (checkedCalArray.indexOf(checkedCal) === -1 && isChecked === true) {
+      dispatch(handleCheckedCalStart());
+      dispatch(handleCheckedCalSuccess_add(checkedCal));
+    } else {
+      dispatch(handleCheckedCalStart());
+      dispatch(handleCheckedCalSuccess_del(checkedCalArray.indexOf(checkedCal)));
+    }
+  };
+
   let eachCalendars;
 
   if (calendars === []) {
@@ -30,51 +41,37 @@ export default function RenderCalendars({
   } else {
     eachCalendars = calendars.map(eachCalendar => {
       return (
-        <div
-          className="checkbox-container"
-          key={eachCalendar.id}
-          style={{
-            display: 'flex',
-            flex: 1,
-            width: '100%',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-          }}
-        >
-          <input
-            id={`is-subscription-${eachCalendar.id}`}
-            type="checkbox"
-            onClick={checked}
-            name={eachCalendar.name}
-            value={eachCalendar.name}
+        <RenderCalendarsWrap key={eachCalendar.id}>
+          <CalCheckBox
+            eachCalendarId={eachCalendar.id}
+            eachCalendarColor={eachCalendar.color}
+            eachCalendarName={eachCalendar.name}
+            handleCheckBox={handleCheckBox}
           />
-          <label
-            htmlFor={`is-subscription-${eachCalendar.id}`}
-            style={{ margin: '0px', width: '150px' }}
-          >
-            {eachCalendar.name}
-          </label>
           <CalSettingButton />
           <CalDeleteButton
             calId={eachCalendar.id}
             calName={eachCalendar.name}
             delCalendar={delCalendar!}
-            displayDeleteModal={displayDeleteModal as boolean}
-            setDisplayDeleteModal={setDisplayDeleteModal!}
           />
-        </div>
+        </RenderCalendarsWrap>
       );
     });
   }
 
-  return <RenderCalendarsWrap>{eachCalendars}</RenderCalendarsWrap>;
+  return <>{eachCalendars}</>;
 }
 
-const RenderCalendarsWrap = styled.div`
+interface RenderCalendarsWrapProps {
+  key: number;
+}
+
+const RenderCalendarsWrap = styled.div.attrs((props: RenderCalendarsWrapProps) => ({
+  key: props.key,
+}))`
   flex: 1;
   display: flex;
   width: 100%;
-  flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   padding-left: 10px;

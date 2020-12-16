@@ -23,11 +23,10 @@ function App() {
       <Router>
         <Switch>
           <Route path="/signup" component={SignupContainer} />
-          <Route exact path="/mypage" component={Mypage} />
-          <Route path="/mypage/settings" component={MypageSettingContainer} />
+          {/* <Route exact path="/mypage" component={Mypage} /> - 이제 이쪽으로는 들어가지 않도록 막음 */}
+          <Route path="/mypage/profile" component={MypageSettingContainer} />
           <Route path="/mypage/tags" component={MypageTagsContainer} />
           <Route path="/mypage/calendar" component={MypageCalendarContainer} />
-
           <Route path="/login" component={LoginContainer} />
           <Route path="/calendar/day" component={CalendarDayContainer} />
           <Route exact path="/" component={MainContainer} />

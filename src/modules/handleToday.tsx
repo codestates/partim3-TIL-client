@@ -1,5 +1,4 @@
 import getToday from '../componentsNew/utils/todayF';
-import date from '../componentsNew/utils/todayF';
 import { todayProps } from '../types';
 
 /* 1. ActionTypes - Signup */
@@ -46,8 +45,8 @@ interface handleTodayProp {
     year: number;
     month: number;
     day: number;
-    hour: number;
-    min: number;
+    // hour: number;
+    // min: number;
   };
 }
 
@@ -69,8 +68,8 @@ export default function handleToday(state = initialState, action: handleTodayPro
           year: action.today.year,
           month: action.today.month,
           day: action.today.day,
-          hour: action.today.hour,
-          min: action.today.min,
+          // hour: action.today.hour,
+          // min: action.today.min,
         },
       };
     case HANDLE_TODAY_FAILURE:
