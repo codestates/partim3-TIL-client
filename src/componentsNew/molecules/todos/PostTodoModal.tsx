@@ -75,12 +75,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     closeModal();
   };
 
-  let TodayForAxios = {
-    year: today.year,
-    month: today.month,
-    day: today.day,
-  };
-
   const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
     if (typeof calendarId !== 'number' || Number.isNaN(calendarId)) {
       alert('캘린더가 선택되어 있지 않습니다.');
@@ -163,11 +157,7 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleCloseModal}>Close Modal</Button>
-        <Button
-          onClick={() =>
-            PostNewTodo(currentUser!, selectedCalendar, title, JSON.stringify(TodayForAxios))
-          }
-        >
+        <Button onClick={() => PostNewTodo(selectedCalendar, title, JSON.stringify(TodayForAxios))}>
           Post new Todo!
         </Button>
       </Modal.Footer>
