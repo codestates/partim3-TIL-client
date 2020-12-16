@@ -1,6 +1,9 @@
+
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
+
+// 실제로는 이쪽으로 들어오지 않도록 막아놨음
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import MypageTagsContainer from '../../container/MypageTagsContainer';
@@ -77,7 +80,7 @@ const Space = styled.span`
   flex: 1;
   display: flex;
   flex-direction: row;
-  justify-contents: center;
+  justify-content: center;
   align-items: center;
 `;
 const Btn = styled.button`

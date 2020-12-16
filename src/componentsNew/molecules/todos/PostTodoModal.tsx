@@ -16,7 +16,8 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const [selectedCalendar, setSelectedCalendar] = useState(NaN); // startDate : Date 객체 상태임
-  // console.log({ myCalendar });
+  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const { today } = useSelector((state: RootState) => state.handleToday);
 
   let defaultmyCalendersForSelectOptions;
 
@@ -42,8 +43,6 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     });
   }
 
-  // = myCalendar[0].id
-
   const handleSelectOption = (
     e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
   ) => {
@@ -56,13 +55,10 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     }
   };
 
-  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const { today } = useSelector((state: RootState) => state.handleToday);
-
   let TodayForAxios = {
-    year: today.year,
-    month: today.month,
-    day: today.day,
+    year: startDate.getFullYear(),
+    month: startDate.getMonth() + 1,
+    day: startDate.getDate(),
   };
 
   const handleTitleInput = (
@@ -79,14 +75,10 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     closeModal();
   };
 
-  let scheduleTime = `${startDate.getFullYear()}-${
-    startDate.getMonth() + 1
-  }-${startDate.getDate()}`;
-
   const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
-    // console.log({ calendarId, title, scheduleDate });
     if (typeof calendarId !== 'number' || Number.isNaN(calendarId)) {
       alert('캘린더가 선택되어 있지 않습니다.');
+
       return;
     }
     if (title.length === 0) {
@@ -96,13 +88,16 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     return axios
       .post(
         `http://localhost:5000/calendar/todo`,
-        { calendarId, title, scheduleDate },
+
+        { userId: currentUser, title, scheduleDate, calendarId },
+
         { withCredentials: true },
       )
       .then(res => {
         alert(`${res.data}`);
         setNewPosted(true);
         handleCloseModal(); // 여기는 잘 작동한다.
+        setSelectedCalendar(NaN);
       })
       .catch(err => {
         alert(`${err}`);

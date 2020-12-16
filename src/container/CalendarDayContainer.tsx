@@ -26,6 +26,7 @@ function CalendarDayContainer() {
   const [newPosted, setNewPosted] = useState(false);
   const [newCalPosted, setNewCalPosted] = useState(false);
   const [calDeleted, setCalDeleted] = useState(false);
+  const [todoDeletedOrUpdated, setTodoDeletedOrUpdated] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -71,7 +72,7 @@ function CalendarDayContainer() {
       .then(res => {
         let { myCalendars, shareCalendars } = res.data;
         dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
-
+        console.log(myCalendars);
         let resTodo = new Array();
 
         for (let i in myCalendars) {
@@ -99,7 +100,7 @@ function CalendarDayContainer() {
           resReviews = resReviews.concat(myCalendars[j].reviews);
         }
 
-        dispatch(calendarSuccess(resTodo, resReviews));
+        dispatch(calendarSuccess(resTodo.reverse(), resReviews));
       })
       .catch(err => {
         console.log(err);
@@ -111,23 +112,12 @@ function CalendarDayContainer() {
   useEffect(() => {
     if (typeof currentUser === 'number') {
       sendToday(currentUser, today);
+      setNewPosted(false);
+      setNewCalPosted(false);
+      setCalDeleted(false);
+      setTodoDeletedOrUpdated(false);
     }
-  }, [currentUser, today]);
-
-  useEffect(() => {
-    sendToday(currentUser, today);
-    setNewPosted(false);
-  }, [newPosted]);
-
-  useEffect(() => {
-    sendToday(currentUser, today);
-    setNewCalPosted(false);
-  }, [newCalPosted]);
-
-  useEffect(() => {
-    sendToday(currentUser, today);
-    setCalDeleted(false);
-  }, [calDeleted]);
+  }, [currentUser, today, newPosted, newCalPosted, calDeleted, todoDeletedOrUpdated]);
 
   // console.log('calsidebar', sidebar);
   // 구글 캘린더의 경우 사이드바의 너비를 항상 고정시킴. 이 방식대로 진행.
@@ -141,6 +131,7 @@ function CalendarDayContainer() {
       setNewPosted={setNewPosted}
       setNewCalPosted={setNewCalPosted}
       setCalDeleted={setCalDeleted}
+      setTodoDeletedOrUpdated={setTodoDeletedOrUpdated}
     />
   );
 }

@@ -13,6 +13,7 @@ interface CalendarDayProps {
   setNewPosted: (newPosted: boolean) => void;
   setNewCalPosted: (trueOrFalse: boolean) => void;
   setCalDeleted: (trueOrFalse: boolean) => void;
+  setTodoDeletedOrUpdated: (trueOrFalse: boolean) => void;
 }
 
 export default function CalendarDay({
@@ -21,6 +22,7 @@ export default function CalendarDay({
   setNewPosted,
   setNewCalPosted,
   setCalDeleted,
+  setTodoDeletedOrUpdated,
 }: CalendarDayProps) {
   // console.log('calendarDay');
   return (
@@ -35,12 +37,15 @@ export default function CalendarDay({
         )}
 
         <Col>
-          <Row style={{ border: '1px solid black', height: '80px' }}>
+          <Row style={{ border: '1px solid black', height: '50px' }}>
             <Header {...today} />
           </Row>
-          <Row style={{ border: '1px solid black', height: '200px' }}>
+          <Row style={{ border: '1px solid black', height: '300px', overflow: 'auto' }}>
             <Col>
-              <Todos setNewPosted={setNewPosted} />
+              <Todos
+                setNewPosted={setNewPosted}
+                setTodoDeletedOrUpdated={setTodoDeletedOrUpdated}
+              />
             </Col>
           </Row>
           <Row style={{ border: '1px solid black' }}>

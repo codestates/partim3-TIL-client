@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
 import { RootState } from '../../../modules';
 import { MakeNewCal, RenderCalendars } from './sidebarCalUnits';
+import {
+  handleCheckedCalStart,
+  handleCheckedCalSuccess_add,
+  handleCheckedCalSuccess_del,
+  handleCheckedCalFailure,
+} from '../../../modules/handleCheckedCal';
 
 interface SidebarMyCalProps {
   setNewCalPosted: (trueOrFalse: boolean) => void;
@@ -17,22 +23,9 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
   const [newCalname, setNewCalname] = useState('');
   const [newCalcolor, setNewCalcolor] = useState('#0693e3');
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
 
-  const checked = (e: any) => {
-    axios
-      .get(`http://localhost:5000/calendar`, {
-        params: {
-          userId: currentUser,
-        },
-        withCredentials: true,
-      })
-      .then(res => {
-        console.log('체크 get 요청 : ', res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  const dispatch = useDispatch();
 
   const handleNewCalName = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -87,6 +80,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
       .then(res => {
         console.log(`${calID}번 캘린더 삭제 요청의 결과 : `, res.data);
         setCalDeleted(true);
+        dispatch(handleCheckedCalSuccess_del(checkedCalArray.indexOf(calID)));
       })
       .catch(err => {
         console.log({ err });
@@ -111,7 +105,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
         addCalendar={addCalendar}
         currentColor={newCalcolor}
       />
-      <RenderCalendars checked={checked} calendars={myCalendar} delCalendar={delCalendar} />
+      <RenderCalendars calendars={myCalendar} delCalendar={delCalendar} />
     </SidebarMyCalWrap>
   );
 }

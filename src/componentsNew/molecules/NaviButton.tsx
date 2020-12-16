@@ -8,8 +8,7 @@ import {
   handleTodayFailure,
 } from '../../modules/handleToday';
 
-import { ButtonAtom } from '../atoms';
-import date from '../utils/todayF';
+import styled from 'styled-components';
 
 export default function NaviButton() {
   const dispatch = useDispatch();
@@ -60,8 +59,17 @@ export default function NaviButton() {
 
   return (
     <>
-      <ButtonAtom text="left" onClick={() => getNextday(-1)} />{' '}
-      <ButtonAtom text="right" onClick={() => getNextday(1)} />
+      <LeftAndRightNaviButton onClick={() => getNextday(-1)}>left</LeftAndRightNaviButton>
+      <LeftAndRightNaviButton onClick={() => getNextday(1)}>right</LeftAndRightNaviButton>
     </>
   );
 }
+
+const LeftAndRightNaviButton = styled.button`
+  width: 60px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: skyblue;
+  margin-left: 5px;
+  margin-right: 5px;
+`;
