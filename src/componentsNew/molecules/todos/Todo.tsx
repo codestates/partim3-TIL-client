@@ -251,8 +251,8 @@ const FixOrDelTodoModalBackground = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3; // 이렇게 해도 리뷰가 더 위에 올라온다.
 `;
 
 const FixOrDelTodoModalContents = styled.div`

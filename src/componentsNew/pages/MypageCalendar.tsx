@@ -6,12 +6,12 @@ import axios from 'axios';
 import ColorPicker from '../molecules/sidebar/sidebarCalUnits/ColorPicker';
 import AutoSaveInput from '../atoms/AutoSaveInput';
 
-declare module 'axios' {
-  export interface AxiosRequestConfig {
-    userId: number | null;
-    calendarId: number;
-  }
-}
+// declare module 'axios' {
+//   export interface AxiosRequestConfig {
+//     userId: number | null;
+//     calendarId: number;
+//   }
+// }
 
 export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNewCalColor }: any) {
   const [calName, setCalName] = useState(curCal);
