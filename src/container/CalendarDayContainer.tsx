@@ -14,6 +14,7 @@ import {
 import { handleTodaySuccess } from '../modules/handleToday';
 import getToday from '../componentsNew/utils/todayF';
 import CalendarDay from '../componentsNew/pages/CalendarDay';
+import REACT_APP_URL from '../config';
 
 // import date from '../componentsNew/utils/todayF';
 
@@ -60,7 +61,7 @@ function CalendarDayContainer() {
     };
 
     return axios
-      .get(`http://localhost:5000/calendar/day`, {
+      .get(`${REACT_APP_URL}/calendar/day`, {
         params: {
           userId: id,
           // date: JSON.stringify(date),

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import REACT_APP_URL from '../../../config';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -21,7 +22,7 @@ export default function NaverLogin() {
   function Naver() {
     var naverLogin = new naver.LoginWithNaverId({
       clientId: `${process.env.REACT_APP_NAVER_LOGIN}`,
-      callbackUrl: 'http://localhost:3000/mypage',
+      callbackUrl: `${REACT_APP_URL}/mypage`,
       isPopup: false /* 팝업을 통한 연동처리 여부 */,
       loginButton: { color: 'green', type: 3, height: 60 } /* 로그인 버튼의 타입을 지정 */,
       callbackHandle: true,

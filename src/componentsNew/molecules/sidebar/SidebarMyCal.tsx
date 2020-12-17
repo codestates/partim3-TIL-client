@@ -10,6 +10,7 @@ import {
   handleCheckedCalSuccess_del,
   handleCheckedCalFailure,
 } from '../../../modules/handleCheckedCal';
+import REACT_APP_URL from '../../../config';
 
 interface SidebarMyCalProps {
   setNewCalPosted: (trueOrFalse: boolean) => void;
@@ -44,7 +45,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
 
     axios
       .post(
-        `http://localhost:5000/calendar/addcalendar`,
+        `${REACT_APP_URL}/calendar/addcalendar`,
         {
           userId: currentUser,
           name: newCalname,
@@ -70,7 +71,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
     }
 
     return axios
-      .delete(`http://localhost:5000/calendar/deletecalendar`, {
+      .delete(`${REACT_APP_URL}calendar/deletecalendar`, {
         data: {
           userId: currentUser,
           calendarId: calID,

@@ -12,6 +12,8 @@ import resetDayF from '../../utils/reSetDayF';
 import { ModalAlert } from '../../atoms';
 import { GoogleLogout } from 'react-google-login';
 
+import REACT_APP_URL from '../../../config';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -44,7 +46,7 @@ export default function SidebarHeader() {
 
     return axios
       .post(
-        `http://localhost:5000/users/logout`,
+        `${REACT_APP_URL}/users/logout`,
         {
           userId: currentUser,
         },

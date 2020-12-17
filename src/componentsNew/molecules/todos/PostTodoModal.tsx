@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../modules';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
+import REACT_APP_URL from '../../../config';
 
 interface PostTodoModalProp {
   show: React.ReactNode;
@@ -87,7 +88,7 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     }
     return axios
       .post(
-        `http://localhost:5000/calendar/todo`,
+        `${REACT_APP_URL}/calendar/todo`,
 
         { userId: currentUser, title, scheduleDate, calendarId },
 

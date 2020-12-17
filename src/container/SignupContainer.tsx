@@ -8,6 +8,8 @@ import { signupStart, signupSuccess, signupFailure } from '../modules/signup';
 
 import Signup from '../componentsNew/pages/Signup';
 
+import REACT_APP_URL from '../config';
+
 export default function SignupContainer() {
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
@@ -47,7 +49,7 @@ export default function SignupContainer() {
 
     return axios
       .post(
-        `http://localhost:5000/users/signup`,
+        `${REACT_APP_URL}/users/signup`,
         {
           email,
           nickname,
@@ -62,7 +64,7 @@ export default function SignupContainer() {
         // history.push('/login');
         axios
           .post(
-            `http://localhost:5000/calendar/addcalendar`,
+            `${REACT_APP_URL}/calendar/addcalendar`,
             {
               userId: userId,
               name: 'basic calendar',
