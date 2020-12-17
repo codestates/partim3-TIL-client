@@ -8,12 +8,6 @@ import { PostNewTagBox, RenderTagsBox } from '../oraganisms/MypageTags';
 
 interface MypageTagsProps {
   userId: number;
-  tags: Array<{
-    id: number;
-    tagName: string;
-    tagColor: string;
-    description: string;
-  }>;
   postNewTag: (
     userId: number | null,
     tagColor: string,
@@ -30,13 +24,7 @@ interface MypageTagsProps {
   deleteTag: (userId: number, tagId: number) => void;
 }
 
-export default function MypageTags({
-  userId,
-  tags,
-  postNewTag,
-  updateTag,
-  deleteTag,
-}: MypageTagsProps) {
+export default function MypageTags({ userId, postNewTag, updateTag, deleteTag }: MypageTagsProps) {
   const searchTag = () => {};
   // 사이드바의 명칭을 더 명확히 하는게 좋을까?
 
@@ -45,7 +33,8 @@ export default function MypageTags({
     setShowPostNewTagBox(!showPostNewTagBox);
   };
 
-  console.log(tags);
+  const { tags } = useSelector((state: RootState) => state.handleTags);
+
   return (
     <div>
       <MainHeader>
