@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import REACT_APP_URL from '../config';
 
 // import { RootState } from '../modules';
 
@@ -66,7 +67,7 @@ export default function LoginContainer() {
 
     return axios
       .post<resData>(
-        `http://localhost:5000/users/login`,
+        `${REACT_APP_URL}/users/login`,
         {
           email,
           password,

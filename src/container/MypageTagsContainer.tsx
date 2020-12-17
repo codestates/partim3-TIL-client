@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import REACT_APP_URL from '../config';
 
 import { RootState } from '../modules';
 import { tagsSuccess, tagsFailure } from '../modules/tagsM';
@@ -22,7 +23,7 @@ export default function MypageTagsContainer() {
 
   const getTag = () => {
     axios
-      .get(`http://localhost:5000/calendar/tags`, {
+      .get(`${REACT_APP_URL}/calendar/tags`, {
         params: {
           userId: currentUser,
         },
@@ -49,7 +50,7 @@ export default function MypageTagsContainer() {
   ) => {
     axios
       .post(
-        'http://localhost:5000/calendar/addtag',
+        `${REACT_APP_URL}/calendar/addtag`,
         { userId, tagName, tagColor, description },
         { withCredentials: true },
       )

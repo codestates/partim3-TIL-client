@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import MypageCalSidebar from '../oraganisms/MypageCalSidebar';
 
 interface MypageHeaderAndSidebarProps {
   childComponent: React.ReactNode;
 }
 
 export default function MypageHeaderAndSidebar({ childComponent }: MypageHeaderAndSidebarProps) {
+  const [curComponent, setChildComponent] = useState(childComponent);
+
+  const changeChildComponent = (component: any) => {
+    setChildComponent(component);
+  };
   return (
     <Container>
       <Header>
@@ -26,8 +32,10 @@ export default function MypageHeaderAndSidebar({ childComponent }: MypageHeaderA
           <Text>
             <Link to="/mypage/calendar">Calendar</Link>
           </Text>
+          <MypageCalSidebar changeChildComponent={changeChildComponent}></MypageCalSidebar>
         </Sidebar>
-        <Main>{childComponent}</Main>
+
+        <Main>{curComponent}</Main>
       </Body>
     </Container>
   );

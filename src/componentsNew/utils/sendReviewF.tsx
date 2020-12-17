@@ -1,4 +1,5 @@
 import axios from 'axios';
+import REACT_APP_URL from '../../config';
 
 // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
 
@@ -17,7 +18,7 @@ export default function sendReview(
 
   return axios
     .post(
-      `http://localhost:5000/calendar/review`,
+      `${REACT_APP_URL}/calendar/review`,
       {
         userId,
         title,

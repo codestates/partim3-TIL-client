@@ -8,7 +8,8 @@ interface propsI {
   goProfile: React.FC;
 }
 
-export default function MypageCalSidebar({ goProfile }: any) {
+export default function MypageCalSidebar({ changeChildComponent }: any) {
+  console.log('calsidebar');
   const [curCal, setCurCal] = useState('curCal');
   // curCal 은 캘린더의 이름.
   const { myCalendar, shareCalendar } = useSelector(
@@ -78,7 +79,7 @@ export default function MypageCalSidebar({ goProfile }: any) {
         //그냥 컴포넌트 자체를 넣어주면 어떨까.
         //curComponent는 필요없어 보인다.
         //await는 삭제 필요
-        await goProfile(
+        await changeChildComponent(
           <MypageCalendar
             curCal={curCal}
             curCalColor={curCalColor}

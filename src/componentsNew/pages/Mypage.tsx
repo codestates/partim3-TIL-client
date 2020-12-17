@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
@@ -62,7 +61,6 @@ export default function Mypage() {
 const Container = styled.div`
   display: flex;
   height: 100vh;
-
   flex-direction: column;
 `;
 // 화면의 비율이 항상 100%인가? 그 이상으로도 높이를 조정할 수 있는데

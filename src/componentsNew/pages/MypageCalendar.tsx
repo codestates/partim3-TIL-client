@@ -5,24 +5,23 @@ import styled from 'styled-components';
 import axios from 'axios';
 import ColorPicker from '../molecules/sidebar/sidebarCalUnits/ColorPicker';
 import AutoSaveInput from '../atoms/AutoSaveInput';
+import REACT_APP_URL from '../../config';
 
-declare module 'axios' {
-  export interface AxiosRequestConfig {
-    userId: number | null;
-    calendarId: number;
-  }
-}
+// declare module 'axios' {
+//   export interface AxiosRequestConfig {
+//     userId: number | null;
+//     calendarId: number;
+//   }
+// }
 
 export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNewCalColor }: any) {
   const [calName, setCalName] = useState(curCal);
-
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
-  console.log(typeof curCalColor);
   //여기서 바로 axios요청이 나가도 되나..
   const calNameUpdate = (newValue: string) => {
     return axios
-      .put(`http://localhost:5000/calendar/updatecalender`, {
+      .put(`${REACT_APP_URL}/calendar/updatecalender`, {
         userId: 1,
         calendarId: 2,
         name: newValue,
@@ -35,7 +34,7 @@ export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNe
 
   const deleteCal = () => {
     return axios;
-    // .delete(`http://localhost:5000/calendar/deletecalendar`, {
+    // .delete(`${REACT_APP_URL}/calendar/deletecalendar`, {
     //   data: {
     //     userId: currentUser,
     //     calendarId: 1,
@@ -59,7 +58,7 @@ export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNe
           value={curCal}
           handleChange={(newValue: any) => {
             setCalName(newValue);
-            calNameUpdate(newValue);
+            // calNameUpdate(newValue);
           }}
         ></AutoSaveInput>
         {/* <input

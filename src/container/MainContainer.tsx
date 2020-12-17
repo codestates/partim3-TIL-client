@@ -25,7 +25,7 @@ export default function MainContainer() {
         return;
       }
       return axios
-        .post(`http://localhost:5000/users/logout`, {}, { withCredentials: true })
+        .post(`${REACT_APP_URL}/users/logout`, {}, { withCredentials: true })
         .then(() => {
           dispatch(handleTodaySuccess(date));
           delete axios.defaults.headers.common['Authorization'];

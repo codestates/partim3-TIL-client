@@ -1,6 +1,6 @@
-let REACT_APP_URL;
+let REACT_APP_URL: string = '';
 if (process.env.NODE_ENV === 'production') {
-  REACT_APP_URL = 'http://ec2-52-78-31-183.ap-northeast-2.compute.amazonaws.com:5000';
+  REACT_APP_URL = 'http://52.78.31.183:5000';
 } else if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
   REACT_APP_URL = 'http://localhost:5000';
 }

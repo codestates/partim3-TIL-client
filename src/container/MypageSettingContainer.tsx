@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import REACT_APP_URL from '../config';
 
 import { RootState } from '../modules';
 import {
@@ -120,7 +121,7 @@ export default function MypageSettingContainer() {
     dispatch(getUserInfoStart());
 
     return axios
-      .get(`http://localhost:5000/users/${currentUserId}`, {
+      .get(`${REACT_APP_URL}/users/${currentUserId}`, {
         withCredentials: true,
       })
       .then(userInfo => {
@@ -141,7 +142,7 @@ export default function MypageSettingContainer() {
 
     return axios
       .put(
-        `http://localhost:5000/user/updateuser`,
+        `${REACT_APP_URL}/user/updateuser`,
         {
           userId: currentUser,
           nickname: newNickname,

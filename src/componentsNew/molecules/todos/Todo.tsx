@@ -5,6 +5,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { Input } from '../../atoms';
 import DatePicker from 'react-datepicker';
+import REACT_APP_URL from '../../../config';
 
 interface scheduleDateType {
   year: number;
@@ -53,7 +54,7 @@ export default function Todo({
       return;
     } else {
       axios
-        .delete(`http://localhost:5000/calendar/deletetodo`, {
+        .delete(`${REACT_APP_URL}/calendar/deletetodo`, {
           data: {
             userId: currentUser,
             todoId: todoId,
@@ -88,7 +89,7 @@ export default function Todo({
     } else {
       axios
         .put(
-          `http://localhost:5000/calendar/updatetodo`,
+          `${REACT_APP_URL}/calendar/updatetodo`,
           {
             userId: currentUser,
             calendarId: calendarId,

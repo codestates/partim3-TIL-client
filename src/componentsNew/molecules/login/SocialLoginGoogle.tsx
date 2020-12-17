@@ -10,6 +10,7 @@ import {
 } from '../../../modules/handleToday';
 import axios from 'axios';
 import getToday from '../../utils/todayF';
+import REACT_APP_URL from '../../../config';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -23,14 +24,11 @@ export default function SocialLoginGoogle() {
       alert('Google Social Login에 실패하셨습니다. 다시 시도해 주세요.');
       return;
     }
-
     dispatch(loginStart());
-
     let idToken = response.tokenObj.id_token;
-
     axios
       .post(
-        'http://localhost:5000/users/social',
+        `${REACT_APP_URL}users/social`,
         { idToken: idToken, oauthType: 'google' },
         { withCredentials: true },
       )
@@ -59,12 +57,12 @@ export default function SocialLoginGoogle() {
         height: '50px',
       }}
     >
-      <GoogleLogin
+      {/* <GoogleLogin
         clientId={`${process.env.REACT_APP_GOOGLE_LOGIN}`}
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
+        // onSuccess={responseGoogle}
+        // onFailure={responseGoogle}
         cookiePolicy={'single_host_origin'}
-      />
+      /> */}
     </div>
   );
 }
