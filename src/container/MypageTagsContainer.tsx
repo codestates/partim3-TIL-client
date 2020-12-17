@@ -11,11 +11,8 @@ import MypageTags from '../componentsNew/pages/MypageTags';
 import { MypageHeaderAndSidebar } from '../componentsNew/oraganisms';
 import { ModalAlert } from '../componentsNew/atoms';
 
-import REACT_APP_URL from '../config';
-
 export default function MypageTagsContainer() {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const { tags } = useSelector((state: RootState) => state.handleTags);
 
   const [tagHandled, setTagHandled] = useState(false);
   const [handleModalAlert, setHandleModalAlert] = useState(false);
@@ -130,12 +127,11 @@ export default function MypageTagsContainer() {
   useEffect(() => {
     getAllTags();
     setTagHandled(false);
-  }, [tagHandled]);
+  }, [currentUser, tagHandled]);
 
   let childComponent = (
     <MypageTags
       userId={currentUser!}
-      tags={tags}
       postNewTag={postNewTag}
       updateTag={updateTag}
       deleteTag={deleteTag}

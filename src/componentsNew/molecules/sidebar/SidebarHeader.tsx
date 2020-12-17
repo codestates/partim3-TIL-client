@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import { handleTodaySuccess } from '../../../modules/handleToday';
 import { getCalendarsSuccess } from '../../../modules/getAllCalendars';
+import { handleTagsSuccess_Get } from '../../../modules/handleTags';
 import resetDayF from '../../utils/reSetDayF';
 import { ModalAlert, ModalChoice } from '../../atoms';
 import { GoogleLogout } from 'react-google-login';
@@ -30,6 +31,7 @@ export default function SidebarHeader() {
     dispatch(logout());
     dispatch(handleTodaySuccess(resetDayF()));
     dispatch(getCalendarsSuccess([], []));
+    dispatch(handleTagsSuccess_Get([]));
   };
 
   const handleLogout2 = () => {
@@ -94,6 +96,7 @@ export default function SidebarHeader() {
         dispatch(logout());
         dispatch(handleTodaySuccess(resetDayF()));
         dispatch(getCalendarsSuccess([], []));
+        dispatch(handleTagsSuccess_Get([]));
       })
       .catch(err => console.log({ err }));
   };
