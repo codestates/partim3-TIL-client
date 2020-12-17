@@ -9,7 +9,7 @@ import handleToday from './handleToday';
 import loginOut from './loginOut';
 import sideBarM from './sideBarM';
 import getAllCalendars from './getAllCalendars';
-import tagsM from './tagsM';
+import handleTags from './handleTags';
 import handleCheckedCal from './handleCheckedCal';
 
 const persistConfig = {
@@ -26,7 +26,7 @@ const persistConfig = {
     'handleToday',
     'sideBarM',
     'getAllCalendars',
-    'tagsM',
+    'handleTags',
     'handleCheckedCal',
   ],
 
@@ -41,7 +41,7 @@ const reducers = combineReducers({
   handleToday,
   sideBarM,
   getAllCalendars,
-  tagsM,
+  handleTags,
   handleCheckedCal,
 });
 
