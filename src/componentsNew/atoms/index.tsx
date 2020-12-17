@@ -3,5 +3,6 @@ import Input from './Input';
 import Label from './Label';
 import ButtonAtom from './ButtonAtom';
 import ModalAlert from './ModalAlert';
+import ModalChoice from './ModalChoice';
 
-export { TextAtom, Input, Label, ButtonAtom, ModalAlert };
+export { TextAtom, Input, Label, ButtonAtom, ModalAlert, ModalChoice };

@@ -53,10 +53,10 @@ const ModalAlertBackground = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
 `;
 
 const ModalAlertContents = styled.div`
@@ -69,4 +69,5 @@ const ModalAlertContents = styled.div`
   border: 1px solid black;
   background-color: white;
   z-index: 5;
+  margin-top: 150px;
 `;
