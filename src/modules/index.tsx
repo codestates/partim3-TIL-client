@@ -11,6 +11,7 @@ import sideBarM from './sideBarM';
 import getAllCalendars from './getAllCalendars';
 import handleTags from './handleTags';
 import handleCheckedCal from './handleCheckedCal';
+import handleCheckedTags from './handleCheckedTags';
 
 const persistConfig = {
   key: 'root',
@@ -28,6 +29,7 @@ const persistConfig = {
     'getAllCalendars',
     'handleTags',
     'handleCheckedCal',
+    'handleCheckedTags',
   ],
 
   // blacklist -> 그것만 제외합니다(여기서는 적용하지 않았음)
@@ -43,6 +45,7 @@ const reducers = combineReducers({
   getAllCalendars,
   handleTags,
   handleCheckedCal,
+  handleCheckedTags,
 });
 
 export type RootState = ReturnType<typeof reducers>;

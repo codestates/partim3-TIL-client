@@ -6,6 +6,7 @@ import axios from 'axios';
 import { RootState } from '../modules';
 
 import { calendarStart, calendarSuccess, calendarFailure } from '../modules/calendarM';
+import { handleTagsStart, handleTagsSuccess_Get, handleTagsFailure } from '../modules/handleTags';
 import {
   getCalendarsStart,
   getCalendarsSuccess,
@@ -102,11 +103,32 @@ function CalendarDayContainer() {
         }
 
         dispatch(calendarSuccess(resTodo.reverse(), resReviews));
+        getAllTags();
       })
       .catch(err => {
         console.log(err);
         dispatch(calendarFailure());
         dispatch(getCalendarsFailure());
+      });
+  };
+
+  const getAllTags = () => {
+    dispatch(handleTagsStart());
+
+    axios
+      .get(`${REACT_APP_URL}/calendar/tags`, {
+        params: {
+          userId: currentUser,
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        const resTags = res.data.myTags;
+        dispatch(handleTagsSuccess_Get(resTags));
+      })
+      .catch(err => {
+        console.log({ err });
+        dispatch(handleTagsFailure());
       });
   };
 

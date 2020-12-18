@@ -7,14 +7,12 @@ const HANDLE_TAGS_FAILURE: string = 'HANDLE_TAGS_FAILURE';
 /* 2. 액션생성자 함수 : 액션 객체(action 객체의 type 값은 "HANDLE_TAGS_START" 등등)를 리턴합니다. */
 interface actionType {
   type: string;
-  tags:
-    | Array<{
-        id: number;
-        tagName: string;
-        tagColor: string;
-        description: string;
-      }>
-    | [];
+  tags: Array<{
+    id: number;
+    tagName: string;
+    tagColor: string;
+    description: string;
+  }>;
 }
 
 export function handleTagsStart() {
@@ -41,14 +39,12 @@ export function handleTagsFailure() {
 /* 3. initialState 및 reducer 함수 */
 interface initialStateI {
   status: string;
-  tags:
-    | Array<{
-        id: number;
-        tagName: string;
-        tagColor: string;
-        description: string;
-      }>
-    | [];
+  tags: Array<{
+    id: number;
+    tagName: string;
+    tagColor: string;
+    description: string;
+  }>;
 }
 
 const initialState: initialStateI = {
