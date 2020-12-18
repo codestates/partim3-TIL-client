@@ -2,8 +2,7 @@
 import React from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 
-import { Header, Todos, Reviews } from '../oraganisms';
-import Sidebar from '../oraganisms/Sidebar';
+import { Header, Todos, Reviews, Sidebar } from '../oraganisms';
 
 import { todayProps } from '../../types';
 
