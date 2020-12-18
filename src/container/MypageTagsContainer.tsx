@@ -29,12 +29,13 @@ export default function MypageTagsContainer() {
     history.push('/login');
   };
 
-  let notLoggedInAlertModal =
-    handleModalAlert === true ? (
-      <ModalAlert message="로그인이 되어있지 않습니다." handleCloseModal={handleCloseModal} />
-    ) : (
-      ''
-    );
+  let notLoggedInAlertModal = (
+    <ModalAlert
+      title="로그인이 되어있지 않습니다."
+      isVisible={handleModalAlert}
+      handleCloseModal={handleCloseModal}
+    />
+  );
 
   // GET
   const getAllTags = () => {

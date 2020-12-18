@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 interface ModalChoiceProps {
   title: string;
+  isVisible: boolean;
   actionFunction: () => void;
   handleCloseModal: () => void;
 }
@@ -14,24 +15,29 @@ interface ModalChoiceProps {
     - import { ModalChoice } from '../componentsNew/atoms';
 
   * 상위 컴포넌트에서 useState 활용하여 모달 open/close 처리하기
-    - 상위 컴포넌트에서 모달 열기 기능 넣기
+    - 상위 컴포넌트에서 모달 열기 기능 넣기 : setHandleModalChoice(true) 등등 
     - const [handleModalChoice, setHandleModalChoice] = useState(false);
     
   * ModalChoice에 내려줄 props는 다음과 같습니다.
-    - props.message (string) : 모달에 표시할 메세지
-    - props.actionFunction (function) : 확인버튼 클릭 후 실행될 내용들 (로그아웃하기, 삭제하기 등등 연결해 줄 기능의 함수)
-    - props.handleCloseModal (function) : 취소버튼 클릭 후 실행될 내용들 (모달 닫기 기능 넣기)
+    - props.title (string) : 모달에 표시할 메세지
+    - props.isVisible (boolean) : 모달 표시 여부를 결정함
+    - props.actionFunction (function) : 확인버튼 클릭 후 실행될 내용들
+        (로그아웃하기, 삭제하기 등등 연결해 줄 기능의 함수)
+    - props.handleCloseModal (function) : 취소버튼 클릭 후 실행될 내용들 
+        (모달 닫기 기능 넣기)
 
-        let logoutModal =
-          logoutModalOpen === true ? (
+        let logoutModal = (
+          <ModalChoice 
             <ModalChoice 
-              message="로그아웃 하시겠습니까?"
-              actionFunction={actionFunction}
+          <ModalChoice 
+            title="로그아웃 하시겠습니까?"
+            isVisible={handleModalChoice}
+            actionFunction={actionFunction}
+            handleCloseModal={handleCloseModal} 
               handleCloseModal={handleCloseModal} 
-            />
-          ) : (
-            ''
-          );
+            handleCloseModal={handleCloseModal} 
+          />
+        );
 
   * 모달을 닫은 이후에 처리할 내용들을, 다른 함수에 담고 이 함수를 ModalChoice에 넘겨줍니다.
         const handleCloseModal = () => {
@@ -45,9 +51,14 @@ interface ModalChoiceProps {
 
 */
 
-export default function ModalChoice({ title, actionFunction, handleCloseModal }: ModalChoiceProps) {
+export default function ModalChoice({
+  title,
+  isVisible,
+  actionFunction,
+  handleCloseModal,
+}: ModalChoiceProps) {
   return (
-    <ModalChoiceWrap>
+    <ModalChoiceWrap isVisible={isVisible}>
       <ModalChoiceBackground>
         <ModalChoiceContents>
           <div>
@@ -70,9 +81,10 @@ export default function ModalChoice({ title, actionFunction, handleCloseModal }:
   );
 }
 
-const ModalChoiceWrap = styled.div`
+const ModalChoiceWrap = styled.div<{ isVisible: boolean }>`
   position: 'absolute';
   z-index: 1;
+  display: ${props => (props.isVisible ? 'flex' : 'none')};
 `;
 
 const ModalChoiceBackground = styled.div`
