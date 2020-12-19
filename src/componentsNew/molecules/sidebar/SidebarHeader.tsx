@@ -101,22 +101,26 @@ export default function SidebarHeader() {
       .catch(err => console.log({ err }));
   };
 
-  let logoutModal =
-    logoutModalOpen === true ? (
-      <ModalAlert message="로그아웃 되었습니다." handleCloseModal={handleCloseModal} />
-    ) : (
-      ''
-    );
+  let logoutModal = (
+    <ModalAlert
+      title="로그아웃 되었습니다."
+      isVisible={logoutModalOpen}
+      handleCloseModal={handleCloseModal}
+    />
+  );
+
+  // const handleCloseModalChoice = () => {
+  //   setLogoutModalChoiceOpen(false);
+  // };
 
   const handleCloseModalChoice = () => {
-    setLogoutModalChoiceOpen(false);
+    setLogoutModalChoiceOpen(!logoutModalChoiceOpen);
   };
 
-  let logoutModalChoice = !logoutModalChoiceOpen ? (
-    ''
-  ) : (
+  let logoutModalChoice = (
     <ModalChoice
       title="로그아웃 하시겠습니까?"
+      isVisible={logoutModalChoiceOpen}
       actionFunction={handleLogout}
       handleCloseModal={handleCloseModalChoice}
     />
@@ -132,7 +136,7 @@ export default function SidebarHeader() {
         </Link>
         <Col>
           <div>{nickname} 님</div>
-          <div onClick={() => setLogoutModalChoiceOpen(true)}> 환영합니다!</div>
+          <div onClick={handleCloseModalChoice}> 환영합니다!</div>
         </Col>
       </Row>
       <Row>

@@ -3,7 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface ModalAlertProps {
-  message: string;
+  title: string;
+  isVisible: boolean;
   handleCloseModal: () => void;
 }
 
@@ -19,12 +20,22 @@ interface ModalAlertProps {
 
     
   * ModalAlert에 내려줄 props는 다음과 같습니다.
-    - props.message (string) : 모달에 표시할 메세지
-    - props.handleCloseModal (function) : 확인버튼 클릭 후 실행될 내용들 (모달 닫기 기능 넣기)
+    - props.title (string) : 모달에 표시할 메세지
+    - props.isVisible (boolean) : 모달 표시 여부를 결정함
+    - props.handleCloseModal (function) : 모달 닫기 기능 넣기
+      (확인버튼 클릭 후 실행될 내용들이 있다면, 이를 반영하여 함수로 전달)
+
+        let logoutModal = (
+          <ModalChoice 
+            title="로그아웃 되었습니다."
+            isVisible={handleModalAlert}
+            handleCloseModal={handleCloseModal} 
+          />
+        );
 
         let logoutModal =
           logoutModalOpen === true ? (
-            <ModalAlert message="로그아웃 되었습니다." handleCloseModal={handleCloseModal} />
+            <ModalAlert title="로그아웃 되었습니다." handleCloseModal={handleCloseModal} />
           ) : (
             ''
           );
@@ -42,14 +53,14 @@ interface ModalAlertProps {
 
 */
 
-export default function ModalAlert({ message, handleCloseModal }: ModalAlertProps) {
+export default function ModalAlert({ title, isVisible, handleCloseModal }: ModalAlertProps) {
   return (
-    <ModalAlertWrap>
+    <ModalAlertWrap isVisible={isVisible}>
       <ModalAlertBackground>
         <ModalAlertContents>
           <div>
             <div>
-              <h5>{message}</h5>
+              <h5>{title}</h5>
             </div>
             <hr style={{ borderColor: 'black' }}></hr>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -64,9 +75,10 @@ export default function ModalAlert({ message, handleCloseModal }: ModalAlertProp
   );
 }
 
-const ModalAlertWrap = styled.div`
+const ModalAlertWrap = styled.div<{ isVisible: boolean }>`
   position: 'absolute';
   z-index: 1;
+  display: ${props => (props.isVisible ? 'flex' : 'none')};
 `;
 
 const ModalAlertBackground = styled.div`
