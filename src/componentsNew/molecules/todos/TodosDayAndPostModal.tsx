@@ -24,7 +24,7 @@ export default function TodosDayAndPostModal({ setNewPosted }: TodosDayAndPostMo
         <div>날짜</div>
       </Col>
       <Col onClick={openModal} className="m-1" style={{ border: '1px solid black' }}></Col>
-      <PostTodoModal show={modalShow} closeModal={closeModal} setNewPosted={setNewPosted} />
+      <PostTodoModal showModal={modalShow} closeModal={closeModal} setNewPosted={setNewPosted} />
     </>
   );
 }

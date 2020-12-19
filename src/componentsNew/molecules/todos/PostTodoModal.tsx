@@ -1,48 +1,122 @@
-import React, { useState } from 'react';
-import { Modal, Container, Row, Col, Button, Form, InputGroup, FormControl } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../modules';
+import { Link } from 'react-router-dom';
+
+import styled from 'styled-components';
+
 import axios from 'axios';
+import { RootState } from '../../../modules';
 import DatePicker from 'react-datepicker';
+
+import { Label, Input } from '../../atoms';
+import EachTagForTodoModal from './EachTagForTodoModal';
+
 import REACT_APP_URL from '../../../config';
 
 interface PostTodoModalProp {
-  show: React.ReactNode;
+  showModal: boolean;
   closeModal: () => void;
   setNewPosted: (newPosted: boolean) => void;
 }
 
-export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTodoModalProp) {
+export default function PostTodoModal({ showModal, closeModal, setNewPosted }: PostTodoModalProp) {
   const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState(new Date()); // startDate : Date 객체 상태임
+
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const { tags } = useSelector((state: RootState) => state.handleTags);
+  const { checkedTagArray } = useSelector((state: RootState) => state.handleCheckedTags);
+  // checkedTagArray 이거는 태그들마다 따로 관리해야 하는구나
   const [selectedCalendar, setSelectedCalendar] = useState(NaN); // startDate : Date 객체 상태임
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { today } = useSelector((state: RootState) => state.handleToday);
+  const [startDate, setStartDate] = useState(new Date(`${today.year} ${today.month} ${today.day}`)); // startDate : Date 객체 상태임
+  const [showTagsSelectOptions, setShowTagsSelectOptions] = useState(false);
 
-  let defaultmyCalendersForSelectOptions;
+  let defaultmyCalendersForSelectOptions = <option>클릭해서 선택해 주세요.</option>;
+  let myCalendersForSelectOptions = myCalendar.map(calendar => {
+    return (
+      <option key={calendar.id} value={calendar.id}>
+        {calendar.name}
+      </option>
+    );
+  });
 
-  if (myCalendar === []) {
-    // myCalendar가 1개 남은 경우 이를 삭제할 수 없도록 막았으니까, 빈 배열일 경우는 고려할 필요가 없지 않나?
-    defaultmyCalendersForSelectOptions = '';
-  } else {
-    defaultmyCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
-  }
+  console.log({ checkedTagArray });
 
-  let myCalendersForSelectOptions;
+  let tagsList =
+    tags.length === 0 ? (
+      <span>
+        <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
+      </span>
+    ) : (
+      tags.map(eachTag => {
+        return (
+          <EachTagForTodoModal
+            key={eachTag.id}
+            tagId={eachTag.id}
+            tagName={eachTag.tagName}
+            tagColor={eachTag.tagColor}
+          />
+        );
+      })
+    );
 
-  if (myCalendar === []) {
-    // myCalendar가 1개 남은 경우 이를 삭제할 수 없도록 막았으니까, 빈 배열일 경우는 고려할 필요가 없지 않나?
-    myCalendersForSelectOptions = <option>먼저 캘린더를 만들어 주세요.</option>;
-  } else {
-    myCalendersForSelectOptions = myCalendar.map(calendar => {
-      return (
-        <option key={calendar.id} value={calendar.id}>
-          {calendar.name}
-        </option>
-      );
-    });
-  }
+  let selectedTags =
+    tags.length === 0 ? (
+      <span>
+        <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
+      </span>
+    ) : (
+      tags.map(eachTag => {
+        if (checkedTagArray.indexOf(eachTag.id) !== -1) {
+          return <TagIcon tagColor={eachTag.tagColor}>{eachTag.tagName}</TagIcon>;
+        }
+      })
+    );
+
+  let tagsSelectOptions = showTagsSelectOptions ? (
+    <div
+      style={{
+        position: 'absolute',
+        right: '0px',
+        zIndex: 2,
+      }}
+    >
+      <div
+        // 바깥을 클릭하면 닫히도록 하는 기능인 듯
+        style={{
+          position: 'fixed',
+          top: '0px',
+          right: '0px',
+          bottom: '0px',
+          left: '0px',
+        }}
+        onClick={() => {
+          setShowTagsSelectOptions(false);
+        }}
+      ></div>
+      <TagSelectWindow>
+        <div
+          className="TagSettingIcon"
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          <div>(검색창이 들어올 자리?)</div>
+          <Link to="/mypage/tags">
+            <button type="button" style={{ border: 'none', padding: '0px' }}>
+              <img
+                src="/img/settingIcon.png"
+                alt="캘린더 설정하기"
+                width="23px"
+                height="23px"
+              ></img>
+            </button>
+          </Link>
+        </div>
+        <HrLine style={{ margin: '5px', width: '95%' }} />
+        {tagsList}
+      </TagSelectWindow>
+    </div>
+  ) : null;
 
   const handleSelectOption = (
     e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
@@ -72,7 +146,10 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
   };
 
   const handleCloseModal = () => {
-    setStartDate(new Date()); // 모달을 닫을 때, 모달 안의 날짜선택 창을 '오늘'로 되돌리는 기능 : 미완성임
+    // setStartDate(new Date(`${today.year} ${today.month} ${today.day}`));
+    // 모달을 닫을 때, 모달 안의 날짜선택 창을 '오늘'로 되돌리는 기능
+    // 이 기능을 여기서 주니까, 갱신된 today가 닫을 때에 반영되지 않고, 다시 열어야 반영되는 문제가 있었음
+    // useEffect로 해결함
     closeModal();
   };
 
@@ -89,15 +166,13 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
     return axios
       .post(
         `${REACT_APP_URL}/calendar/todo`,
-
         { userId: currentUser, title, scheduleDate, calendarId },
-
         { withCredentials: true },
       )
       .then(res => {
         alert(`${res.data}`);
+        closeModal();
         setNewPosted(true);
-        handleCloseModal(); // 여기는 잘 작동한다.
         setSelectedCalendar(NaN);
       })
       .catch(err => {
@@ -105,63 +180,151 @@ export default function PostTodoModal({ show, closeModal, setNewPosted }: PostTo
       });
   };
 
-  return (
-    <Modal
-      show={show}
-      onHide={handleCloseModal}
-      backdrop="static" // 모달 바깥의 배경 부분에 관여함
-      keyboard={true} // esc로 닫을 수 있는지 결정함
-      aria-labelledby="contained-modal-title-vcenter"
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">새로운 Todo를 작성해 보세요!</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="show-grid">
-        <Container>
-          <Row className="m-1" style={{ border: '1px solid black' }}>
-            <Form.Check type="checkbox" label="축하합니다! 오늘 하루도 성공!" />
-          </Row>
-          <Row className="m-1" style={{ border: '1px solid black' }}>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text id="inputGroup-sizing-default">title</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                name="title"
-                onChange={handleTitleInput}
-                aria-label="Default"
-                aria-describedby="inputGroup-sizing-default"
-              />
-            </InputGroup>
-          </Row>
-          <Row className="m-1" style={{ border: '1px solid black' }}>
-            <div>
-              언제 하실 일인가요?{' '}
-              <DatePicker selected={startDate} onChange={handleDate} dateFormat="yyyy/MM/dd" />
-            </div>
-            <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>
-          </Row>
-          <Row className="m-1" style={{ border: '1px solid black' }}>
-            <span>Calendar 선택 : </span>
-            <select className="selectedCalendar" onChange={handleSelectOption}>
-              {defaultmyCalendersForSelectOptions}
-              {myCalendersForSelectOptions}
-            </select>
-          </Row>
-          <Row className="m-1" style={{ border: '1px solid black' }}>
-            tag 선택창 : tag 구현이 필요합니다.
-          </Row>
-          <Row className="m-1" style={{ border: '1px solid black' }}>
-            그 외 부분들은 어떤 것이 들어가면 좋을까요?
-          </Row>
-        </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={handleCloseModal}>Close Modal</Button>
-        <Button onClick={() => PostNewTodo(selectedCalendar, title, JSON.stringify(TodayForAxios))}>
+  useEffect(() => {
+    setStartDate(new Date(`${today.year} ${today.month} ${today.day}`));
+  }, [showModal]);
+
+  let modalContents = (
+    <>
+      <header style={{ display: 'flex', justifyContent: 'center' }}>
+        <h5>새로운 Todo를 작성해 보세요!</h5>
+      </header>
+      <HrLine />
+      <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+        <div style={{ flex: 1, margin: '5px' }}>
+          <input type="checkbox" />
+          축하합니다! 오늘 하루도 성공!
+        </div>
+        <div
+          style={{
+            flex: 1,
+            margin: '5px',
+            alignItems: 'center',
+          }}
+        >
+          <Label text="제목을 입력해 주세요" smLabel={1}></Label>
+          <Input
+            type="text"
+            name="title"
+            placeholder="제목을 입력해 주세요."
+            smInput={1.5}
+            handleChange={handleTitleInput}
+            autoFocus={true}
+            className="PostTodoModal__titleInput"
+          ></Input>
+        </div>
+        <div style={{ flex: 1, margin: '5px' }}>
+          <div>
+            <Label text="언제 하실 일인가요?" smLabel={1}></Label>
+            <DatePicker selected={startDate} onChange={handleDate} dateFormat="yyyy/MM/dd" />
+          </div>
+          <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>{' '}
+          {/* 이 부분이 필요할까? */}
+        </div>
+        <div style={{ flex: 1, margin: '5px' }}>
+          <Label text="캘린더를 선택해 주세요." smLabel={1}></Label>
+          <select className="selectedCalendar" onChange={handleSelectOption}>
+            {defaultmyCalendersForSelectOptions}
+            {myCalendersForSelectOptions}
+          </select>
+        </div>
+        <div style={{ flex: 1, margin: '5px', position: 'relative' }}>
+          <div onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}>
+            <Label text="태그를 선택해 주세요." smLabel={1}></Label>
+          </div>
+          {tagsSelectOptions}
+          <div style={{ display: 'flex' }}>{selectedTags}</div>
+        </div>
+        <div style={{ flex: 1, margin: '5px' }}>그 외 부분들은 어떤 것이 들어가면 좋을까요?</div>
+      </main>
+      <HrLine />
+      <footer style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button
+          onClick={() => PostNewTodo(selectedCalendar, title, JSON.stringify(TodayForAxios))}
+          style={{ margin: '5px' }}
+        >
           Post new Todo!
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        </button>
+        <button onClick={() => closeModal()} style={{ margin: '5px' }}>
+          Close Modal
+        </button>
+      </footer>
+    </>
   );
+
+  if (!showModal) {
+    return <></>;
+  } else {
+    return (
+      <PostTodoModalWrap>
+        <PostTodoModalBackground>
+          <PostTodoModalContents>{modalContents}</PostTodoModalContents>
+        </PostTodoModalBackground>
+      </PostTodoModalWrap>
+    );
+  }
 }
+
+const PostTodoModalWrap = styled.div`
+  position: 'absolute';
+  z-index: 1;
+`;
+
+const PostTodoModalBackground = styled.div`
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
+`;
+
+const PostTodoModalContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px;
+  width: 450px;
+  /* height: 450px; */
+  border-radius: 10px;
+  border: 1px solid black;
+  background-color: white;
+  z-index: 5;
+  margin-top: 150px;
+`;
+
+const HrLine = styled.hr`
+  border: 0;
+  clear: both;
+  display: block;
+  width: 100%;
+  background-color: gray;
+  height: 1px;
+`;
+
+const TagSelectWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid red;
+  background-color: white;
+  width: 250px;
+  z-index: 7;
+  padding: 5px;
+`;
+
+const TagOption = styled.div``;
+
+const TagIcon = styled.div<{ tagColor: string }>`
+  border-radius: 10px;
+  background-color: ${props => props.tagColor};
+  color: white;
+  font-weight: bold;
+  padding: 4px;
+  margin: 4px;
+`;
