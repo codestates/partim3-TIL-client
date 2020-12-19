@@ -9,9 +9,10 @@ import handleToday from './handleToday';
 import loginOut from './loginOut';
 import sideBarM from './sideBarM';
 import getAllCalendars from './getAllCalendars';
-import tagsM from './tagsM';
+import handleTags from './handleTags';
 import handleCheckedCal from './handleCheckedCal';
-import selectedCalM from './selectedCalM';
+import handleCheckedTags from './handleCheckedTags';
+
 
 const persistConfig = {
   key: 'root',
@@ -27,9 +28,10 @@ const persistConfig = {
     'handleToday',
     'sideBarM',
     'getAllCalendars',
-    'tagsM',
+    'handleTags',
     'handleCheckedCal',
-    'selectedCalM',
+    'handleCheckedTags',
+
   ],
 
   // blacklist -> 그것만 제외합니다(여기서는 적용하지 않았음)
@@ -43,9 +45,9 @@ const reducers = combineReducers({
   handleToday,
   sideBarM,
   getAllCalendars,
-  tagsM,
+  handleTags,
   handleCheckedCal,
-  selectedCalM,
+  handleCheckedTags,
 });
 
 export type RootState = ReturnType<typeof reducers>;

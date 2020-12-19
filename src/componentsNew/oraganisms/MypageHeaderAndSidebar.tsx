@@ -24,7 +24,9 @@ export default function MypageHeaderAndSidebar({ childComponent, changeCalCompon
       <Header>
         <Title>Setting</Title>
         <Space>
-          <Btn>완료</Btn>
+          <Link to="/calendar/day">
+            <Btn>완료</Btn>
+          </Link>
         </Space>
       </Header>
       <Body>

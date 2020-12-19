@@ -1,27 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import REACT_APP_URL from '../config';
 
 import { RootState } from '../modules';
-import { tagsSuccess, tagsFailure } from '../modules/tagsM';
+import { handleTagsStart, handleTagsSuccess_Get, handleTagsFailure } from '../modules/handleTags';
 
 import MypageTags from '../componentsNew/pages/MypageTags';
 import { MypageHeaderAndSidebar } from '../componentsNew/oraganisms';
+import { ModalAlert } from '../componentsNew/atoms';
 
 export default function MypageTagsContainer() {
-  const [nickname, setNickname] = useState('');
+  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
-  const userInfoState = useSelector((state: RootState) => state.handleUserInfo); // 끝에 [] 해줘야하는데 에러가 난다
-  // userInfo get 요청에 대응하는 API가 없으므로, 위 코드는 지금은 쓰이질 않고 있음
+  const [tagHandled, setTagHandled] = useState(false);
+  const [handleModalAlert, setHandleModalAlert] = useState(false);
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const { tags } = useSelector((state: RootState) => state.tagsM);
 
-  const getTag = () => {
+  if (currentUser === null) {
+    setHandleModalAlert(true);
+  }
+
+  const handleCloseModal = () => {
+    setHandleModalAlert(false);
+    history.push('/login');
+  };
+
+  let notLoggedInAlertModal = (
+    <ModalAlert
+      title="로그인이 되어있지 않습니다."
+      isVisible={handleModalAlert}
+      handleCloseModal={handleCloseModal}
+    />
+  );
+
+  // GET
+  const getAllTags = () => {
+    dispatch(handleTagsStart());
+
     axios
       .get(`${REACT_APP_URL}/calendar/tags`, {
         params: {
@@ -30,19 +49,17 @@ export default function MypageTagsContainer() {
         withCredentials: true,
       })
       .then(res => {
-        const tags = res.data.myTags;
-        dispatch(tagsSuccess(tags));
+        const resTags = res.data.myTags;
+        dispatch(handleTagsSuccess_Get(resTags));
       })
       .catch(err => {
-        console.log(err);
+        console.log({ err });
+        dispatch(handleTagsFailure());
       });
   };
 
-  useEffect(() => {
-    getTag();
-  }, []);
-
-  const createTag = (
+  // POST
+  const postNewTag = (
     userId: number | null,
     tagColor: string,
     tagName: string,
@@ -55,20 +72,80 @@ export default function MypageTagsContainer() {
         { withCredentials: true },
       )
       .then(res => {
-        console.log('tag sent');
+        console.log('tag posted');
+        setTagHandled(true);
       })
       .catch(err => {
-        console.log(err);
-        dispatch(tagsFailure());
+        console.log({ err });
       });
   };
-  // interface tagsProps {
-  //   userId: number;
-  //   createTag: void;
-  //   tags: Array<object>;
-  // }
 
-  const childComponent = <MypageTags userId={currentUser} createTag={createTag} tags={tags} />;
+  // PUT
+  const updateTag = (
+    userId: number | null,
+    tagId: number,
+    newTagName: string,
+    newTagColor: string,
+    newDescription: string,
+  ) => {
+    axios
+      .put(
+        `${REACT_APP_URL}/calendar/updatetag`,
+        {
+          userId: userId,
+          tagId: tagId,
+          tagName: newTagName,
+          tagColor: newTagColor,
+          description: newDescription,
+        },
+        { withCredentials: true },
+      )
+      .then(res => {
+        console.log('tag updated');
+        setTagHandled(true);
+      })
+      .catch(err => {
+        console.log({ err });
+      });
+  };
 
-  return <MypageHeaderAndSidebar childComponent={childComponent}></MypageHeaderAndSidebar>;
+  // DELETE
+  const deleteTag = (userId: number, tagId: number) => {
+    axios
+      .delete(`${REACT_APP_URL}/calendar/deletetag`, {
+        data: { userId, tagId },
+        withCredentials: true,
+      })
+      .then(res => {
+        console.log('tag deleted');
+        setTagHandled(true);
+      })
+      .catch(err => {
+        console.log({ err });
+      });
+  };
+
+
+<!--   const childComponent = <MypageTags userId={currentUser} createTag={createTag} tags={tags} />; -->
+
+  useEffect(() => {
+    getAllTags();
+    setTagHandled(false);
+  }, [currentUser, tagHandled]);
+
+  let childComponent = (
+    <MypageTags
+      userId={currentUser!}
+      postNewTag={postNewTag}
+      updateTag={updateTag}
+      deleteTag={deleteTag}
+    />
+  );
+
+  return (
+    <>
+      <MypageHeaderAndSidebar childComponent={childComponent}></MypageHeaderAndSidebar>
+      {notLoggedInAlertModal}
+    </>
+  );
 }

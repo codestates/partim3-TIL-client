@@ -11,6 +11,7 @@ import MypageCalendarContainer from './container/MypageCalendarContainer';
 import SignupContainer from './container/SignupContainer';
 import LoginContainer from './container/LoginContainer';
 import CalendarDayContainer from './container/CalendarDayContainer';
+import FilteredTodosAndReviewsContainer from './container/FilteredTodosAndReviewsContainer';
 
 // import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/mypage/calendar/:calName" component={MypageCalendarContainer} />
           <Route path="/login" component={LoginContainer} />
           <Route path="/calendar/day" component={CalendarDayContainer} />
+          <Route path="/filtered" component={FilteredTodosAndReviewsContainer} />
           <Route exact path="/" component={MainContainer} />
         </Switch>
       </Router>

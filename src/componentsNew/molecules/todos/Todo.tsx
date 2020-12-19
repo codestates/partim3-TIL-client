@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RootState } from '../../../modules';
 import axios from 'axios';
 import styled from 'styled-components';
-import { Input } from '../../atoms';
+import { Label, Input } from '../../atoms';
+import EachTagForTodoModal from './EachTagForTodoModal';
 import DatePicker from 'react-datepicker';
 import REACT_APP_URL from '../../../config';
 
@@ -30,11 +32,15 @@ export default function Todo({
   setTodoDeletedOrUpdated,
 }: TodoProps) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const { tags } = useSelector((state: RootState) => state.handleTags);
+  const { checkedTagArray } = useSelector((state: RootState) => state.handleCheckedTags);
+  // checkedTagArray 이거는 태그들마다 따로 관리해야 하는구나
   const [displayFixOrDelTodoModal, setDisplayFixOrDelTodoModal] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [startDate, setStartDate] = useState(
     new Date(`${scheduleDate.year} ${scheduleDate.month} ${scheduleDate.day}`),
   ); // startDate : Date 객체 상태임
+  const [showTagsSelectOptions, setShowTagsSelectOptions] = useState(false);
 
   const handleChange = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -116,6 +122,81 @@ export default function Todo({
     }
   };
 
+  let tagsList =
+    tags.length === 0 ? (
+      <span>
+        <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
+      </span>
+    ) : (
+      tags.map(eachTag => {
+        return (
+          <EachTagForTodoModal
+            key={eachTag.id}
+            tagId={eachTag.id}
+            tagName={eachTag.tagName}
+            tagColor={eachTag.tagColor}
+          />
+        );
+      })
+    );
+
+  let tagsSelectOptions = showTagsSelectOptions ? (
+    <div
+      style={{
+        position: 'absolute',
+        right: '0px',
+        zIndex: 2,
+      }}
+    >
+      <div
+        // 바깥을 클릭하면 닫히도록 하는 기능인 듯
+        style={{
+          position: 'fixed',
+          top: '0px',
+          right: '0px',
+          bottom: '0px',
+          left: '0px',
+        }}
+        onClick={() => {
+          setShowTagsSelectOptions(false);
+        }}
+      ></div>
+      <TagSelectWindow>
+        <div
+          className="TagSettingIcon"
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          <div>(검색창이 들어올 자리?)</div>
+          <Link to="/mypage/tags">
+            <button type="button" style={{ border: 'none', padding: '0px' }}>
+              <img
+                src="/img/settingIcon.png"
+                alt="캘린더 설정하기"
+                width="23px"
+                height="23px"
+              ></img>
+            </button>
+          </Link>
+        </div>
+        <HrLine style={{ margin: '5px', width: '95%' }} />
+        {tagsList}
+      </TagSelectWindow>
+    </div>
+  ) : null;
+
+  let selectedTags =
+    tags.length === 0 ? (
+      <span>
+        <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
+      </span>
+    ) : (
+      tags.map(eachTag => {
+        if (checkedTagArray.indexOf(eachTag.id) !== -1) {
+          return <TagIcon tagColor={eachTag.tagColor}>{eachTag.tagName}</TagIcon>;
+        }
+      })
+    );
+
   let fixOrDelTodoModal;
 
   if (displayFixOrDelTodoModal === false) {
@@ -178,6 +259,22 @@ export default function Todo({
             </div>
             <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>
           </div>
+          {/* todo를 다른 캘린더로 변경하는 기능이 필요할까?
+          <div style={{ flex: 1, margin: '5px' }}>
+            <Label text="캘린더를 선택해 주세요." smLabel={1}></Label>
+            <select className="selectedCalendar" onChange={handleSelectOption}>
+              {defaultmyCalendersForSelectOptions}
+              {myCalendersForSelectOptions}
+            </select>
+          </div> */}
+          <div style={{ flex: 1, margin: '5px', position: 'relative' }}>
+            <div onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}>
+              <Label text="태그를 선택해 주세요." smLabel={1}></Label>
+            </div>
+            {tagsSelectOptions}
+            <div style={{ display: 'flex' }}>{selectedTags}</div>
+          </div>
+          <div style={{ flex: 1, margin: '5px' }}>그 외 부분들은 어떤 것이 들어가면 좋을까요?</div>
         </main>
         <hr style={{ borderColor: 'black' }}></hr>
         <footer
@@ -252,8 +349,8 @@ const FixOrDelTodoModalBackground = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3; // 이렇게 해도 리뷰가 더 위에 올라온다.
 `;
 
 const FixOrDelTodoModalContents = styled.div`
@@ -261,9 +358,39 @@ const FixOrDelTodoModalContents = styled.div`
   flex-direction: column;
   padding: 10px 10px;
   width: 500px;
-  height: 400px;
+  /* height: 400px; */
   border-radius: 10px;
   border: 1px solid black;
   background-color: white;
   z-index: 5;
+`;
+
+const HrLine = styled.hr`
+  border: 0;
+  clear: both;
+  display: block;
+  width: 100%;
+  background-color: gray;
+  height: 1px;
+`;
+
+const TagSelectWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid red;
+  background-color: white;
+  width: 250px;
+  z-index: 7;
+  padding: 5px;
+`;
+
+const TagIcon = styled.div<{ tagColor: string }>`
+  border-radius: 10px;
+  background-color: ${props => props.tagColor};
+  color: white;
+  font-weight: bold;
+  padding: 4px;
+  margin: 4px;
 `;
