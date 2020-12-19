@@ -136,4 +136,5 @@ const NewTagBox = styled.div<{ showPostNewTagBox?: boolean }>`
   display: ${props => (props.showPostNewTagBox ? 'flex' : 'none')};
   flex: 1;
   width: 100%;
+  padding: 5px;
 `;

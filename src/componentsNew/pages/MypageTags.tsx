@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import ColorPicker from '../molecules/sidebar/sidebarCalUnits/ColorPicker';
 
 import { PostNewTagBox, RenderTagsBox } from '../oraganisms/MypageTags';
+import { InputMolecule } from '../molecules';
 
 interface MypageTagsProps {
   userId: number;
@@ -25,22 +26,45 @@ interface MypageTagsProps {
 }
 
 export default function MypageTags({ userId, postNewTag, updateTag, deleteTag }: MypageTagsProps) {
-  const searchTag = () => {};
   // 사이드바의 명칭을 더 명확히 하는게 좋을까?
 
   const [showPostNewTagBox, setShowPostNewTagBox] = useState(false);
+  const [tagfilteringInput, setTagfilteringInput] = useState('');
+  const searchTag = (e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement }) => {
+    setTagfilteringInput(e.target.value);
+  };
+
   const togglePostNewTagBoxButton = () => {
     setShowPostNewTagBox(!showPostNewTagBox);
   };
 
   const { tags } = useSelector((state: RootState) => state.handleTags);
 
+  let filteredTags =
+    tagfilteringInput === ''
+      ? tags
+      : tags.filter(eachTag => {
+          return eachTag.tagName.indexOf(tagfilteringInput) !== -1;
+        });
+
   return (
     <div>
       <MainHeader>
         <MainHeaderBox>
-          <MainHeaderTitle>Tag 검색</MainHeaderTitle>
-          <MainHeaderSearch placeholder="Search all tags" onChange={searchTag}></MainHeaderSearch>
+          <MainHeaderSearch>
+            <InputMolecule
+              text="Tag 검색"
+              type="text"
+              name="SearchAllTags"
+              placeholder="Search All Tags"
+              smLabel={1}
+              smInput={3}
+              handleChange={searchTag}
+              className="SearchAllTags"
+            />
+          </MainHeaderSearch>
+          {/* <MainHeaderTitle>Tag 검색</MainHeaderTitle>
+          <MainHeaderSearch placeholder="Search all tags" onChange={searchTag}></MainHeaderSearch> */}
           <MainHeaderBtnSpace>
             <MainHeaderBtn onClick={togglePostNewTagBoxButton}>New Tag</MainHeaderBtn>
           </MainHeaderBtnSpace>
@@ -55,7 +79,12 @@ export default function MypageTags({ userId, postNewTag, updateTag, deleteTag }:
       </MainHeader>
       <MainBody>
         {/* <MainBodyTitle>Tags</MainBodyTitle> */}
-        <RenderTagsBox userId={userId} tags={tags} updateTag={updateTag} deleteTag={deleteTag} />
+        <RenderTagsBox
+          userId={userId}
+          tags={filteredTags}
+          updateTag={updateTag}
+          deleteTag={deleteTag}
+        />
       </MainBody>
     </div>
   );
@@ -76,17 +105,19 @@ const MainHeaderBox = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  padding: 5px;
 `;
 
-const MainHeaderTitle = styled.span`
-  flex: 0.6;
-  margin-left: 10px;
-`;
-const MainHeaderSearch = styled.input`
-  flex: 3;
+const MainHeaderSearch = styled.div`
+  display: flex;
+  /* flex: 4; */
+  flex-grow: 4;
+  flex-basis: 100px;
+  /* justify-content: center; */
+  padding-left: 4vw;
 `;
 const MainHeaderBtnSpace = styled.span`
-  flex: 5;
+  flex: 8;
   display: flex;
   flex-direction: column;
   align-items: flex-end;

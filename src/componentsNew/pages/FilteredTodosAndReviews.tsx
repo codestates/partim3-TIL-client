@@ -78,11 +78,12 @@ export default function FilteredTodosAndReviews({ tagId }: FilteredTodosAndRevie
       })
     );
 
-  useEffect(() => {
-    if (tagId) {
-      handleClickTagIcon(tagId);
-    }
-  }, [tagId]);
+  // 없어도 일단 작동하는데, api 연동 후 써야할지도 모르니까 남겨둠
+  // useEffect(() => {
+  //   if (tagId) {
+  //     handleClickTagIcon(tagId);
+  //   }
+  // }, [tagId]);
 
   return (
     <FilteredTodosAndReviewsWrap>
