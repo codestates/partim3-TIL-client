@@ -169,7 +169,8 @@ export default function MypageSettingContainer() {
   //   setIsUpdated(false);
   // }, [isUpdated]);
 
-  let childComponent = (
+  //calendar링크를 위한 코드
+  const childComponent = (
     <MypageSetting
       currentNickname={currentNickname}
       updateUserInfoReq={updateUserInfoReq}

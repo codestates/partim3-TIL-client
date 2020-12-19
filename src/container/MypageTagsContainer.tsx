@@ -68,7 +68,7 @@ export default function MypageTagsContainer() {
   //   tags: Array<object>;
   // }
 
-  let childComponent = <MypageTags userId={currentUser} createTag={createTag} tags={tags} />;
+  const childComponent = <MypageTags userId={currentUser} createTag={createTag} tags={tags} />;
 
   return <MypageHeaderAndSidebar childComponent={childComponent}></MypageHeaderAndSidebar>;
 }

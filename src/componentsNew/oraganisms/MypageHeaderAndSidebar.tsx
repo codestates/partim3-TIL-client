@@ -2,17 +2,23 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import MypageCalSidebar from '../oraganisms/MypageCalSidebar';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../modules';
 
 interface MypageHeaderAndSidebarProps {
   childComponent: React.ReactNode;
+  changeCalComponent: any;
 }
 
-export default function MypageHeaderAndSidebar({ childComponent }: MypageHeaderAndSidebarProps) {
-  const [curComponent, setChildComponent] = useState(childComponent);
+export default function MypageHeaderAndSidebar({ childComponent, changeCalComponent }: any) {
+  //라우팅 주소로 calendar가 찍혔을 때 함수가 props로 내려옴.
+  //내려오고 난 다음부터는 문제가 없음
+  //바로 이동하게 되면 사이드바로 넘어가게 되서 문제가됨.
 
-  const changeChildComponent = (component: any) => {
-    setChildComponent(component);
-  };
+  const { myCalendar, shareCalendar } = useSelector(
+    (state: RootState) => state.getAllCalendars.allCalendars,
+  );
+
   return (
     <Container>
       <Header>
@@ -30,12 +36,17 @@ export default function MypageHeaderAndSidebar({ childComponent }: MypageHeaderA
             <Link to="/mypage/tags">Tags</Link>
           </Text>
           <Text>
-            <Link to="/mypage/calendar">Calendar</Link>
+            {/* 사이드바에서 랜더링되므로 링크 삭제 */}
+            Calendars
           </Text>
-          <MypageCalSidebar changeChildComponent={changeChildComponent}></MypageCalSidebar>
-        </Sidebar>
 
-        <Main>{curComponent}</Main>
+          <MypageCalSidebar
+            changeCalComponent={changeCalComponent}
+            myCalendar={myCalendar}
+            shareCalendar={shareCalendar}
+          ></MypageCalSidebar>
+        </Sidebar>
+        <Main>{childComponent}</Main>
       </Body>
     </Container>
   );

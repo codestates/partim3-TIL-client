@@ -1,96 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../modules';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../modules';
+import { calendarSelected } from '../../modules/selectedCalM';
+
 import MypageCalendar from '../pages/MypageCalendar';
 
-interface propsI {
-  goProfile: React.FC;
-}
-
-export default function MypageCalSidebar({ changeChildComponent }: any) {
-  console.log('calsidebar');
-  const [curCal, setCurCal] = useState('curCal');
-  // curCal 은 캘린더의 이름.
-  const { myCalendar, shareCalendar } = useSelector(
-    (state: RootState) => state.getAllCalendars.allCalendars,
-  );
-  //선택된 캘린더 이름을 받아서 세팅해준 후, 그 이름에 맞는 캘린더 찾기
-  //동기 처리가 안된다.
-  const allCalendars = myCalendar.concat(shareCalendar);
-
-  const findColor = () => {
-    for (let i of allCalendars) {
-      if (i.name === curCal) {
-        return i.color;
-      }
-    }
-    return 'red';
-  };
-  const findId = () => {
-    for (let i of allCalendars) {
-      if (i.name === curCal) {
-        return i.id;
-      }
-    }
-    return 0;
-  };
-
-  let curCalColor = findColor();
-  let curCalId = findId();
-
+export default function MypageCalSidebar({ changeCalComponent, myCalendar, shareCalendar }: any) {
   //curComponent가 mypageCalendar일때 캘린더들의 리스트를 랜더링
+  const history = useHistory();
 
-  const selectCalendar = async (e: any) => {
-    setCurCal(e.target.innerHTML);
+  const selectCalendar = (e: any) => {
+    history.push(`/mypage/calendar/${e.target.innerHTML}`);
   };
-  let myCalList = myCalendar.map(el => {
+  //동기적으로 처리해주기 위해서 useEffect사용.
+
+  let myCalList = myCalendar.map((el: any) => {
     return (
-      <CalendarList key={el.name} onClick={selectCalendar}>
-        <ColorCircle color={el.color}></ColorCircle>
-        <div>{el.name}</div>
-      </CalendarList>
+      <Link
+        to={`/mypage/calendar/${el.name}`}
+        style={{ textDecoration: 'none', color: 'black' }}
+        key={el.name}
+        onClick={selectCalendar}
+      >
+        <CalendarList>
+          <ColorCircle color={el.color}></ColorCircle>
+          <div>{el.name}</div>
+        </CalendarList>
+      </Link>
     );
   });
 
-  let shareCalList = shareCalendar.map(el => {
+  let shareCalList = shareCalendar.map((el: any) => {
     return (
-      <CalendarList key={el.id}>
-        <ColorCircle></ColorCircle>
-        <div>{el.name}</div>
-      </CalendarList>
+      <Link
+        to={`/mypage/calendar/${el.name}`}
+        style={{ textDecoration: 'none', color: 'black' }}
+        key={el.name}
+      >
+        <CalendarList key={el.id}>
+          <ColorCircle></ColorCircle>
+          <div>{el.name}</div>
+        </CalendarList>
+      </Link>
     );
   });
 
-  const changeCurCalName = (e: any) => {
-    console.log(e.target);
-  };
-  useEffect(() => {
-    async function test() {
-      //페이지가 랜더링 되어 버림 ㅠㅠ
-      //basic calendar를 누르면, curCal이 바뀐다.
-      //useEffect가 실행된다
-      //컴포넌트를 basic calendar를 남은 컴포넌트로 바꾼다.
-      // 여기서 동기처리가 되면 참으로 바람직하겠구만.
+  // const changeCurCalName = (e: any) => {
+  //   setCurCal(e);
+  // };
 
-      if (curCal !== 'curCal') {
-        //curCal의 값은 바뀌어서 안쪽으로 들어오지만, 비동기처리 때문에 goProfile은 실행되어 버린다.
-        //왜 동기처리가 안될까 심히 슬프다.
-        //그냥 컴포넌트 자체를 넣어주면 어떨까.
-        //curComponent는 필요없어 보인다.
-        //await는 삭제 필요
-        await changeChildComponent(
-          <MypageCalendar
-            curCal={curCal}
-            curCalColor={curCalColor}
-            curCalId={curCalId}
-            changeCurCalName={changeCurCalName}
-          ></MypageCalendar>,
-        );
-      }
-    }
-    test();
-  }, [curCal]);
+  //param을 바로 받아오기 불가능.
+  // useEffect(() => {
+  //   if (paramName !== 'unClicked') {
+  //     console.log(match.params);
+  //   }
+  // }, [paramName]);
 
   return (
     <CalendarContainer>

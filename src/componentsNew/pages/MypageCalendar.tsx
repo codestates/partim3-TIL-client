@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import styled from 'styled-components';
@@ -6,29 +7,56 @@ import axios from 'axios';
 import ColorPicker from '../molecules/sidebar/sidebarCalUnits/ColorPicker';
 import AutoSaveInput from '../atoms/AutoSaveInput';
 import REACT_APP_URL from '../../config';
-
-// declare module 'axios' {
-//   export interface AxiosRequestConfig {
-//     userId: number | null;
-//     calendarId: number;
-//   }
-// }
+import getToday from '../utils/todayF';
+import {
+  getCalendarsStart,
+  getCalendarsSuccess,
+  getCalendarsFailure,
+} from '../../modules/getAllCalendars';
 
 export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNewCalColor }: any) {
+  const history = useHistory();
   const [calName, setCalName] = useState(curCal);
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
-  //여기서 바로 axios요청이 나가도 되나..
   const calNameUpdate = (newValue: string) => {
+    console.log(currentUser, curCalId, newValue);
     return axios
       .put(`${REACT_APP_URL}/calendar/updatecalender`, {
-        userId: 1,
-        calendarId: 2,
+        userId: currentUser,
+        calendarId: curCalId,
         name: newValue,
         color: curCalColor,
         withCredentials: true,
       })
-      .then(res => console.log(res))
+      .then(async res =>
+        //리덕스에서 해당 값을 변경해주어야 하나? 다시 값을 받아오지 않을까?
+        //서버에서 값을 보내주지 않기 때문에 get으로 다시 받아와서 바꾸어 주어야함.
+        {
+          console.log('update success');
+          await setCalName(calName);
+          await history.push(`/mypage/calendar/${newValue}`);
+        },
+      )
+      .catch(err => console.log(err));
+  };
+
+  const dispatch = useDispatch();
+  const getUpdatedCal = () => {
+    let TodayForAxios = {
+      year: getToday().year,
+      month: getToday().month,
+      day: getToday().day,
+    };
+    return axios
+      .get(`${REACT_APP_URL}/calendar/day`, {
+        params: { userId: currentUser, date: TodayForAxios },
+        withCredentials: true,
+      })
+      .then(async res => {
+        let { myCalendars, shareCalendars } = res.data;
+        await dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
+      })
       .catch(err => console.log(err));
   };
 
@@ -56,16 +84,12 @@ export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNe
         <ChangeBoxNameTitle>이름</ChangeBoxNameTitle>
         <AutoSaveInput
           value={curCal}
-          handleChange={(newValue: any) => {
-            setCalName(newValue);
-            // calNameUpdate(newValue);
+          handleChange={async (newValue: any) => {
+            await setCalName(newValue);
+            await calNameUpdate(newValue);
+            await getUpdatedCal();
           }}
         ></AutoSaveInput>
-        {/* <input
-          onClick={changeCurCalName}
-          defaultValue={curCal}
-          onChange={handleCurNameChange}
-        ></input> */}
       </Changebox>
       <Changebox>
         <ChangeboxForRow>
