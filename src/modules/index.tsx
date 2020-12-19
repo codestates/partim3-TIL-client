@@ -12,6 +12,7 @@ import getAllCalendars from './getAllCalendars';
 import handleTags from './handleTags';
 import handleCheckedCal from './handleCheckedCal';
 import handleCheckedTags from './handleCheckedTags';
+import handle_SideBarTag_defaultFilteringTag from './handle_SideBarTag_defaultFilteringTag';
 
 
 const persistConfig = {
@@ -31,7 +32,7 @@ const persistConfig = {
     'handleTags',
     'handleCheckedCal',
     'handleCheckedTags',
-
+    'handle_SideBarTag_defaultFilteringTag',
   ],
 
   // blacklist -> 그것만 제외합니다(여기서는 적용하지 않았음)
@@ -48,6 +49,7 @@ const reducers = combineReducers({
   handleTags,
   handleCheckedCal,
   handleCheckedTags,
+  handle_SideBarTag_defaultFilteringTag,
 });
 
 export type RootState = ReturnType<typeof reducers>;

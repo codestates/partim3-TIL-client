@@ -41,7 +41,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
     );
   });
 
-  console.log({ checkedTagArray });
+  // console.log({ checkedTagArray });
 
   let tagsList =
     tags.length === 0 ? (
@@ -69,7 +69,11 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
     ) : (
       tags.map(eachTag => {
         if (checkedTagArray.indexOf(eachTag.id) !== -1) {
-          return <TagIcon tagColor={eachTag.tagColor}>{eachTag.tagName}</TagIcon>;
+          return (
+            <TagIcon key={eachTag.id} tagId={eachTag.id} tagColor={eachTag.tagColor}>
+              {eachTag.tagName}
+            </TagIcon>
+          );
         }
       })
     );
@@ -230,7 +234,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
         </div>
         <div style={{ flex: 1, margin: '5px', position: 'relative' }}>
           <div onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}>
-            <Label text="태그를 선택해 주세요." smLabel={1}></Label>
+            <Label text="이 영역을 클릭하여 태그를 선택해 주세요." smLabel={1}></Label>
           </div>
           {tagsSelectOptions}
           <div style={{ display: 'flex' }}>{selectedTags}</div>
@@ -320,7 +324,7 @@ const TagSelectWindow = styled.div`
 
 const TagOption = styled.div``;
 
-const TagIcon = styled.div<{ tagColor: string }>`
+const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
   border-radius: 10px;
   background-color: ${props => props.tagColor};
   color: white;

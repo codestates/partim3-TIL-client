@@ -4,15 +4,17 @@ import { Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../modules';
 
-interface FilteredTodosAndReviewsProps {
-  tagId?: number;
-}
-
-export default function FilteredTodosAndReviews({ tagId }: FilteredTodosAndReviewsProps) {
+export default function FilteredTodosAndReviews() {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { tags } = useSelector((state: RootState) => state.handleTags);
-  const [allTagsForFiltering, setAllTagsForFiltering] = useState<number[]>([]);
-  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  const { defaultFiltering_TagID } = useSelector(
+    (state: RootState) => state.handle_SideBarTag_defaultFilteringTag,
+  );
+  const [allTagsForFiltering, setAllTagsForFiltering] = useState<number[]>([
+    defaultFiltering_TagID,
+  ]);
+  // 지금은 useState로 이 컴포넌트 안에서만 관리하고 있는데,
+  // 이 allTagsForFiltering 배열을 redux state로 관리할 수 있어야 한다.
 
   const history = useHistory();
   if (typeof currentUser !== 'number') {
@@ -78,16 +80,11 @@ export default function FilteredTodosAndReviews({ tagId }: FilteredTodosAndRevie
       })
     );
 
-  // 없어도 일단 작동하는데, api 연동 후 써야할지도 모르니까 남겨둠
-  // useEffect(() => {
-  //   if (tagId) {
-  //     handleClickTagIcon(tagId);
-  //   }
-  // }, [tagId]);
-
   return (
     <FilteredTodosAndReviewsWrap>
-      <FilteredTodosAndReviewsHeader></FilteredTodosAndReviewsHeader>
+      <FilteredTodosAndReviewsHeader>
+        <Link to="/calendar/day">/calendar/day 로 돌아가기(임시)</Link>
+      </FilteredTodosAndReviewsHeader>
       <FilteredTodosAndReviewsSidebar>
         <SideBarTags>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
