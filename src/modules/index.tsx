@@ -13,6 +13,7 @@ import handleTags from './handleTags';
 import handleCheckedCal from './handleCheckedCal';
 import handleCheckedTags from './handleCheckedTags';
 
+
 const persistConfig = {
   key: 'root',
   // localStorage에 저장합니다.
@@ -30,6 +31,7 @@ const persistConfig = {
     'handleTags',
     'handleCheckedCal',
     'handleCheckedTags',
+
   ],
 
   // blacklist -> 그것만 제외합니다(여기서는 적용하지 않았음)
