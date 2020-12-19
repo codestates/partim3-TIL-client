@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 
-export default function AutoSaveInput({ value, handleChange }: any) {
+export default function AutoSaveInput({ handleChange, value }: any) {
   const inputEl = useRef<any>(null);
   const [isEditMode, setEditMode] = useState(false);
   const [newValue, setNewValue] = useState(value);
@@ -9,6 +9,8 @@ export default function AutoSaveInput({ value, handleChange }: any) {
   // 왜 useEffect를 두번이나 쓸까?
   useEffect(() => {
     if (isEditMode) {
+      // console.log('1번: isEditMode');
+      // console.log('2번:', newValue);
       inputEl.current.focus();
     }
   }, [isEditMode]);
@@ -18,16 +20,23 @@ export default function AutoSaveInput({ value, handleChange }: any) {
   }, [value]);
 
   const handleClick = () => {
+    // console.log('0번');
     setEditMode(!isEditMode);
   };
 
   const handleBlur = () => {
     setEditMode(false);
+    // console.log('4번 :', newValue, '상위로 newValue전달');
     handleChange(newValue);
   };
 
   const handleInputChange = (e: any) => {
-    setNewValue(e.target.value);
+    // console.log('3번 :', e.target.value);
+    if (e.target.value.length !== 0) {
+      setNewValue(e.target.value);
+    } else {
+      alert('이름은 최소 한글자 입니다.');
+    }
   };
 
   return (
@@ -37,22 +46,25 @@ export default function AutoSaveInput({ value, handleChange }: any) {
           type="text"
           value={newValue}
           ref={inputEl}
+          // onblur- 포커스를 잃었을때 이벤트가 발생합니다.
           onBlur={handleBlur}
           onChange={handleInputChange}
         ></Input>
       ) : (
-        <span onClick={handleClick}>{newValue}</span>
+        <Span onClick={handleClick}>{newValue}</Span>
       )}
     </InputContainer>
   );
 }
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<{ padding?: any }>`
   flex: 1;
-  margin-bottom: 1vh;
   display: flex;
   flex-direction: column;
   margin-left: 0.5vw;
+  justify-content: center;
+  border: 1px solid blue;
+  padding: ${props => props.padding};
 `;
 
 const Input = styled.input`
@@ -62,3 +74,5 @@ const Input = styled.input`
   background: #f0f2f1;
   border-bottom: 2px solid #1a73e8;
 `;
+
+const Span = styled.span``;

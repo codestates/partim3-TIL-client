@@ -13,6 +13,7 @@ import {
   getCalendarsSuccess,
   getCalendarsFailure,
 } from '../../modules/getAllCalendars';
+import { ModalDropbox } from '../atoms';
 
 export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNewCalColor }: any) {
   const history = useHistory();
@@ -20,7 +21,6 @@ export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNe
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
   const calNameUpdate = (newValue: string) => {
-    console.log(currentUser, curCalId, newValue);
     return axios
       .put(`${REACT_APP_URL}/calendar/updatecalender`, {
         userId: currentUser,
@@ -73,6 +73,55 @@ export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNe
     // .catch(err => console.log(err));
   };
 
+  //유저추가 모달
+
+  const [handleModalDropbox, setHandleModalDropbox] = useState(false);
+  const [serchNickName, setSerchNickName] = useState('닉네임 검색');
+
+  const handleCloseModal = () => {
+    setHandleModalDropbox(false);
+    setSerchNickName('닉네임 검색');
+  };
+  const openAddUserModal = () => {
+    setHandleModalDropbox(true);
+  };
+  const actionFunction = () => {
+    console.log('hi');
+  };
+
+  const serchUser = (serchNickName: string) => {
+    axios
+      .post(
+        `${REACT_APP_URL}/user/isuser`,
+        {
+          nickname: serchNickName,
+        },
+        { withCredentials: true },
+      )
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const addUserModalDropbox = (
+    <ModalDropbox
+      title="친구 추가"
+      isVisible={handleModalDropbox}
+      actionFunction={actionFunction}
+      handleCloseModal={handleCloseModal}
+      dropboxMenus={['캘린더 보기', '보기 & 편집', '보기 & 편집 & 공유']}
+      value={serchNickName}
+      handleChange={async (inputVal: string) => {
+        console.log('6번 :', inputVal, '최종전달지로 받음');
+        await setSerchNickName(inputVal);
+        await serchUser(inputVal);
+      }}
+    />
+  );
+
   return (
     <CalendarContainer>
       <CurCal>
@@ -118,7 +167,8 @@ export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNe
             <option value="보기,수정 및 공유">보기,수정 및 공유</option>
           </UserBoxDropbox>
         </Userbox>
-        <Btn> + 사용자 추가</Btn>
+        <Btn onClick={openAddUserModal}> + 사용자 추가</Btn>
+        {addUserModalDropbox}
       </CalendarShare>
       <DeleteCal>
         <SmallTitle>캘린더 삭제</SmallTitle>
