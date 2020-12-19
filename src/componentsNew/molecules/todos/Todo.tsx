@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../../modules';
@@ -21,6 +21,7 @@ interface TodoProps {
   key: number;
   calendarId: number;
   scheduleDate: scheduleDateType;
+  defaultArrayOfTagsId: number[];
   setTodoDeletedOrUpdated: (todoDeleted: boolean) => void;
 }
 
@@ -29,18 +30,36 @@ export default function Todo({
   id,
   calendarId,
   scheduleDate,
+  defaultArrayOfTagsId,
   setTodoDeletedOrUpdated,
 }: TodoProps) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { tags } = useSelector((state: RootState) => state.handleTags);
-  const { checkedTagArray } = useSelector((state: RootState) => state.handleCheckedTags);
-  // checkedTagArray 이거는 태그들마다 따로 관리해야 하는구나
+
   const [displayFixOrDelTodoModal, setDisplayFixOrDelTodoModal] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
+  const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const [newCalendarId, setNewcalendarId] = useState(calendarId);
   const [startDate, setStartDate] = useState(
     new Date(`${scheduleDate.year} ${scheduleDate.month} ${scheduleDate.day}`),
   ); // startDate : Date 객체 상태임
   const [showTagsSelectOptions, setShowTagsSelectOptions] = useState(false);
+
+  // 받아온 todo들의 id로만 구성된 배열
+
+  const [newArrayOfTagsId, setNewArrayOfTagsId] = useState<number[]>(defaultArrayOfTagsId);
+  // const [preservedArrayOfTagsId, setPreservedArrayOfTagsId] = useState<number[]>(newArrayOfTagsId);
+
+  const handleCheckedTags = (tagId: number, isChecked: boolean) => {
+    let checkedTagIndex = newArrayOfTagsId.indexOf(tagId);
+    if (checkedTagIndex === -1 && isChecked === true) {
+      setNewArrayOfTagsId([...newArrayOfTagsId, tagId]);
+    } else {
+      let delBefore = newArrayOfTagsId.slice(0, checkedTagIndex);
+      let delAfter = newArrayOfTagsId.slice(checkedTagIndex + 1);
+      setNewArrayOfTagsId([...delBefore, ...delAfter]);
+    }
+  };
 
   const handleChange = (
     e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -78,11 +97,11 @@ export default function Todo({
     }
   };
 
-  const updateTodo = (todoId: number, newTitle: string) => {
-    if (newTitle === '') {
-      newTitle = title; // newTitle을 비워서 요청하면, 기존 title을 넣어준다
-    }
-
+  const updateTodo = (todoId: number) => {
+    // startDate에는 기본적으로 해당 todo의 날짜가 자동으로 잡혀 있음
+    // 유자가 이를 수정하지 않으면 기존 날짜가 나가고, 수정하면 수정된 날짜로 교체됨
+    // 그러므로 updateTodo에서 날짜를 별도로 넘겨줄 필요가 없다
+    // 위 사항은 title(newTitle), tags(newArrayOfTagsId) 역시 마찬가지임
     let TodayForAxios = {
       year: startDate.getFullYear(),
       month: startDate.getMonth() + 1,
@@ -98,10 +117,11 @@ export default function Todo({
           `${REACT_APP_URL}/calendar/updatetodo`,
           {
             userId: currentUser,
-            calendarId: calendarId,
+            calendarId: newCalendarId,
             title: newTitle,
             scheduleDate: JSON.stringify(TodayForAxios),
             todoId: todoId,
+            tags: newArrayOfTagsId,
           },
           { withCredentials: true },
         )
@@ -129,12 +149,15 @@ export default function Todo({
       </span>
     ) : (
       tags.map(eachTag => {
+        let alreadyChecked = newArrayOfTagsId.indexOf(eachTag.id) !== -1 ? true : false;
         return (
           <EachTagForTodoModal
             key={eachTag.id}
             tagId={eachTag.id}
             tagName={eachTag.tagName}
             tagColor={eachTag.tagColor}
+            handleCheckedTags={handleCheckedTags}
+            alreadyChecked={alreadyChecked}
           />
         );
       })
@@ -149,7 +172,8 @@ export default function Todo({
       }}
     >
       <div
-        // 바깥을 클릭하면 닫히도록 하는 기능인 듯
+        // 태그선택 드롭다운의 바깥을 클릭하면 닫히도록 하는 기능
+        className="rock"
         style={{
           position: 'fixed',
           top: '0px',
@@ -185,17 +209,40 @@ export default function Todo({
   ) : null;
 
   let selectedTags =
-    tags.length === 0 ? (
-      <span>
-        <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
-      </span>
+    newArrayOfTagsId.length === 0 ? (
+      <span>(선택된 태그가 없습니다.)</span>
     ) : (
+      // 추가/삭제를 해야 하니, tags와 비교할수밖에 없다.
       tags.map(eachTag => {
-        if (checkedTagArray.indexOf(eachTag.id) !== -1) {
-          return <TagIcon tagColor={eachTag.tagColor}>{eachTag.tagName}</TagIcon>;
+        if (newArrayOfTagsId.indexOf(eachTag.id) !== -1) {
+          return (
+            <TagIcon key={eachTag.id} tagColor={eachTag.tagColor}>
+              {eachTag.tagName}
+            </TagIcon>
+          );
         }
       })
     );
+
+  const handleSelectOption = (
+    e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
+  ) => {
+    setNewcalendarId(Number(e.target.value));
+  };
+
+  let defaultmyCalendersForSelectOptions = <option>클릭해서 선택해 주세요.</option>;
+  let myCalendersForSelectOptions = myCalendar.map(calendar => {
+    let selected = false;
+    if (calendar.id === calendarId) {
+      selected = true;
+    }
+    return (
+      // selected 대신 value를 쓰라고 해서, 어쩔수없이 value의 기능을 className으로 대신해야 할 듯
+      <option key={calendar.id} value={calendar.id} selected={selected}>
+        {calendar.name}
+      </option>
+    );
+  });
 
   let fixOrDelTodoModal;
 
@@ -259,20 +306,30 @@ export default function Todo({
             </div>
             <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>
           </div>
-          {/* todo를 다른 캘린더로 변경하는 기능이 필요할까?
+
           <div style={{ flex: 1, margin: '5px' }}>
             <Label text="캘린더를 선택해 주세요." smLabel={1}></Label>
             <select className="selectedCalendar" onChange={handleSelectOption}>
               {defaultmyCalendersForSelectOptions}
               {myCalendersForSelectOptions}
             </select>
-          </div> */}
+          </div>
+
           <div style={{ flex: 1, margin: '5px', position: 'relative' }}>
             <div onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}>
-              <Label text="태그를 선택해 주세요." smLabel={1}></Label>
+              <Label text="태그를 추가/삭제하실 수 있습니다." smLabel={1}></Label>
             </div>
             {tagsSelectOptions}
-            <div style={{ display: 'flex' }}>{selectedTags}</div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                minHeight: '40px',
+                flexWrap: 'wrap',
+              }}
+            >
+              {selectedTags}
+            </div>
           </div>
           <div style={{ flex: 1, margin: '5px' }}>그 외 부분들은 어떤 것이 들어가면 좋을까요?</div>
         </main>
@@ -285,7 +342,7 @@ export default function Todo({
           }}
         >
           <button
-            onClick={() => updateTodo(id, newTitle)}
+            onClick={() => updateTodo(id)}
             // style={{
             //   flex: 3,
             //   marginLeft: '5px',
@@ -300,7 +357,10 @@ export default function Todo({
             todo 삭제하기
           </button>
           <button
-            onClick={() => setDisplayFixOrDelTodoModal(false)}
+            onClick={() => {
+              setNewArrayOfTagsId(defaultArrayOfTagsId);
+              setDisplayFixOrDelTodoModal(false);
+            }}
             style={{ marginLeft: '5px', marginRight: '5px' }}
           >
             닫기

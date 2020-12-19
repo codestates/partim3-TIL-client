@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../modules';
 import { Container, Row } from 'react-bootstrap';
@@ -27,14 +27,22 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
       todosList = '';
     } else {
       todosList = todos.map(todo => {
-        // 나중에 서버 수정하고 reverse 삭제?
-        // todoId 순서로 정렬하여 나열하기(수정필요)
+        let defaultArrayOfTagsId: number[] = [];
+
+        if (todo.todoTags[0].tag === null) {
+          defaultArrayOfTagsId = [];
+        } else {
+          for (let j = 0; j < todo.todoTags.length; j++) {
+            defaultArrayOfTagsId.push(todo.todoTags[j].tag.id);
+          }
+        }
 
         if (checkedCalArray.indexOf(todo.calendarId) !== -1) {
-          let title = todo.title as string;
-          let id = todo.id as number;
-          let calendarId = todo.calendarId as number;
+          let title = todo.title;
+          let id = todo.id;
+          let calendarId = todo.calendarId;
           let scheduleDate: scheduleDateType = JSON.parse(todo.scheduleDate);
+
           return (
             <Todo
               title={title}
@@ -42,6 +50,7 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
               key={id}
               calendarId={calendarId}
               scheduleDate={scheduleDate}
+              defaultArrayOfTagsId={defaultArrayOfTagsId}
               setTodoDeletedOrUpdated={setTodoDeletedOrUpdated}
             />
           );

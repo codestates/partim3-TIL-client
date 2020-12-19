@@ -1,65 +1,48 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-
+// setNewArrayOfTagsId(defaultArrayOfTagsId)
 import { RootState } from '../../../modules';
-import {
-  handleCheckedTagsStart,
-  handleCheckedTagsSuccess_add,
-  handleCheckedTagsSuccess_del,
-  handleTagsFailure,
-} from '../../../modules/handleCheckedTags';
 
 interface EachTagForTodoModalProps {
   tagId: number;
   tagName: string;
   tagColor: string;
+  handleCheckedTags: (tagId: number, isChecked: boolean) => void;
+  alreadyChecked: boolean;
 }
 
 export default function EachTagForTodoModal({
   tagId,
   tagName,
   tagColor,
+  handleCheckedTags,
+  alreadyChecked,
 }: EachTagForTodoModalProps) {
-  const { checkedTagArray } = useSelector((state: RootState) => state.handleCheckedTags);
+  // const { checkedTagArray } = useSelector((state: RootState) => state.handleCheckedTags);
 
-  let isCheckedDefault;
-  if (checkedTagArray.indexOf(tagId) !== -1) {
-    isCheckedDefault = true;
-  } else {
-    isCheckedDefault = false;
-  }
-
-  const [isChecked, setIsChecked] = useState(isCheckedDefault);
-
-  const dispatch = useDispatch();
+  // PostTodoModal의 태그 상태는 모달이 새로 열릴때마다 초기화되므로,
+  // 태그가 체크되었는지 여부를 checkedTagArray에 연동할 필요가 없다.
+  const [isChecked, setIsChecked] = useState(alreadyChecked);
 
   const handleTagCheckChange = () => {
     setIsChecked(!isChecked);
-    handleCheckTags(tagId, !isChecked); // 아직 갱신이 적용되지 않은 상태에서 바로 실행되므로, 반전해서 반영한다
-  };
-
-  const handleCheckTags = (checkedTag: number, isChecked: boolean) => {
-    if (checkedTagArray.indexOf(checkedTag) === -1 && isChecked === true) {
-      dispatch(handleCheckedTagsStart());
-      dispatch(handleCheckedTagsSuccess_add(checkedTag));
-    } else {
-      dispatch(handleCheckedTagsStart());
-      dispatch(handleCheckedTagsSuccess_del(checkedTagArray.indexOf(checkedTag)));
-    }
+    handleCheckedTags(tagId, !alreadyChecked); // 아직 갱신이 적용되지 않은 상태에서 바로 실행되므로, 반전해서 반영한다
   };
 
   return (
-    <div className="EachTag" style={{ display: 'flex', alignItems: 'center', margin: '3px 0px' }}>
+    <div
+      className="EachTag"
+      onClick={() => handleTagCheckChange()}
+      style={{ display: 'flex', alignItems: 'center', margin: '3px 0px' }}
+    >
       <div style={{ flex: 1, marginLeft: '10px' }}>{!isChecked ? '' : <span>&#10003;</span>}</div>
-      <div style={{ flex: 7, display: 'flex' }} onClick={() => handleTagCheckChange()}>
+      <div style={{ flex: 7, display: 'flex' }}>
         <TagIcon tagColor={tagColor} isChecked={isChecked}>
           {tagName}
         </TagIcon>
       </div>
-      <div style={{ flex: 1, marginRight: '10px' }} onClick={() => setIsChecked(!isChecked)}>
-        {!isChecked ? '' : <span>&#10007;</span>}
-      </div>
+      <div style={{ flex: 1, marginRight: '10px' }}>{!isChecked ? '' : <span>&#10007;</span>}</div>
     </div>
   );
 }
