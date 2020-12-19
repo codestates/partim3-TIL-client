@@ -18,9 +18,12 @@ interface scheduleTimeI {
 interface calendarDayI {
   type: string;
   todos: Array<{
+    id: number;
     title: string;
     scheduleDate: string;
-    id: number;
+    todoTags: Array<{
+      tag: { id: number; tagName: string; tagColor: string; descrption: string };
+    }>;
     calendarId: number;
     calendarColor: string;
   }>;
@@ -61,9 +64,12 @@ export function calendarFailure() {
 
 interface todosAndReviewsI {
   todos: Array<{
+    id: number;
     title: string;
     scheduleDate: string;
-    id: number;
+    todoTags: Array<{
+      tag: { id: number; tagName: string; tagColor: string; descrption: string };
+    }>;
     calendarId: number;
     calendarColor: string;
   }>;

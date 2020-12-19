@@ -24,8 +24,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
 
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const { tags } = useSelector((state: RootState) => state.handleTags);
-  const { checkedTagArray } = useSelector((state: RootState) => state.handleCheckedTags);
-  // checkedTagArray 이거는 태그들마다 따로 관리해야 하는구나
+  const [checkedTagArray, setCheckedTagArray] = useState<number[]>([]);
   const [selectedCalendar, setSelectedCalendar] = useState(NaN); // startDate : Date 객체 상태임
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { today } = useSelector((state: RootState) => state.handleToday);
@@ -41,8 +40,20 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
     );
   });
 
-  // console.log({ checkedTagArray });
+  // Post요청시에 넘겨주고자 하는 '태그 배열(checkedTagArray)'을 처리하는 코드
+  // checkedTagArray 배열은, 모달창을 닫거나 Post 요청이 성공하면, 빈 배열로 초기화됨
+  const handleCheckedTags = (tagId: number, isChecked: boolean) => {
+    let checkedTagIndex = checkedTagArray.indexOf(tagId);
+    if (checkedTagIndex === -1 && isChecked === true) {
+      setCheckedTagArray([...checkedTagArray, tagId]);
+    } else {
+      let delBefore = checkedTagArray.slice(0, checkedTagIndex);
+      let delAfter = checkedTagArray.slice(checkedTagIndex + 1);
+      setCheckedTagArray([...delBefore, ...delAfter]);
+    }
+  };
 
+  // 태그 선택을 위한 드롭다운 창에 나열될, 유저가 가지고 있는 모든 태그들
   let tagsList =
     tags.length === 0 ? (
       <span>
@@ -50,17 +61,21 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
       </span>
     ) : (
       tags.map(eachTag => {
+        let alreadyChecked = checkedTagArray.indexOf(eachTag.id) !== -1 ? true : false;
         return (
           <EachTagForTodoModal
             key={eachTag.id}
             tagId={eachTag.id}
             tagName={eachTag.tagName}
             tagColor={eachTag.tagColor}
+            handleCheckedTags={handleCheckedTags!}
+            alreadyChecked={alreadyChecked}
           />
         );
       })
     );
 
+  // 드롭다운 창에서 유저가 선택한 태그들(tags에서 checkedTagArray를 기준으로 필터링한 결과물임)
   let selectedTags =
     tags.length === 0 ? (
       <span>
@@ -78,6 +93,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
       })
     );
 
+  // 태그 선택을 위한 드롭다운 창(onClick 이벤트로 이 창을 토글)
   let tagsSelectOptions = showTagsSelectOptions ? (
     <div
       style={{
@@ -149,14 +165,6 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
     }
   };
 
-  const handleCloseModal = () => {
-    // setStartDate(new Date(`${today.year} ${today.month} ${today.day}`));
-    // 모달을 닫을 때, 모달 안의 날짜선택 창을 '오늘'로 되돌리는 기능
-    // 이 기능을 여기서 주니까, 갱신된 today가 닫을 때에 반영되지 않고, 다시 열어야 반영되는 문제가 있었음
-    // useEffect로 해결함
-    closeModal();
-  };
-
   const PostNewTodo = (calendarId: number | null, title: string, scheduleDate: string) => {
     if (typeof calendarId !== 'number' || Number.isNaN(calendarId)) {
       alert('캘린더가 선택되어 있지 않습니다.');
@@ -170,14 +178,21 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
     return axios
       .post(
         `${REACT_APP_URL}/calendar/todo`,
-        { userId: currentUser, title, scheduleDate, calendarId },
+        {
+          userId: currentUser,
+          title: title,
+          scheduleDate: scheduleDate,
+          calendarId: calendarId,
+          tags: checkedTagArray,
+        },
         { withCredentials: true },
       )
       .then(res => {
         alert(`${res.data}`);
-        closeModal();
-        setNewPosted(true);
-        setSelectedCalendar(NaN);
+        setSelectedCalendar(NaN); // post에 성공하면 '선택된 캘린더'를 초기화함
+        setCheckedTagArray([]); // post에 성공하면 '선택된 태그' 배열을 초기화함
+        closeModal(); // PostTodoModal 모달창을 닫음
+        setNewPosted(true); // 다시 렌더링하기 위해 상위 컴포넌트를 조작함(?)
       })
       .catch(err => {
         alert(`${err}`);
@@ -186,6 +201,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
 
   useEffect(() => {
     setStartDate(new Date(`${today.year} ${today.month} ${today.day}`));
+    setCheckedTagArray([]);
   }, [showModal]);
 
   let modalContents = (
@@ -249,7 +265,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
         >
           Post new Todo!
         </button>
-        <button onClick={() => closeModal()} style={{ margin: '5px' }}>
+        <button onClick={closeModal} style={{ margin: '5px' }}>
           Close Modal
         </button>
       </footer>

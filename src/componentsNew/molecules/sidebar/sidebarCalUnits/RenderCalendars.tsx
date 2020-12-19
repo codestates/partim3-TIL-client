@@ -48,7 +48,7 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
             eachCalendarName={eachCalendar.name}
             handleCheckBox={handleCheckBox}
           />
-          <CalSettingButton />
+          <CalSettingButton eachCalendarName={eachCalendar.name} />
           <CalDeleteButton
             calId={eachCalendar.id}
             calName={eachCalendar.name}

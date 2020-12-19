@@ -74,6 +74,8 @@ function CalendarDayContainer() {
       .then(res => {
         let { myCalendars, shareCalendars } = res.data;
         dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
+
+        // myCalendars에 포함된 todo/review 처리
         console.log(myCalendars);
         let resTodo = new Array();
 
@@ -102,7 +104,11 @@ function CalendarDayContainer() {
           resReviews = resReviews.concat(myCalendars[j].reviews);
         }
 
-        dispatch(calendarSuccess(resTodo.reverse(), resReviews));
+        // shareCalendars에 포함된 todo/review 처리 (아직 shareCalendars가 완성되지 않아, 이 부분 코드 없음)
+
+        // (myCalendars, shareCalendars 처리하는 부분은 별도 함수로 빼놓는게 낫지 않나?)
+
+        dispatch(calendarSuccess(resTodo, resReviews));
         getAllTags();
       })
       .catch(err => {

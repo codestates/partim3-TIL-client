@@ -150,7 +150,7 @@ export default function SidebarHeader() {
             onFailure={handleLogout}
           />
         </Col> */}
-        <Link to="/mypage">
+        <Link to="/mypage/profile">
           <Col>
             <Button>setting</Button>
           </Col>
