@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
@@ -13,65 +13,62 @@ import {
   getCalendarsSuccess,
   getCalendarsFailure,
 } from '../../modules/getAllCalendars';
+import { ModalDropbox } from '../atoms';
 
-export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNewCalColor }: any) {
-  const history = useHistory();
-  const [calName, setCalName] = useState(curCal);
-  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+export default function MypageCalendar({
+  curCal,
+  curCalColor,
+  handleNewName,
+  handleNewCalColor,
+}: any) {
+  //유저추가 모달
 
-  const calNameUpdate = (newValue: string) => {
-    console.log(currentUser, curCalId, newValue);
-    return axios
-      .put(`${REACT_APP_URL}/calendar/updatecalender`, {
-        userId: currentUser,
-        calendarId: curCalId,
-        name: newValue,
-        color: curCalColor,
-        withCredentials: true,
-      })
-      .then(async res =>
-        //리덕스에서 해당 값을 변경해주어야 하나? 다시 값을 받아오지 않을까?
-        //서버에서 값을 보내주지 않기 때문에 get으로 다시 받아와서 바꾸어 주어야함.
+  const [handleModalDropbox, setHandleModalDropbox] = useState(false);
+  const [serchNickName, setSerchNickName] = useState('닉네임 검색');
+
+  const handleCloseModal = () => {
+    setHandleModalDropbox(false);
+    setSerchNickName('닉네임 검색');
+  };
+  const openAddUserModal = () => {
+    setHandleModalDropbox(true);
+  };
+  const actionFunction = () => {
+    console.log('hi');
+  };
+
+  const serchUser = (serchNickName: string) => {
+    axios
+      .post(
+        `${REACT_APP_URL}/user/isuser`,
         {
-          console.log('update success');
-          await setCalName(calName);
-          await history.push(`/mypage/calendar/${newValue}`);
+          nickname: serchNickName,
         },
+        { withCredentials: true },
       )
-      .catch(err => console.log(err));
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
-  const dispatch = useDispatch();
-  const getUpdatedCal = () => {
-    let TodayForAxios = {
-      year: getToday().year,
-      month: getToday().month,
-      day: getToday().day,
-    };
-    return axios
-      .get(`${REACT_APP_URL}/calendar/day`, {
-        params: { userId: currentUser, date: TodayForAxios },
-        withCredentials: true,
-      })
-      .then(async res => {
-        let { myCalendars, shareCalendars } = res.data;
-        await dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
-      })
-      .catch(err => console.log(err));
-  };
-
-  const deleteCal = () => {
-    return axios;
-    // .delete(`${REACT_APP_URL}/calendar/deletecalendar`, {
-    //   data: {
-    //     userId: currentUser,
-    //     calendarId: 1,
-    //   },
-    //   withCredentials: true,
-    // })
-    // .then(res => console.log(res))
-    // .catch(err => console.log(err));
-  };
+  const addUserModalDropbox = (
+    <ModalDropbox
+      title="친구 추가"
+      isVisible={handleModalDropbox}
+      actionFunction={actionFunction}
+      handleCloseModal={handleCloseModal}
+      dropboxMenus={['캘린더 보기', '보기 & 편집', '보기 & 편집 & 공유']}
+      value={serchNickName}
+      handleChange={async (inputVal: string) => {
+        console.log('6번 :', inputVal, '최종전달지로 받음');
+        await setSerchNickName(inputVal);
+        await serchUser(inputVal);
+      }}
+    />
+  );
 
   return (
     <CalendarContainer>
@@ -85,9 +82,7 @@ export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNe
         <AutoSaveInput
           value={curCal}
           handleChange={async (newValue: any) => {
-            await setCalName(newValue);
-            await calNameUpdate(newValue);
-            await getUpdatedCal();
+            handleNewName(newValue);
           }}
         ></AutoSaveInput>
       </Changebox>
@@ -118,7 +113,8 @@ export default function MypageCalendar({ curCal, curCalColor, curCalId, handleNe
             <option value="보기,수정 및 공유">보기,수정 및 공유</option>
           </UserBoxDropbox>
         </Userbox>
-        <Btn> + 사용자 추가</Btn>
+        <Btn onClick={openAddUserModal}> + 사용자 추가</Btn>
+        {addUserModalDropbox}
       </CalendarShare>
       <DeleteCal>
         <SmallTitle>캘린더 삭제</SmallTitle>
