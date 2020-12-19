@@ -21,7 +21,7 @@ export default function MypageCalSidebar({ changeCalComponent, myCalendar, share
       <Link
         to={`/mypage/calendar/${el.name}`}
         style={{ textDecoration: 'none', color: 'black' }}
-        key={el.name}
+        key={el.id}
         onClick={selectCalendar}
       >
         <CalendarList>
@@ -37,7 +37,7 @@ export default function MypageCalSidebar({ changeCalComponent, myCalendar, share
       <Link
         to={`/mypage/calendar/${el.name}`}
         style={{ textDecoration: 'none', color: 'black' }}
-        key={el.name}
+        key={el.id}
       >
         <CalendarList key={el.id}>
           <ColorCircle></ColorCircle>
