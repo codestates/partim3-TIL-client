@@ -125,6 +125,9 @@ export default function MypageTagsContainer() {
       });
   };
 
+
+<!--   const childComponent = <MypageTags userId={currentUser} createTag={createTag} tags={tags} />; -->
+
   useEffect(() => {
     getAllTags();
     setTagHandled(false);

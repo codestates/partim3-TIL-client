@@ -24,10 +24,11 @@ function App() {
       <Router>
         <Switch>
           <Route path="/signup" component={SignupContainer} />
-          {/* <Route exact path="/mypage" component={Mypage} /> */}
+          {/* mypage일때 에러페이지로 랜딩 */}
+          {/* <Route exact path="/mypage" component={MypageSettingContainer} /> */}
           <Route path="/mypage/profile" component={MypageSettingContainer} />
           <Route path="/mypage/tags" component={MypageTagsContainer} />
-          <Route path="/mypage/calendar" component={MypageCalendarContainer} />
+          <Route exact path="/mypage/calendar/:calName" component={MypageCalendarContainer} />
           <Route path="/login" component={LoginContainer} />
           <Route path="/calendar/day" component={CalendarDayContainer} />
           <Route path="/filtered" component={FilteredTodosAndReviewsContainer} />
@@ -37,5 +38,8 @@ function App() {
     </div>
   );
 }
+
+//URL Params
+//https://velog.io/@bigbrothershin/%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%EC%99%80-%EC%BF%BC%EB%A6%AC
 
 export default App;

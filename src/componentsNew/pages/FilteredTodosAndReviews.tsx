@@ -80,12 +80,6 @@ export default function FilteredTodosAndReviews() {
       })
     );
 
-  // useEffect(() => {
-  //   if (tagId) {
-  //     handleClickTagIcon(tagId);
-  //   }
-  // }, [tagId]);
-
   return (
     <FilteredTodosAndReviewsWrap>
       <FilteredTodosAndReviewsHeader>

@@ -40,7 +40,7 @@ export default function SocialLoginGoogle() {
         dispatch(loginSuccess(userId, nickname));
         dispatch(handleTodayStart());
         dispatch(handleTodaySuccess(getToday()));
-        history.push('/calendar/day');
+        history.push(`/calendar/day`);
       })
       .catch(err => {
         console.log(err);
