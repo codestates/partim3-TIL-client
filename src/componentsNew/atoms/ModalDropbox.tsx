@@ -63,6 +63,10 @@ export default function ModalDropbox({
     // console.log('5번 : ', inputVal, '상위로 전달');
     handleChange(inputVal);
   };
+  const getDropboxValue = (e: any) => {
+    console.log(e.target.value);
+  };
+
   const dropboxlist = dropboxMenus.map((el: any) => {
     return (
       <option key={el} value={el}>
@@ -76,20 +80,23 @@ export default function ModalDropbox({
       <ModalDropboxBackground>
         <ModalDropboxContents>
           <div>
-            <div>
-              <h5>{title}</h5>
-            </div>
+            <Title>{title}</Title>
             <hr style={{ borderColor: 'black' }}></hr>
             <Changebox>
-              <AutoSaveInput
-                value={value}
-                handleChange={autoInputHandleChange}
-                padding={'5px'}
-              ></AutoSaveInput>
-              <DropBox>{dropboxlist}</DropBox>
+              <Space>
+                <AutoSaveInput
+                  value={value}
+                  handleChange={autoInputHandleChange}
+                  padding={'5px'}
+                ></AutoSaveInput>
+              </Space>
+              <DropboxArea>
+                <DropboxTitle>권한설정</DropboxTitle>
+                <DropBox onClick={getDropboxValue}>{dropboxlist}</DropBox>
+              </DropboxArea>
               <BtnArea>
-                <Btn onClick={() => handleCloseModal()}>취소</Btn>
-                <Btn onClick={() => actionFunction()}>보내기</Btn>
+                <BtnCanCel onClick={() => handleCloseModal()}>취소</BtnCanCel>
+                <BtnSubmit onClick={() => actionFunction()}>보내기</BtnSubmit>
               </BtnArea>
             </Changebox>
           </div>
@@ -131,9 +138,15 @@ const ModalDropboxContents = styled.div`
   z-index: 5;
   margin-top: 150px;
 `;
+
+const Title = styled.h5`
+  margin-top: 5px;
+  margin-bottom: -5px;
+`;
+
 const Changebox = styled.div`
   flex: 1;
-  border: 2px solid red;
+  height: 130px;
   border-radius: 2px;
   margin-top: -8px;
   display: flex;
@@ -141,38 +154,52 @@ const Changebox = styled.div`
   justify-contents: center;
 `;
 
+//#f0f2f1;
+const Space = styled.div`
+  flex: 0.8;
+  background: #f0f2f1;
+  display: flex;
+  flex-direction: column;
+  justify-contents: flex-start;
+`;
+
+const DropboxArea = styled.div`
+  flex: 1;
+  margin-top: 8px;
+  background: #f0f2f1;
+  display: flex;
+  flex-direction: column;
+  justify-contents: flex-start;
+`;
+const DropboxTitle = styled.div`
+  padding-left: 4px;
+`;
+
 const DropBox = styled.select`
   flex: 1;
-  border: 1px solid blue;
-  margin-top: 3vh;
-  border: 0px;
   background: #f0f2f1;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  outline: none;
+  border: 0px;
 
   option {
-    height: 30px;
-    padding-top: 10px;
+    height: 5px;
+    outline: none;
   }
 `;
 
 const BtnArea = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  justify-contents: flex-end;
+  flex: 0.5;
+  padding-top: 8px;
 `;
 
-const Btn = styled.div`
-  flex: 1;
-  margin: 5px;
-  margin-right: 10px;
-  margin-left: 10px;
+const BtnCanCel = styled.span`
+  margin-left: 275px;
+  text-align: right;
+`;
 
-  &:hover {
-    background-color: white;
-    color: black;
-  }
+const BtnSubmit = styled.span`
+  margin-left: 20px;
+  text-align: right;
 `;
 
 //select option 설정법

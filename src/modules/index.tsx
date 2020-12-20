@@ -14,7 +14,6 @@ import handleCheckedCal from './handleCheckedCal';
 import handleCheckedTags from './handleCheckedTags';
 import handle_SideBarTag_defaultFilteringTag from './handle_SideBarTag_defaultFilteringTag';
 
-
 const persistConfig = {
   key: 'root',
   // localStorage에 저장합니다.
