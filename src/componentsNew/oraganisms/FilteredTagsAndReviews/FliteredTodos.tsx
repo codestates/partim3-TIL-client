@@ -57,15 +57,22 @@ export default function FliteredTodos() {
           }
         });
 
+  console.log({ andFilteredTodoId });
+
   let filteredTodoEmpty;
 
-  for (let eachList of filteredtodosList) {
-    if (eachList === undefined || eachList[0] === undefined) {
-      filteredTodoEmpty = '필터링된 결과가 없습니다.';
-    } else {
+  for (let passedTime in andFilteredTodoId) {
+    if (andFilteredTodoId[passedTime] === tags_ArrayForFiltering.length) {
       filteredTodoEmpty = '';
       break;
+    } else {
+      filteredTodoEmpty = '필터링된 결과가 없습니다.';
     }
+  }
+
+  if (Object.keys(andFilteredTodoId).length === 0) {
+    console.log('sdg');
+    filteredTodoEmpty = '필터링된 결과가 없습니다.';
   }
 
   return (
