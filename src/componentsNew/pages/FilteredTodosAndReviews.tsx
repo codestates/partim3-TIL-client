@@ -25,14 +25,7 @@ import {
 
 export default function FilteredTodosAndReviews() {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const { tags } = useSelector((state: RootState) => state.handleTags);
-  const { defaultFiltering_TagID } = useSelector(
-    (state: RootState) => state.handle_SideBarTag_defaultFilteringTag,
-  );
-  const [allTagsForFiltering, setAllTagsForFiltering] = useState<number[]>([
-    defaultFiltering_TagID,
-  ]);
-  // day에서 클릭하면 defaultFiltering_TagID 이 값으로 넣어주게 변경
+
   const { tags_ArrayForFiltering } = useSelector(
     (state: RootState) => state.handle_TagsAndCalsArrayForFiltering,
   );
@@ -40,9 +33,6 @@ export default function FilteredTodosAndReviews() {
   const { filteredTodosAndReviews } = useSelector(
     (state: RootState) => state.handle_filteredTodosAndReviews,
   );
-
-  // 지금은 useState로 이 컴포넌트 안에서만 관리하고 있는데,
-  // 이 allTagsForFiltering 배열을 redux state로 관리할 수 있어야 한다.
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -93,8 +83,8 @@ export default function FilteredTodosAndReviews() {
         <FilteredTodosAndReviewsSidebar>
           <SideBarTags>
             <AllTagsListRendering handleClickTagIcon={handleClickTagIcon} />
-            <HrLine />
-            <SelectedTagsListRendering handleClickTagIcon={handleClickTagIcon} />
+            {/* <HrLine />
+            <SelectedTagsListRendering handleClickTagIcon={handleClickTagIcon} /> */}
           </SideBarTags>
           <HrLine />
           <SideBarCalendars>
@@ -104,6 +94,7 @@ export default function FilteredTodosAndReviews() {
         </FilteredTodosAndReviewsSidebar>
         <FilteredTodosAndReviewsBody>
           FliteredTodos
+          <SelectedTagsListRendering handleClickTagIcon={handleClickTagIcon} />
           {filteredTodosAndReviews === undefined ? <></> : <FliteredTodos />}
           {/* <FliteredTodos />
             원럐는 위와 같이 넣고 싶었으나, 

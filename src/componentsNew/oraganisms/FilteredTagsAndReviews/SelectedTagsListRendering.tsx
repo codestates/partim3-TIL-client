@@ -41,7 +41,7 @@ export default function SelectedTagsListRendering({
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>현재 선택하신 태그들입니다.</div>
+      {/* <div style={{ display: 'flex', justifyContent: 'center' }}>현재 선택하신 태그들입니다.</div> */}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>{selectedTagsList}</div>
     </div>
   );

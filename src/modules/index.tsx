@@ -11,8 +11,6 @@ import sideBarM from './sideBarM';
 import getAllCalendars from './getAllCalendars';
 import handleTags from './handleTags';
 import handleCheckedCal from './handleCheckedCal';
-// import handleCheckedTags from './handleCheckedTags'; // 안쓰게 되어 주석처리함
-import handle_SideBarTag_defaultFilteringTag from './handle_SideBarTag_defaultFilteringTag';
 import handle_filteredTodosAndReviews from './handle_filteredTodosAndReviews';
 import handle_TagsAndCalsArrayForFiltering from './handle_TagsAndCalsArrayForFiltering';
 
@@ -32,8 +30,6 @@ const persistConfig = {
     'getAllCalendars',
     'handleTags',
     'handleCheckedCal',
-    // 'handleCheckedTags',
-    'handle_SideBarTag_defaultFilteringTag',
     'handle_filteredTodosAndReviews',
     'handle_TagsAndCalsArrayForFiltering',
   ],
@@ -51,8 +47,6 @@ const reducers = combineReducers({
   getAllCalendars,
   handleTags,
   handleCheckedCal,
-  // handleCheckedTags,
-  handle_SideBarTag_defaultFilteringTag,
   handle_filteredTodosAndReviews,
   handle_TagsAndCalsArrayForFiltering,
 });
