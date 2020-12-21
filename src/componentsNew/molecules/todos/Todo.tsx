@@ -230,15 +230,11 @@ export default function Todo({
     setNewcalendarId(Number(e.target.value));
   };
 
-  let defaultmyCalendersForSelectOptions = <option>클릭해서 선택해 주세요.</option>;
   let myCalendersForSelectOptions = myCalendar.map(calendar => {
-    let selected = false;
-    if (calendar.id === calendarId) {
-      selected = true;
-    }
     return (
-      // selected 대신 value를 쓰라고 해서, 어쩔수없이 value의 기능을 className으로 대신해야 할 듯
-      <option key={calendar.id} value={calendar.id} selected={selected}>
+      // selected(option 태그) 대신 defaultValue(select 태그)/value(option 태그)를 쓰라는 react의 에러가 있었음
+      // 질문 글 및 블로그 글을 올려 기록에 남겼음
+      <option key={calendar.id} value={calendar.id}>
         {calendar.name}
       </option>
     );
@@ -309,8 +305,11 @@ export default function Todo({
 
           <div style={{ flex: 1, margin: '5px' }}>
             <Label text="캘린더를 선택해 주세요." smLabel={1}></Label>
-            <select className="selectedCalendar" onChange={handleSelectOption}>
-              {defaultmyCalendersForSelectOptions}
+            <select
+              defaultValue={calendarId}
+              className="selectedCalendar"
+              onChange={handleSelectOption}
+            >
               {myCalendersForSelectOptions}
             </select>
           </div>
