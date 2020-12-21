@@ -7,6 +7,7 @@ interface CalCheckBoxProps {
   eachCalendarId: number;
   eachCalendarColor: string;
   eachCalendarName: string;
+  calArrayForFiltering: Array<number>;
   handleCheckBox: (checkedCal: number, isChecked: boolean) => void;
 }
 
@@ -24,12 +25,11 @@ export default function CalCheckBox({
   eachCalendarId,
   eachCalendarColor,
   eachCalendarName,
+  calArrayForFiltering,
   handleCheckBox,
 }: CalCheckBoxProps) {
-  const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
-
   let isCheckedDefault;
-  if (checkedCalArray.indexOf(eachCalendarId) !== -1) {
+  if (calArrayForFiltering.indexOf(eachCalendarId) !== -1) {
     isCheckedDefault = true;
   } else {
     isCheckedDefault = false;

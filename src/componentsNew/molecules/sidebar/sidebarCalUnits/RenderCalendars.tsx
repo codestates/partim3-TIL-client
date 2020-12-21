@@ -46,6 +46,7 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
             eachCalendarId={eachCalendar.id}
             eachCalendarColor={eachCalendar.color}
             eachCalendarName={eachCalendar.name}
+            calArrayForFiltering={checkedCalArray}
             handleCheckBox={handleCheckBox}
           />
           <CalSettingButton eachCalendarName={eachCalendar.name} />

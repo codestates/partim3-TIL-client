@@ -13,6 +13,8 @@ import handleTags from './handleTags';
 import handleCheckedCal from './handleCheckedCal';
 // import handleCheckedTags from './handleCheckedTags'; // 안쓰게 되어 주석처리함
 import handle_SideBarTag_defaultFilteringTag from './handle_SideBarTag_defaultFilteringTag';
+import handle_filteredTodosAndReviews from './handle_filteredTodosAndReviews';
+import handle_TagsAndCalsArrayForFiltering from './handle_TagsAndCalsArrayForFiltering';
 
 const persistConfig = {
   key: 'root',
@@ -32,6 +34,8 @@ const persistConfig = {
     'handleCheckedCal',
     // 'handleCheckedTags',
     'handle_SideBarTag_defaultFilteringTag',
+    'handle_filteredTodosAndReviews',
+    'handle_TagsAndCalsArrayForFiltering',
   ],
 
   // blacklist -> 그것만 제외합니다(여기서는 적용하지 않았음)
@@ -49,6 +53,8 @@ const reducers = combineReducers({
   handleCheckedCal,
   // handleCheckedTags,
   handle_SideBarTag_defaultFilteringTag,
+  handle_filteredTodosAndReviews,
+  handle_TagsAndCalsArrayForFiltering,
 });
 
 export type RootState = ReturnType<typeof reducers>;
