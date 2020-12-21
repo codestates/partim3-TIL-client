@@ -28,7 +28,7 @@ export default function AutoSaveInput({ handleChange, value }: any) {
   const handleBlur = () => {
     console.log('4번 :', newValue, 'container로 newValue전달');
     if (newValue.length === 0) {
-      alert('캘린더 이름은 1글자 이상이어야 합니다');
+      alert('1글자 이상 입력해주세요');
       setisErrMode(true);
     } else {
       setisErrMode(false);
@@ -62,12 +62,10 @@ export default function AutoSaveInput({ handleChange, value }: any) {
 }
 
 const InputContainer = styled.div<{ padding?: any }>`
-  flex: 1;
+  flex: 2;
   display: flex;
   flex-direction: column;
-  margin-left: 0.5vw;
   justify-content: center;
-  border: 1px solid blue;
   padding: ${props => props.padding};
 `;
 
@@ -79,4 +77,6 @@ const Input = styled.input<{ isErrMode?: any }>`
   border-bottom: 2px solid #1a73e8;
 `;
 
-const Span = styled.span``;
+const Span = styled.span`
+  margin-left: 3px;
+`;

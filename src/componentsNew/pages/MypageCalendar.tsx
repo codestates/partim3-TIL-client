@@ -50,6 +50,7 @@ export default function MypageCalendar({
         console.log(res.data);
       })
       .catch(err => {
+        setSerchNickName('존재하지 않는 유저입니다.');
         console.log(err);
       });
   };
@@ -164,6 +165,7 @@ const ColorPickerStyle = styled.span<{ color?: string }>`
 const CurCalTitle = styled.div``;
 
 const Changebox = styled.div`
+  padding: 0.5vw;
   background: #f0f2f1;
   border-radius: 2px;
   margin-top: 1vh;
@@ -171,17 +173,13 @@ const Changebox = styled.div`
   flex-direction: column;
 `;
 
-const ChangeBoxNameTitle = styled.div`
-  margin-top: 1vh;
-  margin-left: 0.5vw;
-`;
+const ChangeBoxNameTitle = styled.div``;
 
 const ChangeboxForRow = styled.div`
   display: flex;
   flex-direction: row;
   height: 5vh;
   align-items: center;
-  margin-left: 0.5vw;
 `;
 
 const ChangeCalTitle = styled.div`

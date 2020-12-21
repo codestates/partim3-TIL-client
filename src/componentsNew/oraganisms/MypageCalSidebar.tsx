@@ -11,9 +11,6 @@ export default function MypageCalSidebar({ changeCalComponent, myCalendar, share
   //curComponent가 mypageCalendar일때 캘린더들의 리스트를 랜더링
   const history = useHistory();
 
-  const selectCalendar = (e: any) => {
-    history.push(`/mypage/calendar/${e.target.innerHTML}`);
-  };
   //동기적으로 처리해주기 위해서 useEffect사용.
 
   let myCalList = myCalendar.map((el: any) => {
@@ -22,7 +19,6 @@ export default function MypageCalSidebar({ changeCalComponent, myCalendar, share
         to={`/mypage/calendar/${el.name}`}
         style={{ textDecoration: 'none', color: 'black' }}
         key={el.id}
-        onClick={selectCalendar}
       >
         <CalendarList>
           <ColorCircle color={el.color}></ColorCircle>

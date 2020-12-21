@@ -12,14 +12,16 @@ import {
   getCalendarsSuccess,
   getCalendarsFailure,
 } from '../modules/getAllCalendars';
+import { ModalDropbox } from '../componentsNew/atoms';
 
 export default function MypageCalendarContainer({ match }: any) {
   const history = useHistory();
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
   let paramName = match.params.calName;
+  console.log('1-1', paramName);
   const [calName, setCalName] = useState(paramName);
-
+  console.log('1-2', calName);
   const calNameUpdate = (newValue: string) => {
     return axios
       .put(`${REACT_APP_URL}/calendar/updatecalender`, {
@@ -105,15 +107,6 @@ export default function MypageCalendarContainer({ match }: any) {
       .catch(err => console.log(err));
   };
 
-  let childComponent = (
-    <MypageCalendar
-      curCal={calName}
-      curCalColor={newCalcolor}
-      handleNewName={handleNameChange}
-      handleNewCalColor={handleNewCalColor}
-    ></MypageCalendar>
-  );
-
   useEffect(() => {
     const orderF = async () => {
       console.log('6번 :', calName, 'container calName use');
@@ -131,6 +124,89 @@ export default function MypageCalendarContainer({ match }: any) {
     };
     orderF();
   }, [newCalcolor]);
+
+  const [handleModalDropbox, setHandleModalDropbox] = useState(false);
+  const [serchNickName, setSerchNickName] = useState('닉네임 검색');
+
+  const handleCloseModal = () => {
+    setHandleModalDropbox(false);
+    setSerchNickName('닉네임 검색');
+  };
+  const openAddUserModal = () => {
+    setHandleModalDropbox(true);
+  };
+  const serchUser = (serchNickName: string) => {
+    axios
+      .post(
+        `${REACT_APP_URL}/user/isuser`,
+        {
+          nickname: serchNickName,
+        },
+        { withCredentials: true },
+      )
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        setSerchNickName('존재하지 않는 닉네임입니다');
+        console.log(err);
+      });
+  };
+
+  const sendMessage = (serchNickName: string) => {
+    axios
+      .post(
+        `${REACT_APP_URL}/user/isuser`,
+        {
+          nickname: serchNickName,
+        },
+        { withCredentials: true },
+      )
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        setSerchNickName('존재하지 않는 닉네임입니다');
+        console.log(err);
+      });
+  };
+
+  const addUserModalDropbox = (
+    <ModalDropbox
+      title="친구 추가"
+      isVisible={handleModalDropbox}
+      actionFunction={sendMessage}
+      handleCloseModal={handleCloseModal}
+      dropboxMenus={['캘린더 보기', '보기 & 편집', '보기 & 편집 & 공유']}
+      value={serchNickName}
+      handleChange={async (inputVal: string) => {
+        console.log('6번 :', inputVal, '최종전달지로 받음');
+        await setSerchNickName(inputVal);
+        await serchUser(inputVal);
+      }}
+    />
+  );
+
+  let childComponent = (
+    <MypageCalendar
+      curCal={calName}
+      curCalColor={newCalcolor}
+      handleNewName={handleNameChange}
+      handleNewCalColor={handleNewCalColor}
+    ></MypageCalendar>
+  );
+
+  useEffect(() => {
+    const orderF = async () => {
+      if (paramName !== calName) {
+        await setCalName(paramName);
+        curCalColor = findColor();
+        await setNewCalcolor(curCalColor);
+        // curCalId = findId();
+      }
+    };
+    orderF();
+  }, [paramName]);
 
   return <MypageHeaderAndSidebar childComponent={childComponent}></MypageHeaderAndSidebar>;
 }
