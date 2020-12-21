@@ -3,6 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../modules';
 import styled from 'styled-components';
 
+interface andFilteredTodoIdType {
+  [name: string]: number;
+}
+
 export default function FliteredTodos() {
   const { filteredTodosAndReviews } = useSelector(
     (state: RootState) => state.handle_filteredTodosAndReviews,
@@ -10,6 +14,8 @@ export default function FliteredTodos() {
   const { tags_ArrayForFiltering } = useSelector(
     (state: RootState) => state.handle_TagsAndCalsArrayForFiltering,
   );
+
+  let andFilteredTodoId: andFilteredTodoIdType = {};
 
   let filteredtodosList =
     filteredTodosAndReviews.length === 0
@@ -20,60 +26,54 @@ export default function FliteredTodos() {
             let tagColor = eachTagsResult.tagColor;
             let tagName = eachTagsResult.tagName;
             let todosFilteredByTag = eachTagsResult.todoTags;
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
-                <div style={{ display: 'flex' }}>
-                  <TagIcon key={tagId} tagId={tagId} tagColor={tagColor}>
-                    {tagName}
-                  </TagIcon>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginLeft: '30px',
-                    marginRight: '30px',
-                  }}
-                >
-                  {todosFilteredByTag[0].todo === null
-                    ? '선택하신 Tag로 필터링된 Todo가 없습니다.'
-                    : todosFilteredByTag.map(eachTodo => {
-                        let eachTodoId = eachTodo.todo.id;
-                        let eachTodoTitle = eachTodo.todo.title;
-                        let eachTodoScheduleDate = JSON.parse(eachTodo.todo.scheduleDate);
-                        return (
-                          <FilteredTodos_byTags key={eachTodoId} tagId={eachTodoId}>
-                            <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
-                              title : {eachTodoTitle}
-                            </div>
-                            <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
-                              {`${eachTodoScheduleDate.year}년 ${eachTodoScheduleDate.month}월 ${eachTodoScheduleDate.day}일`}
-                            </div>
-                            <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
-                              {`(서버 요청) todo 별로 캘린더아이디가 따라와야, 캘린더별 필터링 가능`}
-                            </div>
-                            <div
-                              style={{
-                                display: 'flex',
-                                flex: 2,
-                                justifyContent: 'flex-end',
-                                flexWrap: 'wrap',
-                              }}
-                            >
-                              {
-                                '(서버 요청) 여기에 이 투두가 가진 태그들을 나열하려면, 서버에서 투두별로 태그아이디들을 배열로 넘겨주던가 해야 함'
-                              }
-                            </div>
-                          </FilteredTodos_byTags>
-                        );
-                      })}
-                </div>
-              </div>
-            );
+            return todosFilteredByTag.map(eachTodo => {
+              if (eachTodo.todo === null) {
+                ('');
+              } else {
+                let eachTodoId = eachTodo.todo.id;
+                let eachTodoTitle = eachTodo.todo.title;
+                let eachTodoScheduleDate = JSON.parse(eachTodo.todo.scheduleDate);
+                andFilteredTodoId[eachTodoId] === undefined
+                  ? (andFilteredTodoId[eachTodoId] = 1)
+                  : andFilteredTodoId[eachTodoId]++;
+
+                if (andFilteredTodoId[eachTodoId] === tags_ArrayForFiltering.length) {
+                  return (
+                    <FilteredTodos_byTags key={eachTodoId} tagId={eachTodoId}>
+                      <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
+                        title : {eachTodoTitle}
+                      </div>
+                      <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
+                        {`${eachTodoScheduleDate.year}년 ${eachTodoScheduleDate.month}월 ${eachTodoScheduleDate.day}일`}
+                      </div>
+                      <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
+                        {`(서버 요청) todo 별로 캘린더아이디가 따라와야, 캘린더별 필터링 가능`}
+                      </div>
+                    </FilteredTodos_byTags>
+                  );
+                }
+              }
+            });
           }
         });
 
-  return <FliteredTodosWrap>{filteredtodosList}</FliteredTodosWrap>;
+  let filteredTodoEmpty;
+
+  for (let eachList of filteredtodosList) {
+    if (eachList === undefined || eachList[0] === undefined) {
+      filteredTodoEmpty = '필터링된 결과가 없습니다.';
+    } else {
+      filteredTodoEmpty = '';
+      break;
+    }
+  }
+
+  return (
+    <FliteredTodosWrap>
+      {filteredtodosList}
+      {filteredTodoEmpty}
+    </FliteredTodosWrap>
+  );
 }
 
 const FliteredTodosWrap = styled.div`

@@ -100,9 +100,9 @@ export default function Tag({
           setOpenEditTag(false); // 태그 수정이 성공할 때에만 이렇게 가야 하는데...
         }}
       >
-        Edit Tag
+        Complete
       </Label>
-      <Label onClick={() => setOpenEditTag(false)}>Cancle</Label>
+      <Label onClick={() => setOpenEditTag(false)}>Cancel</Label>
     </div>
   );
 
