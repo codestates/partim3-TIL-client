@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
+import {
+  handle_filteredTodosAndReviews_Start,
+  handle_filteredTodosAndReviews_Success,
+  handle_filteredTodosAndReviews_Failure,
+} from '../../modules/handle_filteredTodosAndReviews';
+import {
+  handle_tags_ArrayForFiltering_Starts,
+  handle_tags_ArrayForFiltering_Success_Add,
+  handle_tags_ArrayForFiltering_Success_Del,
+} from '../../modules/handle_TagsAndCalsArrayForFiltering';
+import axios from 'axios';
+import REACT_APP_URL from '../../config';
+
+import {
+  FliteredTodos,
+  MyCalendarsForFiltering,
+  AllTagsListRendering,
+  SelectedTagsListRendering,
+} from '../oraganisms/FilteredTagsAndReviews';
 
 export default function FilteredTodosAndReviews() {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
@@ -13,93 +32,88 @@ export default function FilteredTodosAndReviews() {
   const [allTagsForFiltering, setAllTagsForFiltering] = useState<number[]>([
     defaultFiltering_TagID,
   ]);
+  // day에서 클릭하면 defaultFiltering_TagID 이 값으로 넣어주게 변경
+  const { tags_ArrayForFiltering } = useSelector(
+    (state: RootState) => state.handle_TagsAndCalsArrayForFiltering,
+  );
+
+  const { filteredTodosAndReviews } = useSelector(
+    (state: RootState) => state.handle_filteredTodosAndReviews,
+  );
+
   // 지금은 useState로 이 컴포넌트 안에서만 관리하고 있는데,
   // 이 allTagsForFiltering 배열을 redux state로 관리할 수 있어야 한다.
 
+  const dispatch = useDispatch();
   const history = useHistory();
+
   if (typeof currentUser !== 'number') {
     alert('먼저 로그인을 해 주세요.');
     history.push('/login');
   }
 
-  const handleClickTagIcon = (tagId: number) => {
-    if (allTagsForFiltering.indexOf(tagId) !== -1) {
-      let tagIdIndex = allTagsForFiltering.indexOf(tagId);
-      let delBefore = allTagsForFiltering.slice(0, tagIdIndex);
-      let delAfter = allTagsForFiltering.slice(tagIdIndex + 1);
-      setAllTagsForFiltering([...delBefore, ...delAfter]);
-    } else {
-      let newTagsForFiltering = allTagsForFiltering.slice();
-      setAllTagsForFiltering([...newTagsForFiltering, tagId]);
-    }
-    // 클릭할때마다 배열 안에 잘 들어오고 나가는 중임.
-    // 전체 todo/review에 대한 get 요청 api가 나오면, 이 allTagsForFiltering 배열에 맞춰서 필터링해서 렌더링하면 된다.
+  const getFilteredTodosAndReviews = () => {
+    dispatch(handle_filteredTodosAndReviews_Start());
+
+    axios
+      .get(`${REACT_APP_URL}/calendar/filtertags`, {
+        params: {
+          userId: currentUser,
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        let filteredTodosAndReviews = res.data.tags;
+        dispatch(handle_filteredTodosAndReviews_Success(filteredTodosAndReviews));
+      })
+      .catch(err => {
+        dispatch(handle_filteredTodosAndReviews_Failure());
+        console.log({ err });
+      });
   };
 
-  let allTagsList =
-    tags.length === 0 ? (
-      <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
-    ) : (
-      tags.map(eachTag => {
-        return (
-          <TagIcon
-            key={eachTag.id}
-            className={`TagIcon_${eachTag.id}`}
-            tagId={eachTag.id}
-            tagColor={eachTag.tagColor}
-            onClick={() => {
-              handleClickTagIcon(eachTag.id);
-            }}
-          >
-            {eachTag.tagName}
-          </TagIcon>
-        );
-      })
-    );
+  const handleClickTagIcon = (tagId: number) => {
+    if (tags_ArrayForFiltering.indexOf(tagId) === -1) {
+      dispatch(handle_tags_ArrayForFiltering_Starts());
+      dispatch(handle_tags_ArrayForFiltering_Success_Add(tagId));
+    } else {
+      dispatch(handle_tags_ArrayForFiltering_Starts());
+      dispatch(handle_tags_ArrayForFiltering_Success_Del(tags_ArrayForFiltering.indexOf(tagId)));
+    }
+  };
 
-  let selectedTagsList =
-    tags.length === 0 ? (
-      <span>아직 선택된 태그가 없습니다.</span>
-    ) : (
-      tags.map(eachTag => {
-        if (allTagsForFiltering.indexOf(eachTag.id) !== -1) {
-          return (
-            <TagIcon
-              key={eachTag.id}
-              className={`TagIcon_${eachTag.id}`}
-              tagId={eachTag.id}
-              tagColor={eachTag.tagColor}
-              onClick={() => {
-                handleClickTagIcon(eachTag.id);
-              }}
-            >
-              {eachTag.tagName}
-            </TagIcon>
-          );
-        }
-      })
-    );
+  useEffect(() => getFilteredTodosAndReviews(), [currentUser]);
 
   return (
     <FilteredTodosAndReviewsWrap>
       <FilteredTodosAndReviewsHeader>
         <Link to="/calendar/day">/calendar/day 로 돌아가기(임시)</Link>
       </FilteredTodosAndReviewsHeader>
-      <FilteredTodosAndReviewsSidebar>
-        <SideBarTags>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            필터링할 태그를 선택해 주세요.
-          </div>
-          {/* <HrLine /> */}
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>{allTagsList}</div>
+      <FilteredTodosAndReviewsMain>
+        <FilteredTodosAndReviewsSidebar>
+          <SideBarTags>
+            <AllTagsListRendering handleClickTagIcon={handleClickTagIcon} />
+            <HrLine />
+            <SelectedTagsListRendering handleClickTagIcon={handleClickTagIcon} />
+          </SideBarTags>
           <HrLine />
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            현재 선택하신 태그들입니다.
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>{selectedTagsList}</div>
-        </SideBarTags>
-        <SideBarCalendars></SideBarCalendars>
-      </FilteredTodosAndReviewsSidebar>
+          <SideBarCalendars>
+            내 캘린더
+            <MyCalendarsForFiltering />
+          </SideBarCalendars>
+        </FilteredTodosAndReviewsSidebar>
+        <FilteredTodosAndReviewsBody>
+          FliteredTodos
+          {filteredTodosAndReviews === undefined ? <></> : <FliteredTodos />}
+          {/* <FliteredTodos />
+            원럐는 위와 같이 넣고 싶었으나, 
+            이렇게 하면 filteredTodosAndReviews가 갱신되기 전에 FliteredTodos를 렌더링해서 
+            filteredTodosAndReviews가 undefined로 잡힘 
+          */}
+          <HrLine />
+          <FliteredReviews>FliteredReviews</FliteredReviews>
+        </FilteredTodosAndReviewsBody>
+      </FilteredTodosAndReviewsMain>
     </FilteredTodosAndReviewsWrap>
   );
 }
@@ -128,14 +142,31 @@ const FilteredTodosAndReviewsHeader = styled.div`
   height: 100px;
 `;
 
+const FilteredTodosAndReviewsMain = styled.div`
+  flex: 1;
+
+  display: flex;
+  border: 1px solid purple;
+`;
+
 const FilteredTodosAndReviewsSidebar = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid black;
-  flex-basis: auto;
+  flex: 0 0 auto;
   height: 100%;
   width: 250px;
 `;
+
+const FilteredTodosAndReviewsBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border: 5px solid yellow;
+  padding: 10px;
+`;
+
+const FliteredReviews = styled.div``;
 
 const SideBarTags = styled.div`
   flex: 1;

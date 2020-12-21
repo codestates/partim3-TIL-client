@@ -6,10 +6,9 @@ import { RootState } from '../../../modules';
 import { Input } from '../../atoms';
 
 import {
-  handle_defaultfilteringTags_Start,
-  handle_defaultfilteringTags_Success,
-  handle_defaultfilteringTags_Failure,
-} from '../../../modules/handle_SideBarTag_defaultFilteringTag';
+  handle_first_filtering_on_sidebar_day_start,
+  handle_first_filtering_on_sidebar_day_success,
+} from '../../../modules/handle_TagsAndCalsArrayForFiltering';
 
 export default function SidebarTag() {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
@@ -27,8 +26,8 @@ export default function SidebarTag() {
   const dispatch = useDispatch();
 
   const handleClickTagIcon = (tagId: number) => {
-    dispatch(handle_defaultfilteringTags_Start());
-    dispatch(handle_defaultfilteringTags_Success(tagId));
+    dispatch(handle_first_filtering_on_sidebar_day_start());
+    dispatch(handle_first_filtering_on_sidebar_day_success(tagId));
     history.push('/filtered');
 
     // 클릭한 tagId 를 기준으로 FilteredTodosAndReviews에서 최초 필터링을 하게 수정했음

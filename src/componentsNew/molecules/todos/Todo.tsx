@@ -216,7 +216,7 @@ export default function Todo({
       tags.map(eachTag => {
         if (newArrayOfTagsId.indexOf(eachTag.id) !== -1) {
           return (
-            <TagIcon key={eachTag.id} tagColor={eachTag.tagColor}>
+            <TagIcon key={eachTag.id} tagId={eachTag.id} tagColor={eachTag.tagColor}>
               {eachTag.tagName}
             </TagIcon>
           );
@@ -370,8 +370,21 @@ export default function Todo({
   }
 
   return (
-    <div style={{ flex: 1, margin: '1px' }}>
-      <TodoWrap onClick={() => setDisplayFixOrDelTodoModal(true)}>title : {title}</TodoWrap>
+    <>
+      <TodoWrap onClick={() => setDisplayFixOrDelTodoModal(true)}>
+        <div style={{ display: 'flex', flex: 1, margin: '10px' }}>title : {title}</div>
+        <div
+          style={{
+            display: 'flex',
+            flex: 2,
+            justifyContent: 'flex-end',
+            flexWrap: 'wrap',
+            marginRight: '5px',
+          }}
+        >
+          {selectedTags}
+        </div>
+      </TodoWrap>
       {displayFixOrDelTodoModal ? (
         <FixOrDelTodoModalWrap
           style={{
@@ -384,13 +397,15 @@ export default function Todo({
           </FixOrDelTodoModalBackground>
         </FixOrDelTodoModalWrap>
       ) : null}
-    </div>
+    </>
   );
 }
 
 const TodoWrap = styled.div`
+  display: flex;
   width: 100%;
-  border: 1px solid black;
+  align-items: center;
+  justify-content: 'space-between';
 `;
 
 const FixOrDelTodoModalWrap = styled.div`
@@ -445,11 +460,12 @@ const TagSelectWindow = styled.div`
   padding: 5px;
 `;
 
-const TagIcon = styled.div<{ tagColor: string }>`
+const TagIcon = styled.div<{ tagId: number; tagColor: string }>`
   border-radius: 10px;
   background-color: ${props => props.tagColor};
   color: white;
   font-weight: bold;
   padding: 4px;
   margin: 4px;
+  box-shadow: 5px 5px 5px grey; // 클릭한 것만 이런 강조 효과를 주고 싶었는데,
 `;
