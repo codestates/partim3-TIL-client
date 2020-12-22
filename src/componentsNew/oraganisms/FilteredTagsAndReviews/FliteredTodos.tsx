@@ -1,19 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { RootState } from '../../../modules';
 import styled from 'styled-components';
+
+import {
+  handleTodayStart,
+  handleTodaySuccess,
+  handleTodayFailure,
+} from '../../../modules/handleToday';
+import {
+  handleCheckedCalStart,
+  handleCheckedCalSuccess_add,
+  handleCheckedCalSuccess_del,
+  handleCheckedCalFailure,
+} from '../../../modules/handleCheckedCal';
+import { todayProps } from '../../../types';
 
 interface andFilteredTodoIdType {
   [name: string]: number;
 }
 
 export default function FliteredTodos() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   const { filteredTodosAndReviews } = useSelector(
     (state: RootState) => state.handle_filteredTodosAndReviews,
   );
   const { tags_ArrayForFiltering } = useSelector(
     (state: RootState) => state.handle_TagsAndCalsArrayForFiltering,
   );
+  const { cals_ArrayForFiltering } = useSelector(
+    (state: RootState) => state.handle_TagsAndCalsArrayForFiltering,
+  );
+  const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
+
+  const goToClickedTodo_CalendarDayPage = (
+    eachTodoCalendarId: number,
+    clickedTodo_Date: todayProps,
+  ) => {
+    dispatch(handleTodayStart());
+    dispatch(handleTodaySuccess(clickedTodo_Date));
+
+    let delTime = checkedCalArray.length - 1;
+
+    for (let i = delTime; i >= 0; i--) {
+      dispatch(handleCheckedCalStart());
+      dispatch(handleCheckedCalSuccess_del(checkedCalArray.indexOf(checkedCalArray[i])));
+    }
+
+    dispatch(handleCheckedCalSuccess_add(eachTodoCalendarId));
+
+    history.push('/calendar/day');
+  };
 
   let andFilteredTodoId: andFilteredTodoIdType = {};
 
@@ -30,34 +70,63 @@ export default function FliteredTodos() {
               if (eachTodo.todo === null) {
                 ('');
               } else {
-                let eachTodoId = eachTodo.todo.id;
-                let eachTodoTitle = eachTodo.todo.title;
-                let eachTodoScheduleDate = JSON.parse(eachTodo.todo.scheduleDate);
-                andFilteredTodoId[eachTodoId] === undefined
-                  ? (andFilteredTodoId[eachTodoId] = 1)
-                  : andFilteredTodoId[eachTodoId]++;
+                if (cals_ArrayForFiltering.indexOf(eachTodo.todo.calendar.id) !== -1) {
+                  let eachTodoId = eachTodo.todo.id;
+                  let eachTodoTitle = eachTodo.todo.title;
+                  let eachTodoScheduleDate = JSON.parse(eachTodo.todo.scheduleDate);
+                  let eachTodoCalendarId = eachTodo.todo.calendar.id;
+                  let eachTodoCalendarName = eachTodo.todo.calendar.name;
+                  let eachTodoCalendarColor = eachTodo.todo.calendar.color;
 
-                if (andFilteredTodoId[eachTodoId] === tags_ArrayForFiltering.length) {
-                  return (
-                    <FilteredTodos_byTags key={eachTodoId} tagId={eachTodoId}>
-                      <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
-                        title : {eachTodoTitle}
-                      </div>
-                      <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
-                        {`${eachTodoScheduleDate.year}년 ${eachTodoScheduleDate.month}월 ${eachTodoScheduleDate.day}일`}
-                      </div>
-                      <div style={{ display: 'flex', flex: 1, margin: '10px' }}>
-                        {`(서버 요청) todo 별로 캘린더아이디가 따라와야, 캘린더별 필터링 가능`}
-                      </div>
-                    </FilteredTodos_byTags>
-                  );
+                  andFilteredTodoId[eachTodoId] === undefined
+                    ? (andFilteredTodoId[eachTodoId] = 1)
+                    : andFilteredTodoId[eachTodoId]++;
+
+                  if (andFilteredTodoId[eachTodoId] === tags_ArrayForFiltering.length) {
+                    return (
+                      <FilteredTodos_byTags
+                        key={eachTodoId}
+                        tagId={eachTodoId}
+                        onClick={() => {
+                          goToClickedTodo_CalendarDayPage(eachTodoCalendarId, eachTodoScheduleDate);
+                        }}
+                      >
+                        <div style={{ display: 'flex', flex: 2, margin: '10px' }}>
+                          Title : {eachTodoTitle}
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flex: 1,
+                            margin: '10px',
+                            justifyContent: 'flex-end',
+                          }}
+                        >
+                          Date&nbsp;:&nbsp;
+                          {`${eachTodoScheduleDate.year}년 ${eachTodoScheduleDate.month}월 ${eachTodoScheduleDate.day}일`}
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flex: 1,
+                            margin: '10px',
+                            justifyContent: 'flex-end',
+                          }}
+                        >
+                          {/* {`(서버 요청) todo 별로 캘린더아이디가 따라와야, 캘린더별 필터링 가능`} */}
+                          <span>Calendar&nbsp;:&nbsp;</span>
+                          <span style={{ color: `${eachTodoCalendarColor}` }}>
+                            {eachTodoCalendarName}
+                          </span>
+                        </div>
+                      </FilteredTodos_byTags>
+                    );
+                  }
                 }
               }
             });
           }
         });
-
-  console.log({ andFilteredTodoId });
 
   let filteredTodoEmpty;
 
@@ -71,7 +140,6 @@ export default function FliteredTodos() {
   }
 
   if (Object.keys(andFilteredTodoId).length === 0) {
-    console.log('sdg');
     filteredTodoEmpty = '필터링된 결과가 없습니다.';
   }
 
@@ -84,16 +152,18 @@ export default function FliteredTodos() {
 }
 
 const FliteredTodosWrap = styled.div`
+  display: flex;
+  flex-direction: column;
   border: 1px solid red;
   margin: 5px;
 `;
 
 // Tag별 개별 Todo들
 const FilteredTodos_byTags = styled.div<{ tagId: number }>`
+  display: flex;
+  flex: 1;
   border: 1px solid blue;
   margin: 5px;
-  display: flex;
-  width: 100%;
   align-items: center;
   justify-content: 'space-between';
 `;
