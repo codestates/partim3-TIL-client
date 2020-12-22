@@ -88,6 +88,7 @@ export default function FilteredTodosAndReviews() {
           </SideBarTags>
           <HrLine />
           <SideBarCalendars>
+            필터링할 캘린더를 선택해 주세요.<br></br>
             내 캘린더
             <MyCalendarsForFiltering />
           </SideBarCalendars>
@@ -160,14 +161,14 @@ const FilteredTodosAndReviewsBody = styled.div`
 const FliteredReviews = styled.div``;
 
 const SideBarTags = styled.div`
-  flex: 1;
+  flex: 0 0 30%;
   border: 1px solid blue;
   width: 100%;
   padding: 10px;
 `;
 
 const SideBarCalendars = styled.div`
-  flex: 1;
+  /* flex: 1; */
   border: 1px solid blue;
   width: 100%;
   padding: 10px;

@@ -33,6 +33,11 @@ interface filteredTodosAndReviewsType {
       id: number;
       scheduleDate: string;
       title: string;
+      calendar: {
+        id: number;
+        color: string;
+        name: string;
+      };
     };
   }>;
   reviewTags: Array<{
