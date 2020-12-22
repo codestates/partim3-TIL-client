@@ -14,7 +14,7 @@ export default function LoginGeneral({ handleChange }: LoginGeneralProps) {
     <LoginGeneralWrap>
       <LoginGeneralElements>
         {/* 이메일 */}
-        <BsFillAwardFill></BsFillAwardFill>
+        {/* <BsFillAwardFill></BsFillAwardFill> */}
         <Input
           type="email"
           name="email"
@@ -28,7 +28,7 @@ export default function LoginGeneral({ handleChange }: LoginGeneralProps) {
       {/* 패스워드 */}
       <LoginGeneralElements>
         {/* 이메일 */}
-        <BsFillAwardFill></BsFillAwardFill>
+        {/* <BsFillAwardFill></BsFillAwardFill> */}
         <Input
           type="password"
           name="password"

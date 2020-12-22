@@ -1,15 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import NaverLogin from '../molecules/login/NaverLogin';
+import SocialLoginGoogle from '../molecules/login/SocialLoginGoogle';
+
 // 버튼만 있는 상태임. 기능구현 필요
 export default function SignupSocial() {
   return (
     <SocialSignupWrap>
-      <ButtonWrap value="naver" color="green">
-        naver
+      <ButtonWrap>
+        <NaverLogin />
       </ButtonWrap>
-      <ButtonWrap value="google" color="red">
-        google
+      <ButtonWrap>
+        <SocialLoginGoogle buttonText="Google Signup" />
       </ButtonWrap>
     </SocialSignupWrap>
   );
@@ -23,10 +26,9 @@ const SocialSignupWrap = styled.div`
   justify-content: center;
 `;
 
-const ButtonWrap = styled.button`
+const ButtonWrap = styled.div`
   margin: 5px;
-  height: 40px;
   width: 100%;
-  background-color: ${props => props.color};
-  border-radius: 5px;
+  display: flex;
+  justify-content: center;
 `;

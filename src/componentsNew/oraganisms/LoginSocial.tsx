@@ -11,7 +11,7 @@ export default function LoginSocial() {
         <NaverLogin />
       </ButtonWrap>
       <ButtonWrap>
-        <SocialLoginGoogle />
+        <SocialLoginGoogle buttonText="Google Login" />
       </ButtonWrap>
     </LoginSocialWrap>
   );
@@ -26,9 +26,8 @@ const LoginSocialWrap = styled.div`
 `;
 
 const ButtonWrap = styled.div`
-  margin: 10px;
-  /* height: 40px; */
+  margin: 5px;
   width: 100%;
-  background-color: ${props => props.color};
-  border-radius: 5px;
+  display: flex;
+  justify-content: center;
 `;

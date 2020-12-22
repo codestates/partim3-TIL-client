@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import LoginGeneral from '../oraganisms/LoginGeneral';
 import LoginSocial from '../oraganisms/LoginSocial';
 
+import { GoSignIn } from 'react-icons/go';
+
 interface LoginProps {
   handleChange: (
     event: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
@@ -30,14 +32,15 @@ export default function Login({ handleChange, postLoginReq }: LoginProps) {
 
         <div style={{ margin: '10px 0px', width: '100%' }}>
           {/* 로그인 버튼 */}
-          <ButtonWrap value="Get started!" color="skyblue" onClick={postLoginReq}>
-            Log in!
+          <ButtonWrap value="Get started!" onClick={postLoginReq}>
+            <GoSignIn size="1.7em" style={{ flex: 1, color: '#585858' }} />
+            <span style={{ flex: 5, fontSize: '20px' }}>Sign in!</span>
           </ButtonWrap>
         </div>
 
         <div>
           {/* 가로선 */}
-          <hr style={{ height: 3, width: '300px', background: 'gray' }}></hr>
+          <hr style={{ height: 3, width: '280px', background: 'gray', margin: '5px 0px' }}></hr>
         </div>
 
         <div style={{ margin: '10px 0px', width: '100%' }}>
@@ -72,7 +75,7 @@ const LoginPage = styled.div`
 
 const LoginWrap = styled.div`
   flex: 1;
-  width: 300px;
+  width: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,9 +83,10 @@ const LoginWrap = styled.div`
 `;
 
 const ButtonWrap = styled.button`
-  padding: 5px;
-  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  height: 60px;
   width: 100%;
-  background-color: ${props => props.color};
   border-radius: 5px;
 `;
