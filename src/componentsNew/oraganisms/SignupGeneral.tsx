@@ -14,7 +14,7 @@ export default function SignupGeneral({ handleChange }: SignupGeneralProps) {
     <SignupGeneralWrap>
       <SignupGeneralElements>
         {/* 이메일 */}
-        <BsFillAwardFill></BsFillAwardFill>
+        {/* <BsFillAwardFill></BsFillAwardFill> */}
         <Input
           type="email"
           name="email"
@@ -26,7 +26,7 @@ export default function SignupGeneral({ handleChange }: SignupGeneralProps) {
       </SignupGeneralElements>
       <SignupGeneralElements>
         {/* 닉네임 */}
-        <BsFillAwardFill></BsFillAwardFill>
+        {/* <BsFillAwardFill></BsFillAwardFill> */}
         <Input
           type="text"
           name="nickname"
@@ -37,7 +37,7 @@ export default function SignupGeneral({ handleChange }: SignupGeneralProps) {
       </SignupGeneralElements>
       <SignupGeneralElements>
         {/* 패스워드 */}
-        <BsFillAwardFill></BsFillAwardFill>
+        {/* <BsFillAwardFill></BsFillAwardFill> */}
         <Input
           type="password"
           name="password"
@@ -48,7 +48,7 @@ export default function SignupGeneral({ handleChange }: SignupGeneralProps) {
       </SignupGeneralElements>
       <SignupGeneralElements>
         {/* 패스워드 확인 */}
-        <BsFillAwardFill></BsFillAwardFill>
+        {/* <BsFillAwardFill></BsFillAwardFill> */}
         <Input
           type="password"
           name="passwordConfirm"

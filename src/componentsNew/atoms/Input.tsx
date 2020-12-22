@@ -39,4 +39,9 @@ interface InputWrapProps {
 
 const InputWrap = styled.input`
   flex: ${(props: InputWrapProps) => props.smInput};
+  height: 35px;
+  font-size: 1.1em;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
 `;
