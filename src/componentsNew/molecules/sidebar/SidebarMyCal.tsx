@@ -71,7 +71,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
     }
 
     return axios
-      .delete(`${REACT_APP_URL}calendar/deletecalendar`, {
+      .delete(`${REACT_APP_URL}/calendar/deletecalendar`, {
         data: {
           userId: currentUser,
           calendarId: calID,

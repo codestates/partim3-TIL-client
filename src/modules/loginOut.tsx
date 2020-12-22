@@ -3,6 +3,7 @@ const AUTH_LOGIN_START = 'AUTH_LOGIN_START';
 const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
 const AUTH_LOGIN_FAILURE = 'AUTH_LOGIN_FAILURE';
 const AUTH_LOGOUT = 'AUTH_LOGOUT';
+const AUTH_UPDATE_NICKNAME = 'AUTH_UPDATE_NICKNAME';
 
 /* 2. 액션생성자 함수 : 액션 객체(action 객체의 type 값은 "AUTH_login" 등등)를 리턴합니다. */
 
@@ -23,7 +24,6 @@ export function loginSuccess(id: number, nickname: string) {
 export function loginFailure() {
   return {
     type: AUTH_LOGIN_FAILURE,
-    // error,
   };
 }
 
@@ -33,19 +33,22 @@ export function logout() {
   };
 }
 
-interface loginType {
-  status: string;
-}
-
-interface statusType {
-  isLoggedIn: boolean;
-  currentUser: number | null;
-  nickname: string | null;
+export function updateNickname(newNickname: string) {
+  return {
+    type: AUTH_UPDATE_NICKNAME,
+    newNickname,
+  };
 }
 
 interface initialStateType {
-  login: loginType;
-  status: statusType;
+  login: {
+    status: string;
+  };
+  status: {
+    isLoggedIn: boolean;
+    currentUser: number | null;
+    nickname: string | null;
+  };
 }
 
 /* 3. initialState 및 reducer 함수 */
@@ -62,13 +65,14 @@ const initialState: initialStateType = {
 
 /* reducer func*/
 
-interface loginProp {
+interface actionType {
   type: string;
   id: number | null;
   nickname: string | null;
+  newNickname: string;
 }
 
-export default function loginOut(state = initialState, action: loginProp) {
+export default function loginOut(state = initialState, action: actionType) {
   switch (action.type) {
     case AUTH_LOGIN_START:
       return {
@@ -110,7 +114,14 @@ export default function loginOut(state = initialState, action: loginProp) {
           nickname: null,
         },
       };
-
+    case AUTH_UPDATE_NICKNAME:
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          nickname: action.newNickname,
+        },
+      };
     default:
       return state;
   }

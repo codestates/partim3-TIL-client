@@ -8,14 +8,7 @@ import axios from 'axios';
 import REACT_APP_URL from '../config';
 
 import { RootState } from '../modules';
-import {
-  getUserInfoStart,
-  getUserInfoSuccess,
-  getUserInfoFailure,
-  updateUerInfoStart,
-  updateUserInfoSuccess,
-  updateUserInfoFailure,
-} from '../modules/handleUserInfo';
+import { updateNickname } from '../modules/loginOut';
 
 import MypageSetting from '../componentsNew/pages/MypageSetting';
 import { MypageHeaderAndSidebar } from '../componentsNew/oraganisms';
@@ -25,16 +18,10 @@ export default function MypageSettingContainer() {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
-  const [isUpdated, setIsUpdated] = useState(false);
-
-  const userInfoState = useSelector((state: RootState) => state.handleUserInfo); // 끝에 [] 해줘야하는데 에러가 난다
-  // userInfo get 요청에 대응하는 API가 없으므로, 위 코드는 지금은 쓰이질 않고 있음
 
   const loginStatus = useSelector((state: RootState) => state.loginOut.status);
   const currentUser = loginStatus.currentUser as number;
   const currentNickname = loginStatus.nickname as string;
-  // 일단 이렇게 처리는 하는데, mypage의 userInfo get 요청을 통해 받아오는 nickname을 내려주도록 변경해야 한다.
-  // (userInfo get 요청에 대응하는 API를 서버에서 만들어주셔야 함)
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -115,31 +102,12 @@ export default function MypageSettingContainer() {
     }
   };
 
-  // 닉네임 변경시에 이 컴포넌트만 새롭게 렌더링할건데, 이 때 변경된 닉네임을 즉시 받아오고 싶음
-  // 그러므로 이 컴포넌트에서 get 요청이 필요하다 (API 요청하기)
-  const getUserInfo = (currentUserId: string) => {
-    dispatch(getUserInfoStart());
-
-    return axios
-      .get(`${REACT_APP_URL}/users/${currentUserId}`, {
-        withCredentials: true,
-      })
-      .then(userInfo => {
-        dispatch(getUserInfoSuccess(userInfo.data));
-      })
-      .catch(error => {
-        dispatch(getUserInfoFailure());
-      });
-  };
-
   const updateUserInfo = (
     currentUser: number,
-    newNickname: string | null,
-    oldPassword: string | null,
+    newNickname: string,
+    oldPassword: string,
     newPassword: string | null,
   ) => {
-    dispatch(updateUerInfoStart());
-
     return axios
       .put(
         `${REACT_APP_URL}/user/updateuser`,
@@ -154,20 +122,10 @@ export default function MypageSettingContainer() {
         },
       )
       .then(response => {
-        dispatch(updateUserInfoSuccess());
-        // 여기다 모달 : handleShow();
-        alert('업데이트 성공');
-        setIsUpdated(true);
+        dispatch(updateNickname(newNickname));
       })
-      .catch(error => {
-        dispatch(updateUserInfoFailure());
-      });
+      .catch(error => {});
   };
-
-  // useEffect(() => {
-  //   getUserInfo(currentUser);
-  //   setIsUpdated(false);
-  // }, [isUpdated]);
 
   //calendar링크를 위한 코드
   const childComponent = (

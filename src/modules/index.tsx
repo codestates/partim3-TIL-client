@@ -3,7 +3,6 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import signup from './signup';
-import handleUserInfo from './handleUserInfo';
 import calendarDay from './calendarM';
 import handleToday from './handleToday';
 import loginOut from './loginOut';
@@ -22,7 +21,6 @@ const persistConfig = {
   // auth, board, studio 3개의 reducer 중에 auth reducer만 localstorage에 저장합니다.
 
   whitelist: [
-    'handleUserInfo',
     'loginOut',
     'calendarDay',
     'handleToday',
@@ -39,7 +37,6 @@ const persistConfig = {
 
 const reducers = combineReducers({
   signup,
-  handleUserInfo,
   loginOut,
   calendarDay,
   handleToday,
