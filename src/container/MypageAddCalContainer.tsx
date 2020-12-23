@@ -82,7 +82,6 @@ export default function MypageAddCalContainer() {
   //   getMessage();
   // };
 
-
   //초반의 messages는 빈배열인 상태.
   //하위에서 클릭시 변경값을 받아올 수 있도록, messageStatus를 내린다.
   //변경값으로 무엇을 받아와야 할까?
@@ -96,7 +95,7 @@ export default function MypageAddCalContainer() {
   // const { messages } = useSelector((state: RootState) => state.mypageCalendarMessagesM);
   //받은 메세지를 하위로 내려주기 위해 리덕스에서 받아오기
 
-  console.log('MypageAddCalContainer');
+  getMessage();
   let childComponent = (
     <MypageAddCal connectcalendarauthority={connectcalendarauthority}></MypageAddCal>
   );
