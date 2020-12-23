@@ -7,55 +7,50 @@ import { calendarSelected } from '../../modules/selectedCalM';
 
 import MypageCalendar from '../pages/MypageCalendar';
 
-export default function MypageCalSidebar({ changeCalComponent, myCalendar, shareCalendar }: any) {
+export default function MypageCalSidebar({ myCalendar, shareCalendar }: any) {
   //curComponent가 mypageCalendar일때 캘린더들의 리스트를 랜더링
-  const history = useHistory();
 
   //동기적으로 처리해주기 위해서 useEffect사용.
 
   let myCalList = myCalendar.map((el: any) => {
     return (
-      <Link
-        to={`/mypage/calendar/${el.name}`}
-        style={{ textDecoration: 'none', color: 'black' }}
-        key={el.id}
-      >
-        <CalendarList>
-          <ColorCircle color={el.color}></ColorCircle>
-          <div>{el.name}</div>
-        </CalendarList>
-      </Link>
+      <AddCal key={el.id}>
+        <Link
+          to={`/mypage/calendar/mycal/${el.name}`}
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          <CalendarList>
+            <ColorCircle color={el.color}></ColorCircle>
+            <div>{el.name}</div>
+          </CalendarList>
+        </Link>
+      </AddCal>
     );
   });
 
   let shareCalList = shareCalendar.map((el: any) => {
     return (
-      <Link
-        to={`/mypage/calendar/${el.name}`}
-        style={{ textDecoration: 'none', color: 'black' }}
-        key={el.id}
-      >
-        <CalendarList key={el.id}>
-          <ColorCircle></ColorCircle>
-          <div>{el.name}</div>
-        </CalendarList>
-      </Link>
+      <AddCal key={el.id}>
+        <Link
+          to={`/mypage/calendar/share/${el.name}`}
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
+          <CalendarList key={el.id}>
+            <ColorCircle color={el.color}></ColorCircle>
+            <div>{el.name}</div>
+          </CalendarList>
+        </Link>
+      </AddCal>
     );
   });
 
-  // const changeCurCalName = (e: any) => {
-  //   setCurCal(e);
-  // };
-
-  //param을 바로 받아오기 불가능.
-  // useEffect(() => {
-  //   if (paramName !== 'unClicked') {
-  //     console.log(match.params);
-  //   }
-  // }, [paramName]);
-
   return (
     <CalendarContainer>
+      <AddCal>
+        <Link to={`/mypage/calendar`} style={{ textDecoration: 'none', color: 'black' }}>
+          캘린더 추가
+        </Link>
+      </AddCal>
       <div>내 캘린더</div>
       <div>{myCalList}</div>
       <div>공유받은 캘린더</div>
@@ -91,12 +86,13 @@ const ColorCircle = styled.div<{ color?: string }>`
   display: inline-block;
 `;
 
-//캘린더 공유 페이지
-
-const CalendarShare = styled.div`
-  flex: 1;
-`;
-
-const CalendarShareTitle = styled.div`
-  font-weight: bold;
+//나중에 픽셀로 고정으로 잡을 것.
+const AddCal = styled.div`
+  &:hover {
+    margin-left: -0.5vw;
+    padding-left: 0.5vw;
+    background-color: #f0f2f1;
+    color: black;
+    border-radius: 0 10px 10px 0;
+  }
 `;
