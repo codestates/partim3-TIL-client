@@ -13,6 +13,7 @@ import handleCheckedCal from './handleCheckedCal';
 import handle_filteredTodosAndReviews from './handle_filteredTodosAndReviews';
 import handle_TagsAndCalsArrayForFiltering from './handle_TagsAndCalsArrayForFiltering';
 import mypageCalendarMessagesM from './mypageCalendarMessagesM';
+import handle_rerenderCalendarDay from './handle_rerenderCalendarDay';
 
 const persistConfig = {
   key: 'root',
@@ -31,6 +32,7 @@ const persistConfig = {
     'handleCheckedCal',
     'handle_filteredTodosAndReviews',
     'handle_TagsAndCalsArrayForFiltering',
+    'handle_rerenderCalendarDay',
   ],
 
   // blacklist -> 그것만 제외합니다(여기서는 적용하지 않았음)
@@ -48,6 +50,7 @@ const reducers = combineReducers({
   handle_filteredTodosAndReviews,
   handle_TagsAndCalsArrayForFiltering,
   mypageCalendarMessagesM,
+  handle_rerenderCalendarDay,
 });
 
 export type RootState = ReturnType<typeof reducers>;

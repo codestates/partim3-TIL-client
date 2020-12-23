@@ -6,6 +6,11 @@ import axios from 'axios';
 import REACT_APP_URL from '../config';
 import { RootState } from '../modules';
 import { mypageCalendarMessageSuccess } from '../modules/mypageCalendarMessagesM';
+import {
+  handle_rerenderCalendarDay_Start,
+  handle_rerenderCalendarDay_Success,
+  handle_rerenderCalendarDay_Failure,
+} from '../modules/handle_rerenderCalendarDay';
 import mypageCalendarMessagesM from '../modules';
 
 export default function MypageAddCalContainer() {
@@ -38,6 +43,8 @@ export default function MypageAddCalContainer() {
   };
 
   const connectcalendarauthority = (messageId: number, answer: boolean) => {
+    dispatch(handle_rerenderCalendarDay_Start());
+
     axios
       .post(
         `${REACT_APP_URL}/calendar/connectcalendarauthority`,
@@ -50,13 +57,14 @@ export default function MypageAddCalContainer() {
       )
       .then(res => {
         console.log(res.data);
+        // MypageHeaderAndSidebar의 getAllCals를 다시 실행하는 리듀서 여기다 걸기
+        dispatch(handle_rerenderCalendarDay_Success(true));
       })
       .catch(err => {
         console.log(err);
+        dispatch(handle_rerenderCalendarDay_Failure());
       });
   };
-
-  // const handleMessage = () => {};
 
   //문제점: 최초랜더링시 빈배열이 랜더링 되는 문제.
   //사이드바의 캘린더 추가버튼을 클릭시 calendar 주소로 이동한다.
@@ -74,9 +82,6 @@ export default function MypageAddCalContainer() {
   //   getMessage();
   // };
 
-  // useEffect(() => {
-  //   setMessageStatus(false);
-  // }, [messageStatus]);
 
   //초반의 messages는 빈배열인 상태.
   //하위에서 클릭시 변경값을 받아올 수 있도록, messageStatus를 내린다.
@@ -88,7 +93,6 @@ export default function MypageAddCalContainer() {
   //생각해보니 이렇게 복잡하게 할 필요없이, 컴포넌트 실행시에 값을 받아서 내려주면 된다.
   //calendar로 라우팅이 되면 메세지를 받아오기.
 
-  getMessage();
   // const { messages } = useSelector((state: RootState) => state.mypageCalendarMessagesM);
   //받은 메세지를 하위로 내려주기 위해 리덕스에서 받아오기
 
