@@ -12,6 +12,7 @@ import handleTags from './handleTags';
 import handleCheckedCal from './handleCheckedCal';
 import handle_filteredTodosAndReviews from './handle_filteredTodosAndReviews';
 import handle_TagsAndCalsArrayForFiltering from './handle_TagsAndCalsArrayForFiltering';
+import mypageCalendarMessagesM from './mypageCalendarMessagesM';
 
 const persistConfig = {
   key: 'root',
@@ -46,6 +47,7 @@ const reducers = combineReducers({
   handleCheckedCal,
   handle_filteredTodosAndReviews,
   handle_TagsAndCalsArrayForFiltering,
+  mypageCalendarMessagesM,
 });
 
 export type RootState = ReturnType<typeof reducers>;

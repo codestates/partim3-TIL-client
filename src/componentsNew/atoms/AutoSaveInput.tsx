@@ -7,11 +7,10 @@ export default function AutoSaveInput({ handleChange, value }: any) {
   const [isErrMode, setisErrMode] = useState(false);
   const [newValue, setNewValue] = useState(value);
 
-  // 왜 useEffect를 두번이나 쓸까?
   useEffect(() => {
     if (isEditMode) {
-      console.log('1번: isEditMode');
-      console.log('2번:', newValue);
+      // console.log('1번: isEditMode');
+      // console.log('2번:', newValue);
       inputEl.current.focus();
     }
   }, [isEditMode]);

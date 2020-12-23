@@ -73,10 +73,10 @@ function CalendarDayContainer() {
       })
       .then(res => {
         let { myCalendars, shareCalendars } = res.data;
+        console.log(res.data);
         dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
 
         // myCalendars에 포함된 todo/review 처리
-        console.log(myCalendars);
         let resTodo = new Array();
 
         for (let i in myCalendars) {

@@ -20,11 +20,17 @@ export default function MypageCalendar({
   curCalColor,
   handleNewName,
   handleNewCalColor,
+  currentUser,
+  curCalId,
+  shareId,
+  shareCalName,
 }: any) {
   //유저추가 모달
 
   const [handleModalDropbox, setHandleModalDropbox] = useState(false);
   const [serchNickName, setSerchNickName] = useState('닉네임 검색');
+  const [dropboxDefaltValue, setDropboxDefaultValue] = useState('캘린더 보기');
+  // console.log('5번 닉네임 변경확인   :', serchNickName);
 
   const handleCloseModal = () => {
     setHandleModalDropbox(false);
@@ -33,8 +39,10 @@ export default function MypageCalendar({
   const openAddUserModal = () => {
     setHandleModalDropbox(true);
   };
-  const actionFunction = () => {
-    console.log('hi');
+  const actionFunction = (select: string) => {
+    console.log('mypagecalendar 값 받음  :', select);
+    postMessage(select);
+    setHandleModalDropbox(false);
   };
 
   const serchUser = (serchNickName: string) => {
@@ -47,10 +55,50 @@ export default function MypageCalendar({
         { withCredentials: true },
       )
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch(err => {
         setSerchNickName('존재하지 않는 유저입니다.');
+        console.log(err);
+      });
+  };
+
+  const postMessage = (select: string) => {
+    // 하드코딩인가..
+    let read = false;
+    let write = false;
+    let auth = false;
+    if (select === '캘린더 보기') {
+      read = true;
+    }
+    if (select === '보기 & 편집') {
+      read = true;
+      write = true;
+    }
+    if (select === '보기 & 편집 & 공유') {
+      read = true;
+      write = true;
+      auth = true;
+    }
+    console.log({ select }, { read }, { write }, { auth });
+    axios
+      .post(
+        `${REACT_APP_URL}/user/message`,
+        {
+          userId: currentUser,
+          otherNickname: serchNickName,
+          read,
+          write,
+          auth,
+          calendarId: curCalId,
+        },
+        { withCredentials: true },
+      )
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        alert('닉네임을 입력해주세요');
         console.log(err);
       });
   };
@@ -62,9 +110,10 @@ export default function MypageCalendar({
       actionFunction={actionFunction}
       handleCloseModal={handleCloseModal}
       dropboxMenus={['캘린더 보기', '보기 & 편집', '보기 & 편집 & 공유']}
+      dropboxDefaltValue={dropboxDefaltValue}
       value={serchNickName}
       handleChange={async (inputVal: string) => {
-        console.log('6번 :', inputVal, '최종전달지로 받음');
+        // console.log('6번 :', inputVal, '최종전달지로 받음');
         await setSerchNickName(inputVal);
         await serchUser(inputVal);
       }}
@@ -186,10 +235,17 @@ const ChangeCalTitle = styled.div`
   margin-right: 1vh;
 `;
 
+//캘린더 공유 수락 페이지
+const Admit = styled.button`
+  border: 0px;
+  outline: none;
+  background-color: white;
+`;
+
 //캘린더 공유 페이지
 
 const CalendarShare = styled.div`
-  margin-top: 1vh;
+  margin-top: 2vh;
   flex: 1;
 `;
 

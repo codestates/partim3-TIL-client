@@ -12,6 +12,8 @@ import SignupContainer from './container/SignupContainer';
 import LoginContainer from './container/LoginContainer';
 import CalendarDayContainer from './container/CalendarDayContainer';
 import FilteredTodosAndReviewsContainer from './container/FilteredTodosAndReviewsContainer';
+import MypageAddCalContainer from './container/MypageAddCalContainer';
+import MypageShareCalendar from './container/MypageShareCalendar';
 
 // import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -28,7 +30,9 @@ function App() {
           {/* <Route exact path="/mypage" component={MypageSettingContainer} /> */}
           <Route path="/mypage/profile" component={MypageSettingContainer} />
           <Route path="/mypage/tags" component={MypageTagsContainer} />
-          <Route exact path="/mypage/calendar/:calName" component={MypageCalendarContainer} />
+          <Route exact path="/mypage/calendar" component={MypageAddCalContainer} />
+          <Route exact path="/mypage/calendar/mycal/:calName" component={MypageCalendarContainer} />
+          <Route exact path="/mypage/calendar/share/:calName" component={MypageShareCalendar} />
           <Route path="/login" component={LoginContainer} />
           <Route path="/calendar/day" component={CalendarDayContainer} />
           <Route path="/filtered" component={FilteredTodosAndReviewsContainer} />

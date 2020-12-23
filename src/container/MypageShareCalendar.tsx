@@ -112,7 +112,7 @@ export default function MypageCalendarContainer({ match }: any) {
       // console.log('6번 :', calName, 'container calName use');
       await calNameUpdate(calName);
       await getUpdatedCal();
-      await history.push(`/mypage/calendar/mycal/${calName}`);
+      await history.push(`/mypage/calendar/share/${calName}`);
     };
     orderF();
   }, [calName]);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import AutoSaveInput from './AutoSaveInput';
 
@@ -59,12 +59,31 @@ export default function ModalDropbox({
   value,
   handleChange,
 }: any) {
+  const [isEditMode, setEditMode] = useState(false);
+  const [dropboxValue, setDropboxValue] = useState('');
+  // useEffect(() => {
+  //   //처음에는 isEditMode가 아니지만 클릭시에는 isEditMode가 true가 되면서 이쪽으로 들어오게 된다.
+  //   //그리고 컴포넌트는 리랜더링이 된다.
+  //   // console.log(inputEl);
+  //   // inputEl.current.focus();
+  //   // 왜 오류가 날까;;
+  // }, [isEditMode]);
+
+  const handleClick = () => {
+    setEditMode(true);
+  };
+  const handleBlur = () => {
+    setEditMode(false);
+  };
+
   const autoInputHandleChange = (inputVal: string) => {
     // console.log('5번 : ', inputVal, '상위로 전달');
     handleChange(inputVal);
   };
   const getDropboxValue = (e: any) => {
-    console.log(e.target.value);
+    // actionFunction(e.target.value);
+    // setEditMode(false);
+    setDropboxValue(e.target.value);
   };
 
   const dropboxlist = dropboxMenus.map((el: any) => {
@@ -74,6 +93,18 @@ export default function ModalDropbox({
       </option>
     );
   });
+
+  // 드롭박스 변경 -> 취소버튼 클릭 -> 사용자 추가버튼 누르면 -> 변경한 드롭박스 값이 남아 있음.
+  // 드롭박스의 값이 변경되면, 상위로 변경된 드롭박스의 내용이 전달됨
+
+  // 취소버튼을 눌렀을때, 상위에서 권한 설정을 초기버전으로 state값 변경
+  // state값이 변경되지만, 리랜더링이 되지는 않는 것으로 보임.
+  // 모달은 클릭이 되었을때, 값이 세팅이 되는건가?
+  // 모달 버튼을 클릭할 때마다 재실행이 되는데
+  // 재실행은 되는데, select박스의 값이 그대로 남아 있는 이유가 뭘까.
+
+  // 이해는 안되지만 다른 방식으로 코드 도입
+  // idEditMode일때와 아닐 때 랜더링을 다르게 했다.
 
   return (
     <ModalDropboxWrap isVisible={isVisible}>
@@ -92,11 +123,24 @@ export default function ModalDropbox({
               </Space>
               <DropboxArea>
                 <DropboxTitle>권한설정</DropboxTitle>
-                <DropBox onClick={getDropboxValue}>{dropboxlist}</DropBox>
+                {isEditMode ? (
+                  <DropBox onChange={getDropboxValue}>{dropboxlist}</DropBox>
+                ) : (
+                  <DropBox onClick={handleClick}>
+                    <option>값을 선택해주세요</option>
+                  </DropBox>
+                )}
               </DropboxArea>
               <BtnArea>
-                <BtnCanCel onClick={() => handleCloseModal()}>취소</BtnCanCel>
-                <BtnSubmit onClick={() => actionFunction()}>보내기</BtnSubmit>
+                <BtnCanCel
+                  onClick={() => {
+                    handleCloseModal();
+                    setEditMode(false);
+                  }}
+                >
+                  취소
+                </BtnCanCel>
+                <BtnSubmit onClick={() => actionFunction(dropboxValue)}>보내기</BtnSubmit>
               </BtnArea>
             </Changebox>
           </div>
