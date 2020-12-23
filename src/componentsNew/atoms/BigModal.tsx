@@ -16,7 +16,7 @@ export default function BigModal(props: any) {
   const [min, setMin] = useState(getToday().min);
 
   const [selectedCalendar, setSelectedCalendar] = useState(NaN);
-  const { register, handleSubmit, reset, errors } = useForm();
+  // const { register, handleSubmit, reset, errors } = useForm();
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
   // const [timeChange, settimeChange] = React.useState(false);
 
@@ -111,7 +111,7 @@ export default function BigModal(props: any) {
 
   const hideInput = () => {
     // 범위는 나중에 고민해 봐야할듯 하다..
-    reset();
+
     setDivHour(true);
     setInputHour(false);
     setDivMin(true);
@@ -119,13 +119,12 @@ export default function BigModal(props: any) {
   };
   const renderInputHour = () => {
     console.log('hi');
-    reset();
+
     setDivHour(false);
     setInputHour(true);
   };
 
   const renderInputMin = () => {
-    console.log('ho');
     setDivMin(false);
     setInputMin(true);
   };
@@ -137,7 +136,6 @@ export default function BigModal(props: any) {
           <SpaceErr></SpaceErr>
           <ModalAndArrow>
             <ErrModal show={errShow}>잘못된 시간</ErrModal>
-            {/* <Tri></Tri> */}
           </ModalAndArrow>
           <SpaceErr2></SpaceErr2>
           <CloseBtn onClick={handleCloseBtn}>X</CloseBtn>
@@ -146,14 +144,13 @@ export default function BigModal(props: any) {
         <TimeHeader>
           <MonthAndDay>{`${getToday().month}월 ${getToday().day}일`}</MonthAndDay>
           <HourInput
-            ref={register}
             value={`${getToday().hour}`}
             onClick={renderInputHour}
             show={divHour}
             hover={'yellowgreen'}
             readOnly
           ></HourInput>
-          <HourInput ref={register} show={inputHour} onChange={handleHour}></HourInput>
+          <HourInput show={inputHour} onChange={handleHour}></HourInput>
           <SpaceTime>시</SpaceTime>
           <MinInput
             value={`${getToday().min}`}
@@ -181,6 +178,7 @@ export default function BigModal(props: any) {
           <SubmitBtn
             onClick={async () => {
               const today = getToday();
+              console.log(currentUser);
               const userId = currentUser;
               const scheduleDate = {
                 year: today.year,
@@ -190,6 +188,7 @@ export default function BigModal(props: any) {
               const scheduleTime = { hour: hour, min: min };
               const imageUrl = 'www.';
               const calendarId = selectedCalendar;
+              console.log(calendarId);
               await sendReview(
                 userId,
                 title,
