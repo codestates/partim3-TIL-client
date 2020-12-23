@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import MypageCalSidebar from '../oraganisms/MypageCalSidebar';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
+import axios from 'axios';
+import REACT_APP_URL from '../../config';
+import {
+  handle_rerenderCalendarDay_Start,
+  handle_rerenderCalendarDay_Success,
+  handle_rerenderCalendarDay_Failure,
+} from '../../modules/handle_rerenderCalendarDay';
 
 interface MypageHeaderAndSidebarProps {
   childComponent: React.ReactNode;
@@ -15,9 +22,36 @@ export default function MypageHeaderAndSidebar({ childComponent, getMessage }: a
   //내려오고 난 다음부터는 문제가 없음
   //바로 이동하게 되면 사이드바로 넘어가게 되서 문제가됨.
 
-  const { myCalendar, shareCalendar } = useSelector(
-    (state: RootState) => state.getAllCalendars.allCalendars,
+  const { calendarDay_rerendered } = useSelector(
+    (state: RootState) => state.handle_rerenderCalendarDay,
   );
+
+  const [myCalendarsNames, setMyCalendarsNames] = useState([]);
+  const [shareCalendarsNames, setShareCalendarsNames] = useState([]);
+
+  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+
+  const dispatch = useDispatch();
+
+  const getAllCals = () => {
+    axios
+      .get(`${REACT_APP_URL}/calendar/calendars`, {
+        params: {
+          userId: currentUser,
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        const { myCalendars, shareCalendars } = res.data;
+        setMyCalendarsNames(myCalendars);
+        setShareCalendarsNames(shareCalendars);
+      });
+  };
+
+  useEffect(() => {
+    getAllCals();
+    dispatch(handle_rerenderCalendarDay_Success(false));
+  }, [calendarDay_rerendered]);
 
   return (
     <Container>
@@ -40,8 +74,8 @@ export default function MypageHeaderAndSidebar({ childComponent, getMessage }: a
           <Text>Calendars</Text>
 
           <MypageCalSidebar
-            myCalendar={myCalendar}
-            shareCalendar={shareCalendar}
+            myCalendar={myCalendarsNames}
+            shareCalendar={shareCalendarsNames}
           ></MypageCalSidebar>
         </Sidebar>
         <Main>{childComponent}</Main>

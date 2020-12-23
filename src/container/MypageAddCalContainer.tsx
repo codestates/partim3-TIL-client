@@ -6,6 +6,11 @@ import axios from 'axios';
 import REACT_APP_URL from '../config';
 import { RootState } from '../modules';
 import { mypageCalendarMessageSuccess } from '../modules/mypageCalendarMessagesM';
+import {
+  handle_rerenderCalendarDay_Start,
+  handle_rerenderCalendarDay_Success,
+  handle_rerenderCalendarDay_Failure,
+} from '../modules/handle_rerenderCalendarDay';
 import mypageCalendarMessagesM from '../modules';
 
 export default function MypageAddCalContainer() {
@@ -40,6 +45,8 @@ export default function MypageAddCalContainer() {
   };
 
   const connectcalendarauthority = (messageId: number, answer: boolean) => {
+    dispatch(handle_rerenderCalendarDay_Start());
+
     axios
       .post(
         `${REACT_APP_URL}/calendar/connectcalendarauthority`,
@@ -52,9 +59,12 @@ export default function MypageAddCalContainer() {
       )
       .then(res => {
         console.log(res.data);
+        // MypageHeaderAndSidebar의 getAllCals를 다시 실행하는 리듀서 여기다 걸기
+        dispatch(handle_rerenderCalendarDay_Success(true));
       })
       .catch(err => {
         console.log(err);
+        dispatch(handle_rerenderCalendarDay_Failure());
       });
   };
 
@@ -74,7 +84,7 @@ export default function MypageAddCalContainer() {
     setMessageStatus(true);
   };
 
-  useEffect(() => {}, [messageStatus]);
+  // useEffect(() => {}, [messageStatus]);
 
   //초반의 messages는 빈배열인 상태.
   //하위에서 클릭시 변경값을 받아올 수 있도록, messageStatus를 내린다.

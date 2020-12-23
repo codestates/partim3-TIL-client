@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 interface CalSettingButtonProps {
   eachCalendarName: string;
 }
-
+// url 수정 필요 : mycal / sharedcal
 export default function CalSettingButton({ eachCalendarName }: CalSettingButtonProps) {
-  let url = `/mypage/calendar/${eachCalendarName}`;
+  let url = `/mypage/calendar/mycal/${eachCalendarName}`;
   return (
     <div style={{ flex: 1 }}>
       <Link to={url}>
