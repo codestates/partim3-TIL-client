@@ -44,6 +44,15 @@ export default function MypageCalendarContainer({ match }: any) {
   const { myCalendar, shareCalendar } = useSelector(
     (state: RootState) => state.getAllCalendars.allCalendars,
   );
+  const belongsToShare = () => {
+    for (let i of shareCalendar) {
+      if (i.name === paramName) {
+        return true;
+      }
+    }
+    return false;
+  };
+  // console.log(belongsToShare());
 
   const allCalendars = myCalendar.concat(shareCalendar);
   const findColor = () => {

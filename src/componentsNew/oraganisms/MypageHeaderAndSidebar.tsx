@@ -17,7 +17,7 @@ interface MypageHeaderAndSidebarProps {
   changeCalComponent: any;
 }
 
-export default function MypageHeaderAndSidebar({ childComponent, getMessage }: any) {
+export default function MypageHeaderAndSidebar({ childComponent, handleGetMessage }: any) {
   //라우팅 주소로 calendar가 찍혔을 때 함수가 props로 내려옴.
   //내려오고 난 다음부터는 문제가 없음
   //바로 이동하게 되면 사이드바로 넘어가게 되서 문제가됨.

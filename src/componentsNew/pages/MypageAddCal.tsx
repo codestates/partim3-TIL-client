@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { RootState } from '../../modules';
+import { useSelector, useDispatch } from 'react-redux';
 
-export default function MypageAddCalendar({ messages, connectcalendarauthority }: any) {
+export default function MypageAddCalendar({ connectcalendarauthority }: any) {
   const judgeAuth = (message: any) => {
     if (message.read && message.write && message.auth) {
       return '보기&수정&공유';
@@ -11,12 +13,12 @@ export default function MypageAddCalendar({ messages, connectcalendarauthority }
       return '캘린더 보기';
     }
   };
-
+  const { messages } = useSelector((state: RootState) => state.mypageCalendarMessagesM);
   let messageList = messages.map((el: any) => {
     return (
       <Userbox key={el.id}>
         <UserBoxSetting>{el.fromUserNickname}</UserBoxSetting>
-        <UserBoxSetting>{el.shareCalendar}</UserBoxSetting>
+        <UserBoxSetting>{el.shareCalendarName}</UserBoxSetting>
         <UserBoxAuth>{judgeAuth(el) + ' 권한'}</UserBoxAuth>
         <Admit
           onClick={() => {
@@ -27,8 +29,7 @@ export default function MypageAddCalendar({ messages, connectcalendarauthority }
         </Admit>
         <Admit
           onClick={() => {
-            // connectcalendarauthority(el.id, false);
-            // handleMessage();
+            connectcalendarauthority(el.id, false);
           }}
         >
           거절
