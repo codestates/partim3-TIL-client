@@ -15,7 +15,6 @@ export default function MypageAddCalContainer() {
   //뷰에게 받아온 메세지 배열을 넘겨주기
   //뷰 컴포넌트 랜더링
   const dispatch = useDispatch();
-
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
   const getMessage = () => {
@@ -27,7 +26,6 @@ export default function MypageAddCalContainer() {
         withCredentials: true,
       })
       .then(res => {
-        //일단 state를 쓴다고 가정.
         const { myMessages } = res.data;
         //state를 쓰니 무한 반복됨. shareCalMessage 변수명을 같게 해주어서 무한 반복되는 것이었음.
         //캘린더의 상태값을 다양한 곳에서 필요로 할 것 같아서 리덕스 사용
@@ -58,7 +56,7 @@ export default function MypageAddCalContainer() {
       });
   };
 
-  const handleMessage = () => {};
+  // const handleMessage = () => {};
 
   //문제점: 최초랜더링시 빈배열이 랜더링 되는 문제.
   //사이드바의 캘린더 추가버튼을 클릭시 calendar 주소로 이동한다.
@@ -69,12 +67,16 @@ export default function MypageAddCalContainer() {
   //여기에서는 주소는 변하지 않으므로,색깔 변경시에 해당 하는 코드를 참조하자.
   //요청은 하위에서 나가지 않고, 하위의 state값 변경에 따라 상위에서 서버로 나간다.
 
-  const [messageStatus, setMessageStatus] = useState(false);
-  const handleMessageStatus = () => {
-    setMessageStatus(true);
-  };
+  // const [messageStatus, setMessageStatus] = useState(false);
+  // const handleGetMessage = () => {
+  //   console.log(messageStatus);
+  //   setMessageStatus(true);
+  //   getMessage();
+  // };
 
-  useEffect(() => {}, [messageStatus]);
+  // useEffect(() => {
+  //   setMessageStatus(false);
+  // }, [messageStatus]);
 
   //초반의 messages는 빈배열인 상태.
   //하위에서 클릭시 변경값을 받아올 수 있도록, messageStatus를 내린다.
@@ -84,19 +86,21 @@ export default function MypageAddCalContainer() {
   //boolean으로 해당 값을 세팅해 준다면?
 
   //생각해보니 이렇게 복잡하게 할 필요없이, 컴포넌트 실행시에 값을 받아서 내려주면 된다.
-
   //calendar로 라우팅이 되면 메세지를 받아오기.
+
   getMessage();
-  const { messages } = useSelector((state: RootState) => state.mypageCalendarMessagesM);
+  // const { messages } = useSelector((state: RootState) => state.mypageCalendarMessagesM);
   //받은 메세지를 하위로 내려주기 위해 리덕스에서 받아오기
 
+  console.log('MypageAddCalContainer');
   let childComponent = (
-    <MypageAddCal
-      messages={messages}
-      handleMessageStatus={handleMessageStatus}
-      connectcalendarauthority={connectcalendarauthority}
-    ></MypageAddCal>
+    <MypageAddCal connectcalendarauthority={connectcalendarauthority}></MypageAddCal>
   );
 
   return <MypageHeaderAndSidebar childComponent={childComponent}></MypageHeaderAndSidebar>;
 }
+//profile시 아예 랜더링이 되지 않은 상태
+//사이드바에 childComponent를 내려준다
+//이때 get요청을 해서 내려보내 주고 싶은데..
+//get요청 -> 리덕스 업데이트 -> 페이지 리랜더링 -> get요청의 무한루프
+//하위로 상태값을 내려보내서 useEffect로 반복시키는 수밖에.
