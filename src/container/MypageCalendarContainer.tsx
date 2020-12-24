@@ -12,6 +12,12 @@ import {
   getCalendarsSuccess,
   getCalendarsFailure,
 } from '../modules/getAllCalendars';
+import {
+  handle_rerenderCalendarDay_Start,
+  handle_rerenderCalendarDay_Success,
+  handle_rerenderCalendarDay_Failure,
+} from '../modules/handle_rerenderCalendarDay';
+
 import { ModalDropbox } from '../componentsNew/atoms';
 
 export default function MypageCalendarContainer({ match }: any) {
@@ -111,6 +117,7 @@ export default function MypageCalendarContainer({ match }: any) {
       .then(async res => {
         let { myCalendars, shareCalendars } = res.data;
         await dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
+        dispatch(handle_rerenderCalendarDay_Success(true));
         // console.log('update redux success');
       })
       .catch(err => console.log(err));
