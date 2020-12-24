@@ -22,7 +22,7 @@ interface calendarDayI {
     title: string;
     scheduleDate: string;
     todoTags: Array<{
-      tag: { id: number; tagName: string; tagColor: string; descrption: string };
+      tag: { id: number; tagName: string; tagColor: string; description: string };
     }>;
     calendarId: number;
     calendarColor: string;
@@ -68,7 +68,7 @@ interface todosAndReviewsI {
     title: string;
     scheduleDate: string;
     todoTags: Array<{
-      tag: { id: number; tagName: string; tagColor: string; descrption: string };
+      tag: { id: number; tagName: string; tagColor: string; description: string };
     }>;
     calendarId: number;
     calendarColor: string;

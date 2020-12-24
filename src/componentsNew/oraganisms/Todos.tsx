@@ -42,6 +42,7 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
           let id = todo.id;
           let calendarId = todo.calendarId;
           let scheduleDate: scheduleDateType = JSON.parse(todo.scheduleDate);
+          let todoTags = todo.todoTags;
 
           return (
             <Todo
@@ -52,6 +53,7 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
               scheduleDate={scheduleDate}
               defaultArrayOfTagsId={defaultArrayOfTagsId}
               setTodoDeletedOrUpdated={setTodoDeletedOrUpdated}
+              todoTags={todoTags}
             />
           );
         }
