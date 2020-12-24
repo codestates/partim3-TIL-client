@@ -26,7 +26,10 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
     if (todos === []) {
       todosList = '';
     } else {
-      todosList = todos.map(todo => {
+      // 기존의 todos : 캘린더 순서대로 나열되고 있었음 (새로운 todo가 기존 todo목록의 중간에 끼워지는 문제 있었음)
+      // 새로운 sortedTodos : 각 todo의 id 순서로 sort하여 처리함 (새로운 todo가 todo목록의 가장 밑으로 내려오게 됨)
+      let sortedTodos = [...todos].sort((a, b) => a.id - b.id);
+      todosList = sortedTodos.map(todo => {
         let defaultArrayOfTagsId: number[] = [];
 
         if (todo.todoTags[0].tag === null) {

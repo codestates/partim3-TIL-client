@@ -241,17 +241,31 @@ export default function Todo({
     newArrayOfTagsId.length === 0 ? (
       <span>(선택된 태그가 없습니다.)</span>
     ) : (
-      // 추가/삭제를 해야 하니, tags와 비교할수밖에 없다.
-      todoTags.map(eachTag => {
-        if (newArrayOfTagsId.indexOf(eachTag.tag.id) !== -1) {
-          return (
-            <TagIcon key={eachTag.tag.id} tagId={eachTag.tag.id} tagColor={eachTag.tag.tagColor}>
-              {eachTag.tag.tagName}
-            </TagIcon>
-          );
+      // concattedTagsArray : 내가 가진 모든 태그들과, 공유받은 todo라면 그에 붙어서 온 태그들
+      concattedTagsArray.map(eachTag => {
+        if (eachTag !== null) {
+          if (newArrayOfTagsId.indexOf(eachTag.id) !== -1) {
+            return (
+              <TagIcon key={eachTag.id} tagId={eachTag.id} tagColor={eachTag.tagColor}>
+                {eachTag.tagName}
+              </TagIcon>
+            );
+          }
         }
       })
     );
+
+  // 이건 서버에서 받아온 todo에 이미 연결된 tag들을 나열하는 것이므로,
+  // todo 수정 모달에서 tag를 다르게 선택하더라도 실제 수정요청이 나가지 않으면 여기는 수정되면 안된다
+  let attachedTags = todoTags.map(eachTag => {
+    if (eachTag.tag !== null) {
+      return (
+        <TagIcon key={eachTag.tag.id} tagId={eachTag.tag.id} tagColor={eachTag.tag.tagColor}>
+          {eachTag.tag.tagName}
+        </TagIcon>
+      );
+    }
+  });
 
   const handleSelectOption = (
     e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
@@ -411,7 +425,7 @@ export default function Todo({
             marginRight: '5px',
           }}
         >
-          {selectedTags}
+          {attachedTags}
         </div>
       </TodoWrap>
       {displayFixOrDelTodoModal ? (
