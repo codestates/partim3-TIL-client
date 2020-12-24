@@ -38,7 +38,7 @@ export default function Sidebar({ setNewCalPosted, setCalDeleted }: SidebarProps
       </Row>
       <HrLine />
       <Row>
-        <SidebarSharedCal></SidebarSharedCal>
+        <SidebarSharedCal setCalDeleted={setCalDeleted}></SidebarSharedCal>
       </Row>
     </Container>
   );
@@ -50,7 +50,7 @@ const HrLine = styled.hr`
   display: block;
   width: 100%;
   background-color: gray;
-  height: 1px;
+  height: 3px;
   margin: 5px 0px;
   padding: 0px;
 `;
