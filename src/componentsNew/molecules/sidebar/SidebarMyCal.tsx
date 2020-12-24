@@ -99,14 +99,16 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
 
   return (
     <SidebarMyCalWrap>
-      <div>내 캘린더</div>
+      <div>My Calendars</div>
       <MakeNewCal
         handleNewCalName={handleNewCalName}
         handleNewCalColor={handleNewCalColor}
         addCalendar={addCalendar}
         currentColor={newCalcolor}
       />
-      <RenderCalendars calendars={myCalendar} delCalendar={delCalendar} />
+      <div style={{ display: 'flex', flexDirection: 'column', margin: '5px 0px', width: '100%' }}>
+        <RenderCalendars calendars={myCalendar} delCalendar={delCalendar} />
+      </div>
     </SidebarMyCalWrap>
   );
 }
@@ -118,4 +120,5 @@ const SidebarMyCalWrap = styled.div`
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
+  width: 100%;
 `;

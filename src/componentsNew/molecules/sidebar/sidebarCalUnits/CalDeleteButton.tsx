@@ -16,6 +16,10 @@ export default function CalDeleteButton({ calId, calName, delCalendar }: CalDele
 
   // console.log({ calId, calName });
 
+  // [궁금한 점] calendar day의 sidebar에 있는 '공유받은 캘린더들'에서, 휴지통 버튼에는 '캘린더 삭제'기능을 붙여야 할지, '공유받은걸 취소'하는걸 붙여야 할지 모르겠음.
+  // 아예 휴지통버튼 자체를 지우고 공유받은 캘린더는 설정창에서 컨트롤하는것도 좋아보임
+  // 일단은 console.log() 함수만 연결해 뒀음
+
   let DeleteModal;
 
   if (myCalendar.length === 1) {
