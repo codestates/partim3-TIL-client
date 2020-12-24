@@ -6,7 +6,7 @@ import {
   SidebarCal,
   SidebarHeader,
   SidebarMyCal,
-  SidebarOtherCal,
+  SidebarSharedCal,
   SidebarTag,
 } from '../molecules/sidebar';
 
@@ -38,7 +38,7 @@ export default function Sidebar({ setNewCalPosted, setCalDeleted }: SidebarProps
       </Row>
       <HrLine />
       <Row>
-        <SidebarOtherCal></SidebarOtherCal>
+        <SidebarSharedCal></SidebarSharedCal>
       </Row>
     </Container>
   );

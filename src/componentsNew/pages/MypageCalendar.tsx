@@ -86,7 +86,7 @@ export default function MypageCalendar({
         `${REACT_APP_URL}/user/message`,
         {
           userId: currentUser,
-          otherNickname: serchNickName,
+          SharedNickname: serchNickName,
           read,
           write,
           auth,

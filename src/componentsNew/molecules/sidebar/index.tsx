@@ -1,7 +1,7 @@
 import SidebarCal from './SidebarCal';
 import SidebarHeader from './SidebarHeader';
 import SidebarMyCal from './SidebarMyCal';
-import SidebarOtherCal from './SidebarOtherCal';
+import SidebarSharedCal from './SidebarSharedCal';
 import SidebarTag from './SidebarTag';
 
-export { SidebarCal, SidebarHeader, SidebarMyCal, SidebarOtherCal, SidebarTag };
+export { SidebarCal, SidebarHeader, SidebarMyCal, SidebarSharedCal, SidebarTag };

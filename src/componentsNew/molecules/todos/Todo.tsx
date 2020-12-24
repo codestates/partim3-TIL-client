@@ -161,8 +161,10 @@ export default function Todo({
 
   // 공유받은 todo에 걸려있는 tag는, 내꺼는 중복되지 않게 필터링해서, 합친 tag 목록을 만듬
   for (let i = 0; i < todoTags.length; i++) {
-    if (concattedTagsArrayId.indexOf(todoTags[i].tag.id) === -1) {
-      concattedTagsArray.push(todoTags[i].tag);
+    if (todoTags[i].tag !== null) {
+      if (concattedTagsArrayId.indexOf(todoTags[i].tag.id) === -1) {
+        concattedTagsArray.push(todoTags[i].tag);
+      }
     }
   }
 
