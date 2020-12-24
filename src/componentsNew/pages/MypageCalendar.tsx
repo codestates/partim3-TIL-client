@@ -81,6 +81,7 @@ export default function MypageCalendar({
       auth = true;
     }
     console.log({ select }, { read }, { write }, { auth });
+    console.log({ serchNickName });
     axios
       .post(
         `${REACT_APP_URL}/user/message`,
@@ -91,6 +92,8 @@ export default function MypageCalendar({
           write,
           auth,
           calendarId: curCalId,
+          otherNickname: serchNickName,
+          description: '',
         },
         { withCredentials: true },
       )
