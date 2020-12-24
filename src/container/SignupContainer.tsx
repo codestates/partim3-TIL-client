@@ -59,6 +59,7 @@ export default function SignupContainer() {
   };
 
   const handleRegister = (email: string, nickname: string, password: string) => {
+    console.log('여기는 한번만 와야 함');
     dispatch(signupStart());
 
     return axios

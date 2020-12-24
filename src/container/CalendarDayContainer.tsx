@@ -88,6 +88,16 @@ function CalendarDayContainer() {
           resTodo = resTodo.concat(myCalendars[i].todos);
         }
 
+        for (let i in shareCalendars) {
+          let calendarId = shareCalendars[i].id;
+          let calendarColor = shareCalendars[i].color;
+          for (let ii = 0; ii < shareCalendars[i].todos.length; ii++) {
+            shareCalendars[i].todos[ii]['calendarId'] = calendarId;
+            shareCalendars[i].todos[ii]['calendarColor'] = calendarColor;
+          }
+          resTodo = resTodo.concat(shareCalendars[i].todos);
+        }
+
         let resReviews = new Array();
 
         for (let j in myCalendars) {
@@ -103,7 +113,18 @@ function CalendarDayContainer() {
           resReviews = resReviews.concat(myCalendars[j].reviews);
         }
 
-        // shareCalendars에 포함된 todo/review 처리 (아직 shareCalendars가 완성되지 않아, 이 부분 코드 없음)
+        for (let j in shareCalendars) {
+          let calendarId = shareCalendars[j].id;
+          let calendarColor = shareCalendars[j].color;
+          for (let jj = 0; jj < shareCalendars[j].reviews.length; jj++) {
+            let shortcut = shareCalendars[j].reviews[jj];
+            shortcut['calendarId'] = calendarId;
+            shortcut['calendarColor'] = calendarColor;
+            shortcut['scheduleDate'] = JSON.parse(shortcut['scheduleDate']);
+            shortcut['scheduleTime'] = JSON.parse(shortcut['scheduleTime']);
+          }
+          resReviews = resReviews.concat(shareCalendars[j].reviews);
+        }
 
         // (myCalendars, shareCalendars 처리하는 부분은 별도 함수로 빼놓는게 낫지 않나?)
 
