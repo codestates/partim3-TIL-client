@@ -4,18 +4,18 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../modules';
 import { RenderCalendars } from './sidebarCalUnits';
 
-export default function SidebarOtherCal() {
+export default function SidebarSharedCal() {
   const { shareCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
 
   return (
-    <SidebarOtherCalWrap>
+    <SidebarSharedCalWrap>
       <div>공유캘린더</div>
       <RenderCalendars calendars={shareCalendar} />
-    </SidebarOtherCalWrap>
+    </SidebarSharedCalWrap>
   );
 }
 
-const SidebarOtherCalWrap = styled.div`
+const SidebarSharedCalWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
