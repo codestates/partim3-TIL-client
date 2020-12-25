@@ -13,6 +13,7 @@ import { handleTodayStart, handleTodaySuccess, handleTodayFailure } from '../mod
 
 import Login from '../componentsNew/pages/Login';
 import getToday from '../componentsNew/utils/todayF';
+import { ModalAlert } from '../componentsNew/atoms';
 
 export default function LoginContainer() {
   // console.log('loginCon');
@@ -34,6 +35,8 @@ export default function LoginContainer() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [handleModalAlert, setHandleModalAlert] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -82,23 +85,42 @@ export default function LoginContainer() {
         dispatch(handleTodaySuccess(getToday()));
         // 토큰을 localStorage 등에 저장할 필요를 고려해야 할까?
         localStorage.setItem('token', token); // 일단 저장해봄...
-        alert('로그인에 성공하셨습니다.');
+        // alert('로그인에 성공하셨습니다.');  // 필요없어 보여서 삭제했음
         history.push('/calendar/day');
       })
       .catch(err => {
-        console.log(err);
+        if (err.response.data === '잘못된 이메일 또는 잘못된 비밀번호') {
+          setModalMessage('이메일 또는 비밀번호가 잘못 입력되었습니다.');
+          setHandleModalAlert(true);
+        }
+        console.log({ err });
         dispatch(loginFailure());
       });
   };
 
   const postLoginReq = () => {
     if (password === '') {
-      alert('비밀번호를 입력하지 않으셨습니다. 비밀번호를 입력해 주세요.');
+      // alert('비밀번호를 입력하지 않으셨습니다. 비밀번호를 입력해 주세요.');  이 기능을 대신함
+      setModalMessage('비밀번호를 입력하지 않으셨습니다. 비밀번호를 입력해 주세요.');
+      setHandleModalAlert(true);
     } else {
       handleLogin(email, password);
       return false;
     }
   };
 
-  return <Login handleChange={handleChange} postLoginReq={postLoginReq} />;
+  const handleCloseModal = () => {
+    setHandleModalAlert(false);
+  };
+
+  return (
+    <>
+      <Login handleChange={handleChange} postLoginReq={postLoginReq} />
+      <ModalAlert
+        title={`${modalMessage}`}
+        isVisible={handleModalAlert}
+        handleCloseModal={handleCloseModal}
+      />
+    </>
+  );
 }
