@@ -92,7 +92,8 @@ export default function FliteredTodos() {
                         }}
                       >
                         <div style={{ display: 'flex', flex: 2, margin: '10px' }}>
-                          Title : {eachTodoTitle}
+                          {/* Title :  */}
+                          {eachTodoTitle}
                         </div>
                         <div
                           style={{
@@ -102,8 +103,8 @@ export default function FliteredTodos() {
                             justifyContent: 'flex-end',
                           }}
                         >
-                          Date&nbsp;:&nbsp;
-                          {`${eachTodoScheduleDate.year}년 ${eachTodoScheduleDate.month}월 ${eachTodoScheduleDate.day}일`}
+                          {/* Date&nbsp;:&nbsp; */}
+                          {`${eachTodoScheduleDate.year}. ${eachTodoScheduleDate.month}. ${eachTodoScheduleDate.day}`}
                         </div>
                         <div
                           style={{
@@ -114,7 +115,7 @@ export default function FliteredTodos() {
                           }}
                         >
                           {/* {`(서버 요청) todo 별로 캘린더아이디가 따라와야, 캘린더별 필터링 가능`} */}
-                          <span>Calendar&nbsp;:&nbsp;</span>
+                          {/* <span>Calendar&nbsp;:&nbsp;</span> */}
                           <span style={{ color: `${eachTodoCalendarColor}` }}>
                             {eachTodoCalendarName}
                           </span>
@@ -154,16 +155,20 @@ export default function FliteredTodos() {
 const FliteredTodosWrap = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid red;
-  margin: 5px;
+  /* border: 1px solid red; */
+  margin: 2px;
+  /* flex-grow: 1; */
+  height: 200px;
+  overflow: auto;
 `;
 
 // Tag별 개별 Todo들
 const FilteredTodos_byTags = styled.div<{ tagId: number }>`
   display: flex;
-  flex: 1;
-  border: 1px solid blue;
-  margin: 5px;
+  /* flex: 1; */
+  border: 1px solid grey;
+  border-radius: 10px;
+  margin: 2px;
   align-items: center;
   justify-content: 'space-between';
 `;

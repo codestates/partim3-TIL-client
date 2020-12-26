@@ -34,9 +34,8 @@ export default function AllTagsListRendering({ handleClickTagIcon }: AllTagsList
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        필터링할 태그를 선택해 주세요.
-      </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>필터링할 태그를 선택하세요.</div>
+      <HrLine />
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>{allTagsList}</div>
     </div>
   );
@@ -50,4 +49,14 @@ const TagIcon = styled.div<{ tagId: number; tagColor: string }>`
   padding: 4px;
   margin: 4px;
   box-shadow: 5px 5px 5px grey; // 클릭한 것만 이런 강조 효과를 주고 싶었는데,
+`;
+
+const HrLine = styled.hr`
+  border: 0;
+  clear: both;
+  display: block;
+  width: 100%;
+  background-color: gray;
+  height: 2px;
+  margin: 10px 0px;
 `;
