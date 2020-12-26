@@ -77,16 +77,17 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
       <Row className="m-1">
         <TodosDayAndPostModal setNewPosted={setNewPosted} />
       </Row>
-      <Row
+      <div
         className="m-1"
         style={{
           // border: '1px solid yellow',
           overflow: 'auto',
+          height: '187px',
           flexDirection: 'column',
         }}
       >
         {todosList}
-      </Row>
+      </div>
     </>
   );
 }

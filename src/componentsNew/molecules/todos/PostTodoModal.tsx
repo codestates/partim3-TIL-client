@@ -297,9 +297,8 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
               <AiFillTags size="1.5em" />
             </div>
           </div>
-
-          {tagsSelectOptions}
-          <div style={{ display: 'flex' }}>{selectedTags}</div>
+          <div>{tagsSelectOptions}</div>
+          <div style={{ display: 'flex', marginLeft: '10px' }}>{selectedTags}</div>
         </div>
         {/* <div style={{ flex: 1, margin: '10px' }}>그 외 부분들은 어떤 것이 들어가면 좋을까요?</div> */}
       </main>
@@ -353,7 +352,7 @@ const PostTodoModalBackground = styled.div`
 const PostTodoModalContents = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 10px;
+  padding: 10px;
   width: 420px;
   /* height: 450px; */
   border-radius: 10px;
@@ -392,6 +391,7 @@ const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
   background-color: ${props => props.tagColor};
   color: white;
   font-weight: bold;
-  padding: 4px;
-  margin: 4px;
+  padding: 2px;
+  margin: 2px;
+  box-shadow: 1px 1px 1px grey;
 `;
