@@ -67,10 +67,10 @@ const TagsBox = styled.div`
 
 const TagWarp = styled.div`
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   justify-content: flex-end;
   align-items: center;
-  height: 20px;
+  height: 40px;
 `;
 
 const TagsName = styled.div`
@@ -78,20 +78,25 @@ const TagsName = styled.div`
   flex: 3;
   text-align: justify;
   margin-left: 10px;
+  font-size: 20px;
 `;
 const TagsDescription = styled.div`
-  flex: 5;
+  flex: 4;
   margin-left: 10px;
+  font-size: 20px;
 `;
 
 const TagsEdit = styled.div`
-  flex: 2;
+  flex: 3;
   text-align: right;
   margin-left: 10px;
+  margin-right: 20px;
+  font-size: 20px;
 `;
 
 const TagsDelete = styled.div`
   flex: 1.5;
   text-align: right;
   margin-right: 10px;
+  font-size: 20px;
 `;

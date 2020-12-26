@@ -137,7 +137,7 @@ export default function Tag({
 
 const TagWarp = styled.div`
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   justify-content: flex-end;
   align-items: center;
   margin: 10px 3px;
@@ -146,7 +146,7 @@ const TagWarp = styled.div`
 
 const TagsName = styled.div`
   display: flex;
-  flex: 4;
+  flex: 3;
   text-align: justify;
   margin-left: 10px;
 `;
@@ -157,7 +157,7 @@ const TagsDescription = styled.div`
 `;
 
 const TagsEdit = styled.div`
-  flex: 2;
+  flex: 3;
   text-align: right;
   margin: 0px 10px;
   display: flex;
