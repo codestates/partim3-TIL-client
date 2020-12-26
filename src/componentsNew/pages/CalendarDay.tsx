@@ -74,14 +74,15 @@ export default function CalendarDay({
 const Container = styled.div`
   display: flex;
   height: 100vh;
+  width: 100vw;
   flex-direction: row;
 `;
 const SidebarArea = styled.div`
-  width: 250px;
+  flex: 1;
   background-color: #aed581;
 `;
 
 const MainArea = styled.div`
-  flex: 2;
+  flex: 8;
   background-color: white;
 `;
