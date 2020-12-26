@@ -34,6 +34,8 @@ export default function FilteredTodosAndReviews() {
     (state: RootState) => state.handle_filteredTodosAndReviews,
   );
 
+  console.log({ filteredTodosAndReviews });
+
   const dispatch = useDispatch();
   const history = useHistory();
 

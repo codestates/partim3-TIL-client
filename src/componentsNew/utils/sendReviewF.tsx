@@ -11,6 +11,7 @@ export default function sendReview(
   scheduleDate: object,
   scheduleTime: object,
   calendarId: number,
+  tags: number[],
 ) {
   // dispatch(calendarStart());
   // return 이 없어도 axios는 잘 작동되는데 return이 필요한 이유?
@@ -28,7 +29,7 @@ export default function sendReview(
         scheduleDate: JSON.stringify(scheduleDate),
         scheduleTime: JSON.stringify(scheduleTime),
         calendarId,
-        tags: [], // 서버에서 tags를 요청하도록 변경됐는데, 일단 임의의 배열(임의의 태그id를 담은 배열)로 넘김
+        tags: tags, // 서버에서 tags를 요청하도록 변경됐는데, 일단 임의의 배열(임의의 태그id를 담은 배열)로 넘김
         // 실제로는 BigModal 안에서 태그를 선택(select/option)해서 '태그id들이 담긴 배열'로 만들어 매개변수로 넘길 수 있어야 한다.
       },
       { withCredentials: true },
