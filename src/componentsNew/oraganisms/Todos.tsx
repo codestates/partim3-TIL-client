@@ -44,6 +44,7 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
           let title = todo.title;
           let id = todo.id;
           let calendarId = todo.calendarId;
+          let calendarColor = todo.calendarColor;
           let scheduleDate: scheduleDateType = JSON.parse(todo.scheduleDate);
           let todoTags = todo.todoTags;
 
@@ -53,6 +54,7 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
               id={id}
               key={id}
               calendarId={calendarId}
+              calendarColor={calendarColor}
               scheduleDate={scheduleDate}
               defaultArrayOfTagsId={defaultArrayOfTagsId}
               setTodoDeletedOrUpdated={setTodoDeletedOrUpdated}
@@ -72,12 +74,16 @@ export default function Todos({ setNewPosted, setTodoDeletedOrUpdated }: TodosPr
 
   return (
     <>
-      <Row className="m-1" style={{ border: '1px solid black' }}>
+      <Row className="m-1">
         <TodosDayAndPostModal setNewPosted={setNewPosted} />
       </Row>
       <Row
         className="m-1"
-        style={{ border: '1px solid yellow', overflow: 'auto', flexDirection: 'column' }}
+        style={{
+          // border: '1px solid yellow',
+          overflow: 'auto',
+          flexDirection: 'column',
+        }}
       >
         {todosList}
       </Row>
