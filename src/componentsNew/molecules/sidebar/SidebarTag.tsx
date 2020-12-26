@@ -188,13 +188,18 @@ const SidebarTagWrap = styled.div`
   flex-direction: column;
 `;
 
-const TagIcon = styled.div<{ tagId: number; tagColor: string }>`
-  border-radius: 10px;
+const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
+  border-radius: 5px;
   background-color: ${props => props.tagColor};
   color: white;
   font-weight: bold;
   padding: 4px;
   margin: 4px;
+  box-shadow: 1px 1px 1px grey;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const HrLine = styled.hr`
