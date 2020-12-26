@@ -18,6 +18,7 @@ import REACT_APP_URL from '../../config';
 
 import {
   FliteredTodos,
+  FliteredReviews,
   MyCalendarsForFiltering,
   AllTagsListRendering,
   SelectedTagsListRendering,
@@ -115,7 +116,8 @@ export default function FilteredTodosAndReviews() {
             filteredTodosAndReviews가 undefined로 잡힘 
           */}
           <HrLine />
-          <FliteredReviews>FliteredReviews - coming soon</FliteredReviews>
+
+          {filteredTodosAndReviews === undefined ? <></> : <FliteredReviews />}
         </FilteredTodosAndReviewsBody>
       </FilteredTodosAndReviewsMain>
     </FilteredTodosAndReviewsWrap>
@@ -170,8 +172,6 @@ const FilteredTodosAndReviewsBody = styled.div`
   /* border: 5px solid yellow; */
   padding: 10px;
 `;
-
-const FliteredReviews = styled.div``;
 
 const SideBarTags = styled.div`
   flex: 0 0 40%;

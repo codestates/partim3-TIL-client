@@ -48,6 +48,11 @@ interface filteredTodosAndReviewsType {
       imageUrl: string;
       scheduleDate: string;
       scheduleTime: string;
+      calendar: {
+        id: number;
+        color: string;
+        name: string;
+      };
     };
   }>;
 }
