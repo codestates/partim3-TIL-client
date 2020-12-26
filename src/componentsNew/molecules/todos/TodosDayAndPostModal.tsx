@@ -32,11 +32,11 @@ export default function TodosDayAndPostModal({ setNewPosted }: TodosDayAndPostMo
         onClick={openModal}
         style={{
           // border: '1px solid black',
-          margin: '5px 5px 5px 30px',
+          margin: '3px 3px 3px 30px',
           display: 'flex',
           justifyContent: 'flex-start',
           alignItems: 'center',
-          fontSize: '30px',
+          fontSize: '20px',
         }}
       >
         {DateOfToday}, {DayOfTheWeekArray[DayOfTheWeek]}

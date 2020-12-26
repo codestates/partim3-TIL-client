@@ -418,7 +418,7 @@ export default function Todo({
   return (
     <>
       <TodoWrap onClick={() => setDisplayFixOrDelTodoModal(true)}>
-        <div style={{ display: 'flex', flex: 1, margin: '10px', fontSize: '20px' }}>{title}</div>
+        <div style={{ display: 'flex', flex: 1, margin: '10px', fontSize: '15px' }}>{title}</div>
         <div
           style={{
             display: 'flex',
@@ -450,11 +450,11 @@ export default function Todo({
 const TodoWrap = styled.div`
   display: flex;
   width: 100%;
-  height: 50px;
+  height: 35px;
   align-items: center;
   justify-content: 'space-between';
   border: 2px solid lightgrey;
-  margin: 3px 0px;
+  margin: 2px 0px;
   border-radius: 10px;
 `;
 
@@ -515,7 +515,7 @@ const TagIcon = styled.div<{ tagId: number; tagColor: string }>`
   background-color: ${props => props.tagColor};
   color: white;
   font-weight: bold;
-  padding: 4px;
-  margin: 4px;
-  box-shadow: 5px 5px 5px grey; // 클릭한 것만 이런 강조 효과를 주고 싶었는데,
+  padding: 2px;
+  margin: 2px;
+  box-shadow: 1px 1px 1px grey; // 클릭한 것만 이런 강조 효과를 주고 싶었는데,
 `;
