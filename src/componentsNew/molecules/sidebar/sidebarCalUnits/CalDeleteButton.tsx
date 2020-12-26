@@ -61,15 +61,13 @@ export default function CalDeleteButton({ calId, calName, delCalendar }: CalDele
 
   return (
     <div style={{ flex: 1 }}>
-      <button
-        type="button"
-        style={{ border: 'none', padding: '0px' }}
+      <Btn
         onClick={() => {
           setDisplayDeleteModal(true);
         }}
       >
         <img src="/img/deleteIcon.png" alt="캘린더 삭제하기" width="23px" height="23px"></img>
-      </button>
+      </Btn>
 
       {displayDeleteModal ? (
         <DeleteModalWrap
@@ -86,6 +84,17 @@ export default function CalDeleteButton({ calId, calName, delCalendar }: CalDele
     </div>
   );
 }
+
+const Btn = styled.button`
+  outline: none;
+  border: 0px;
+  background-color: #aed581;
+  &:hover {
+    background-color: #f0f2f1;
+    color: black;
+    border-radius: 2px;
+  }
+`;
 
 const DeleteModalWrap = styled.div`
   position: 'absolute';

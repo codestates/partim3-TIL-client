@@ -1,7 +1,6 @@
 // Todos, Reviews, Sidebar, Header
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { Row, Col, Container } from 'react-bootstrap';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../modules';
@@ -54,34 +53,35 @@ export default function CalendarDay({
   });
 
   return (
-    <Container fluid style={{ border: '1px solid black' }}>
-      <Row>
-        {sidebar ? (
-          <Col xs={3.5} sm={3.5} md={3.5}>
-            <Sidebar setNewCalPosted={setNewCalPosted} setCalDeleted={setCalDeleted} />
-          </Col>
-        ) : (
-          <span></span>
-        )}
-
-        <Col>
-          <Row style={{ border: '1px solid black', height: '50px' }}>
-            <Header {...today} />
-          </Row>
-          <Row style={{ border: '1px solid black', height: '300px', overflow: 'auto' }}>
-            <Col>
-              <Todos
-                setNewPosted={setNewPosted}
-                setTodoDeletedOrUpdated={setTodoDeletedOrUpdated}
-              />
-            </Col>
-          </Row>
-          <Row style={{ border: '1px solid black' }}>
-            <Reviews setNewPosted={setNewPosted} />
-          </Row>
-        </Col>
-      </Row>
-      {toastsList}
+    <Container>
+      {sidebar ? (
+        <SidebarArea>
+          <Sidebar setNewCalPosted={setNewCalPosted} setCalDeleted={setCalDeleted} />
+        </SidebarArea>
+      ) : (
+        <span></span>
+      )}
+      <MainArea>
+        <Header {...today} />
+        <Todos setNewPosted={setNewPosted} setTodoDeletedOrUpdated={setTodoDeletedOrUpdated} />
+        <Reviews setNewPosted={setNewPosted} />
+        {toastsList}
+      </MainArea>
     </Container>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+`;
+const SidebarArea = styled.div`
+  width: 250px;
+  background-color: #aed581;
+`;
+
+const MainArea = styled.div`
+  flex: 2;
+  background-color: white;
+`;

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Container, Row } from 'react-bootstrap';
 
 import {
   SidebarCal,
@@ -17,40 +16,19 @@ interface SidebarProps {
 
 export default function Sidebar({ setNewCalPosted, setCalDeleted }: SidebarProps) {
   return (
-    <Container>
-      <Row>
-        <SidebarHeader></SidebarHeader>
-      </Row>
-      <HrLine />
-      <Row>
-        <SidebarTag></SidebarTag>
-      </Row>
-      <HrLine />
-      <Row>
-        <SidebarCal></SidebarCal>
-      </Row>
-      <HrLine />
-      <Row>
-        <SidebarMyCal
-          setNewCalPosted={setNewCalPosted}
-          setCalDeleted={setCalDeleted}
-        ></SidebarMyCal>
-      </Row>
-      <HrLine />
-      <Row>
-        <SidebarSharedCal setCalDeleted={setCalDeleted}></SidebarSharedCal>
-      </Row>
-    </Container>
+    <SidebarContainer>
+      <SidebarHeader></SidebarHeader>
+      <SidebarTag></SidebarTag>
+      <SidebarCal></SidebarCal>
+      <SidebarMyCal setNewCalPosted={setNewCalPosted} setCalDeleted={setCalDeleted}></SidebarMyCal>
+      <SidebarSharedCal setCalDeleted={setCalDeleted}></SidebarSharedCal>
+    </SidebarContainer>
   );
 }
 
-const HrLine = styled.hr`
-  border: 0;
-  clear: both;
-  display: block;
-  width: 100%;
-  background-color: gray;
-  height: 3px;
-  margin: 5px 0px;
-  padding: 0px;
+const SidebarContainer = styled.div`
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 `;

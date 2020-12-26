@@ -46,7 +46,7 @@ export default function SidebarSharedCal({ setCalDeleted }: SidebarSharedCalProp
 
   return (
     <SidebarSharedCalWrap>
-      <div>Shared Calendars</div>
+      <div>공유 캘린더</div>
       <div style={{ display: 'flex', flexDirection: 'column', margin: '5px 0px', width: '100%' }}>
         <RenderCalendars calendars={shareCalendar} delCalendar={delCalendar} />
       </div>
@@ -57,7 +57,6 @@ export default function SidebarSharedCal({ setCalDeleted }: SidebarSharedCalProp
 const SidebarSharedCalWrap = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;

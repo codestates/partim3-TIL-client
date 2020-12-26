@@ -22,7 +22,6 @@ import {
 } from '../modules/handle_rerenderCalendarDay';
 import { ModalDropbox } from '../componentsNew/atoms';
 
-
 export default function MypageCalendarContainer({ match }: any) {
   const history = useHistory();
   const { currentUser, nickname } = useSelector((state: RootState) => state.loginOut.status);

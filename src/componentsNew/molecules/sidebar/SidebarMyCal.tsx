@@ -99,26 +99,27 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
 
   return (
     <SidebarMyCalWrap>
-      <div>My Calendars</div>
+      <h6>새 캘린더 추가하기</h6>
       <MakeNewCal
         handleNewCalName={handleNewCalName}
         handleNewCalColor={handleNewCalColor}
         addCalendar={addCalendar}
         currentColor={newCalcolor}
       />
-      <div style={{ display: 'flex', flexDirection: 'column', margin: '5px 0px', width: '100%' }}>
-        <RenderCalendars calendars={myCalendar} delCalendar={delCalendar} />
-      </div>
+      <MycalTitle>내 캘린더</MycalTitle>
+      <RenderCalendars calendars={myCalendar} delCalendar={delCalendar} />
     </SidebarMyCalWrap>
   );
 }
 
 const SidebarMyCalWrap = styled.div`
+  flex: 1;
+  margin-top: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 100%;
+`;
+
+const MycalTitle = styled.h6`
+  flex: 1;
+  margin-top: 15px;
 `;

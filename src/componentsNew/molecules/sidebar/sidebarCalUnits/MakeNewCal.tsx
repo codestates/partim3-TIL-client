@@ -27,12 +27,7 @@ export default function MakeNewCal({
         width="40"
         onChange={handleNewCalName}
         style={{
-          borderLeftWidth: 0,
-          borderRightWidth: 0,
-          borderTopWidth: 0,
-          borderBottomWidth: 1,
-          marginLeft: '2px',
-          marginRight: '2px',
+          border: '0px',
         }}
       ></input>
       <ColorPicker handleNewCalColor={handleNewCalColor} currentColor={currentColor} />
@@ -43,9 +38,10 @@ export default function MakeNewCal({
 
 const MakeNewCalWrap = styled.div`
   flex: 1;
+  background-color: white;
+  padding: 2px;
+  border-radius: 2px;
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
   justify-content: center;
-  margin: 5px 0px;
 `;
