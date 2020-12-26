@@ -12,48 +12,56 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
     <UserInfoWrap>
       <LabelInputSet>
         <UserInfoLabel>nickname</UserInfoLabel>
-        <Input
-          className="newNickname"
-          smInput={2}
-          type="text"
-          name="nickname"
-          handleChange={handleChange}
-          // placeholder={currentNickname}
-          autoFocus={true}
-        />
+        <form style={{ display: 'flex' }}>
+          <Input
+            className="newNickname"
+            smInput={2}
+            type="text"
+            name="nickname"
+            handleChange={handleChange}
+            // placeholder={currentNickname}
+            autoFocus={true}
+          />
+        </form>
       </LabelInputSet>
 
       <LabelInputSet>
         <UserInfoLabel>old password</UserInfoLabel>
-        <Input
-          className="oldPassword"
-          smInput={2}
-          type="password"
-          name="oldPassword"
-          handleChange={handleChange}
-        />
+        <form style={{ display: 'flex' }}>
+          <Input
+            className="oldPassword"
+            smInput={2}
+            type="password"
+            name="oldPassword"
+            handleChange={handleChange}
+          />
+        </form>
       </LabelInputSet>
 
       <LabelInputSet>
         <UserInfoLabel>new password</UserInfoLabel>
-        <Input
-          className="newPassword"
-          smInput={2}
-          type="password"
-          name="newPassword"
-          handleChange={handleChange}
-        />
+        <form style={{ display: 'flex' }}>
+          <Input
+            className="newPassword"
+            smInput={2}
+            type="password"
+            name="newPassword"
+            handleChange={handleChange}
+          />
+        </form>
       </LabelInputSet>
 
       <LabelInputSet>
         <UserInfoLabel>new password confirm</UserInfoLabel>
-        <Input
-          className="newPasswordConfirm"
-          smInput={2}
-          type="password"
-          name="newPasswordConfirm"
-          handleChange={handleChange}
-        />
+        <form style={{ display: 'flex' }}>
+          <Input
+            className="newPasswordConfirm"
+            smInput={2}
+            type="password"
+            name="newPasswordConfirm"
+            handleChange={handleChange}
+          />
+        </form>
       </LabelInputSet>
     </UserInfoWrap>
   );
