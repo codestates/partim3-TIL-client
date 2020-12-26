@@ -122,16 +122,16 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
       <TagSelectWindow>
         <div
           className="TagSettingIcon"
-          style={{ display: 'flex', justifyContent: 'space-between' }}
+          style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
         >
-          <div>(검색창이 들어올 자리?)</div>
+          {/* <div>(검색창이 들어올 자리?)</div> */}
           <Link to="/mypage/tags">
-            <button type="button" style={{ border: 'none', padding: '0px' }}>
+            <button type="button" style={{ border: 'none', padding: '0px', marginRight: '5px' }}>
               <img
                 src="/img/settingIcon.png"
                 alt="캘린더 설정하기"
-                width="23px"
-                height="23px"
+                width="25px"
+                height="25px"
               ></img>
             </button>
           </Link>
@@ -384,14 +384,16 @@ const TagSelectWindow = styled.div`
   padding: 5px;
 `;
 
-const TagOption = styled.div``;
-
 const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: ${props => props.tagColor};
   color: white;
   font-weight: bold;
-  padding: 2px;
-  margin: 2px;
+  padding: 4px;
+  margin: 4px;
   box-shadow: 1px 1px 1px grey;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

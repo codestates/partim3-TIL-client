@@ -173,12 +173,16 @@ const FilteredTodos_byTags = styled.div<{ tagId: number }>`
   justify-content: 'space-between';
 `;
 
-const TagIcon = styled.div<{ tagId: number; tagColor: string }>`
-  border-radius: 10px;
+const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
+  border-radius: 5px;
   background-color: ${props => props.tagColor};
   color: white;
   font-weight: bold;
   padding: 4px;
   margin: 4px;
-  box-shadow: 5px 5px 5px grey; // 클릭한 것만 이런 강조 효과를 주고 싶었는데,
+  box-shadow: 1px 1px 1px grey;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

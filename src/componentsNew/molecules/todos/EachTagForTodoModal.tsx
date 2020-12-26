@@ -48,9 +48,15 @@ export default function EachTagForTodoModal({
 }
 
 const TagIcon = styled.div<{ tagColor: string; isChecked: boolean }>`
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: ${props => props.tagColor};
   color: white;
   font-weight: bold;
   padding: 4px;
+  margin: 4px;
+  box-shadow: 1px 1px 1px grey;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
