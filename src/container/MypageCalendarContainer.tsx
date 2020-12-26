@@ -12,6 +12,9 @@ import {
   getCalendarsSuccess,
   getCalendarsFailure,
 } from '../modules/getAllCalendars';
+
+import { calendarAuth } from '../modules/calendarAuthM';
+
 import {
   handle_rerenderCalendarDay_Start,
   handle_rerenderCalendarDay_Success,
@@ -19,6 +22,7 @@ import {
 } from '../modules/handle_rerenderCalendarDay';
 
 import { ModalDropbox } from '../componentsNew/atoms';
+
 
 export default function MypageCalendarContainer({ match }: any) {
   const history = useHistory();
@@ -42,6 +46,7 @@ export default function MypageCalendarContainer({ match }: any) {
       })
       .catch(err => console.log(err));
   };
+
   const handleNameChange = (newValue: any) => {
     setCalName(newValue);
   };
@@ -50,15 +55,6 @@ export default function MypageCalendarContainer({ match }: any) {
   const { myCalendar, shareCalendar } = useSelector(
     (state: RootState) => state.getAllCalendars.allCalendars,
   );
-  const belongsToShare = () => {
-    for (let i of shareCalendar) {
-      if (i.name === paramName) {
-        return true;
-      }
-    }
-    return false;
-  };
-  // console.log(belongsToShare());
 
   const allCalendars = myCalendar.concat(shareCalendar);
   const findColor = () => {
@@ -87,7 +83,7 @@ export default function MypageCalendarContainer({ match }: any) {
     setNewCalcolor(color);
   };
 
-  const calColorUpdate = () => {
+  const calColorUpdate = (newCalcolor: string) => {
     return axios
       .put(`${REACT_APP_URL}/calendar/updatecalender`, {
         userId: currentUser,
@@ -125,7 +121,7 @@ export default function MypageCalendarContainer({ match }: any) {
 
   useEffect(() => {
     const orderF = async () => {
-      // console.log('6번 :', calName, 'container calName use');
+      console.log('6번 :', calName, 'container calName use');
       await calNameUpdate(calName);
       await getUpdatedCal();
       await history.push(`/mypage/calendar/mycal/${calName}`);
@@ -135,22 +131,30 @@ export default function MypageCalendarContainer({ match }: any) {
 
   useEffect(() => {
     const orderF = async () => {
-      await calColorUpdate();
+      await calColorUpdate(newCalcolor);
       await getUpdatedCal();
     };
     orderF();
   }, [newCalcolor]);
 
-  let childComponent = (
-    <MypageCalendar
-      curCal={calName}
-      curCalColor={newCalcolor}
-      handleNewName={handleNameChange}
-      handleNewCalColor={handleNewCalColor}
-      currentUser={currentUser}
-      curCalId={curCalId}
-    ></MypageCalendar>
-  );
+  const getcalendarauthorityofcalendar = () => {
+    console.log(curCalId);
+    axios
+      .get(`${REACT_APP_URL}/calendar/getcalendarauthorityofcalendar`, {
+        params: {
+          calendarId: curCalId,
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        let { calendars } = res.data;
+        dispatch(calendarAuth(calendars.authorities));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  getcalendarauthorityofcalendar();
 
   useEffect(() => {
     const orderF = async () => {
@@ -165,6 +169,17 @@ export default function MypageCalendarContainer({ match }: any) {
     };
     orderF();
   }, [paramName]);
+
+  let childComponent = (
+    <MypageCalendar
+      curCal={calName}
+      curCalColor={newCalcolor}
+      handleNewName={handleNameChange}
+      handleNewCalColor={handleNewCalColor}
+      currentUser={currentUser}
+      curCalId={curCalId}
+    ></MypageCalendar>
+  );
 
   return <MypageHeaderAndSidebar childComponent={childComponent}></MypageHeaderAndSidebar>;
 }

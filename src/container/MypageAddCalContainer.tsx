@@ -75,12 +75,15 @@ export default function MypageAddCalContainer() {
   //여기에서는 주소는 변하지 않으므로,색깔 변경시에 해당 하는 코드를 참조하자.
   //요청은 하위에서 나가지 않고, 하위의 state값 변경에 따라 상위에서 서버로 나간다.
 
-  // const [messageStatus, setMessageStatus] = useState(false);
-  // const handleGetMessage = () => {
-  //   console.log(messageStatus);
-  //   setMessageStatus(true);
-  //   getMessage();
-  // };
+  const [messageStatus, setMessageStatus] = useState(false);
+  const handleGetMessage = (sth: any) => {
+    setMessageStatus(sth);
+  };
+
+  useEffect(() => {
+    // console.log('use');
+    setMessageStatus(false);
+  }, [messageStatus]);
 
   //초반의 messages는 빈배열인 상태.
   //하위에서 클릭시 변경값을 받아올 수 있도록, messageStatus를 내린다.
@@ -95,9 +98,39 @@ export default function MypageAddCalContainer() {
   // const { messages } = useSelector((state: RootState) => state.mypageCalendarMessagesM);
   //받은 메세지를 하위로 내려주기 위해 리덕스에서 받아오기
 
+  // console.log('getMessage');
   getMessage();
+
+  //API수정예정
+  //물어봐야할듯.
+  const calendarauthority = () => {
+    axios
+      .get(`${REACT_APP_URL}/calendar/calendarauthority`, {
+        params: {
+          userId: currentUser,
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        console.log(res.data);
+        let { authorities } = res.data;
+        console.log(authorities);
+        let users = authorities.map((el: any) => {
+          console.log(el.user);
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  calendarauthority();
+
   let childComponent = (
-    <MypageAddCal connectcalendarauthority={connectcalendarauthority}></MypageAddCal>
+    <MypageAddCal
+      connectcalendarauthority={connectcalendarauthority}
+      getMessage={getMessage}
+      handleGetMessage={handleGetMessage}
+    ></MypageAddCal>
   );
 
   return <MypageHeaderAndSidebar childComponent={childComponent}></MypageHeaderAndSidebar>;
