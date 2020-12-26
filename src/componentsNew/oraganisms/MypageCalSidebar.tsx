@@ -7,7 +7,7 @@ import { calendarSelected } from '../../modules/selectedCalM';
 
 import MypageCalendar from '../pages/MypageCalendar';
 
-export default function MypageCalSidebar({ myCalendar, shareCalendar, handleGetMessage }: any) {
+export default function MypageCalSidebar({ myCalendar, shareCalendar }: any) {
   //curComponent가 mypageCalendar일때 캘린더들의 리스트를 랜더링
 
   //동기적으로 처리해주기 위해서 useEffect사용.

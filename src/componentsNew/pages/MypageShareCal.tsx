@@ -14,14 +14,16 @@ import {
   getCalendarsFailure,
 } from '../../modules/getAllCalendars';
 import { ModalDropbox } from '../atoms';
+import { format } from 'path';
 
-export default function MypageCalendar({
+export default function MypageShareCal({
   curCal,
   curCalColor,
   handleNewName,
   handleNewCalColor,
   currentUser,
   curCalId,
+  currnetUserNickname,
   shareId,
   shareCalName,
 }: any) {
@@ -42,7 +44,7 @@ export default function MypageCalendar({
     setHandleModalDropbox(true);
   };
   const actionFunction = (select: string) => {
-    console.log('mypagecalendar 값 받음  :', select);
+    // console.log('mypagecalendar 값 받음  :', select);
     postMessage(select);
     setHandleModalDropbox(false);
   };
@@ -82,7 +84,7 @@ export default function MypageCalendar({
       write = true;
       auth = true;
     }
-    console.log({ select }, { read }, { write }, { auth });
+    // console.log({ select }, { read }, { write }, { auth });
     axios
       .post(
         `${REACT_APP_URL}/user/message`,
@@ -97,7 +99,7 @@ export default function MypageCalendar({
         { withCredentials: true },
       )
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch(err => {
         alert('닉네임을 입력해주세요');
@@ -123,19 +125,28 @@ export default function MypageCalendar({
     );
   });
 
-  const deletecalendar = () => {
-    axios
-      .delete(`${REACT_APP_URL}/calendar/deletecalendar`, {
-        data: { userId: currentUser, calendarId: curCalId },
-        withCredentials: true,
-      })
-      .then(res => {
-        console.log(res.data);
-        history.push('/mypage/calendar');
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  // 현재 로그인한 유저가 캘린더의 권한 중 일치하는 권한을 찾아야함
+
+  const judgeAuth = (calAuth: any) => {
+    for (let i of calAuth) {
+      if (i.user.nickname === currnetUserNickname) {
+        if (i.auth) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const judgeWrite = (calAuth: any) => {
+    for (let i of calAuth) {
+      if (i.user.nickname === currnetUserNickname) {
+        if (i.write) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
 
   const addUserModalDropbox = (
@@ -164,39 +175,36 @@ export default function MypageCalendar({
       <SmallTitle>캘린더 수정</SmallTitle>
       <Changebox>
         <ChangeBoxNameTitle>이름</ChangeBoxNameTitle>
-        <AutoSaveInput
-          value={curCal}
-          handleChange={async (newValue: any) => {
-            handleNewName(newValue);
-          }}
-        ></AutoSaveInput>
+        {judgeWrite(calAuth) ? (
+          <AutoSaveInput
+            value={curCal}
+            handleChange={async (newValue: any) => {
+              handleNewName(newValue);
+            }}
+          ></AutoSaveInput>
+        ) : (
+          <InputRead>{curCal}</InputRead>
+        )}
       </Changebox>
       <Changebox>
         <ChangeboxForRow>
           <ChangeCalTitle>캘린더 색</ChangeCalTitle>
-          <ColorPicker
-            handleNewCalColor={handleNewCalColor}
-            currentColor={curCalColor}
-          ></ColorPicker>
+          {judgeWrite(calAuth) ? (
+            <ColorPicker
+              handleNewCalColor={handleNewCalColor}
+              currentColor={curCalColor}
+            ></ColorPicker>
+          ) : (
+            <ColorCircle color={curCalColor}></ColorCircle>
+          )}
         </ChangeboxForRow>
       </Changebox>
       <CalendarShare>
         <SmallTitle>캘린더 공유</SmallTitle>
         <UserboxCol>{shareUsers}</UserboxCol>
-        <Btn onClick={openAddUserModal}> + 사용자 추가</Btn>
+        {judgeAuth(calAuth) ? <Btn onClick={openAddUserModal}> + 사용자 추가</Btn> : <div></div>}
         {addUserModalDropbox}
       </CalendarShare>
-      <DeleteCal>
-        <SmallTitle>캘린더 삭제</SmallTitle>
-        <div>이 캘린더의 모든 내용이 삭제됩니다.삭제 후 내용은 복원할 수 없습니다.</div>
-        <Btn
-          onClick={() => {
-            deletecalendar();
-          }}
-        >
-          삭제하기
-        </Btn>
-      </DeleteCal>
     </CalendarContainer>
   );
 }
@@ -321,4 +329,11 @@ const Btn = styled.button`
   cursor: pointer;
   border-color: #e7e7e7;
   color: #1a73e8;
+`;
+
+const InputRead = styled.div`
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;

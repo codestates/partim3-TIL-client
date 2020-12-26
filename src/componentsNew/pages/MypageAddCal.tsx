@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RootState } from '../../modules';
 import { useSelector, useDispatch } from 'react-redux';
 
-export default function MypageAddCalendar({ connectcalendarauthority }: any) {
+export default function MypageAddCalendar({
+  connectcalendarauthority,
+  getMessage,
+  handleGetMessage,
+}: any) {
   const judgeAuth = (message: any) => {
     if (message.read && message.write && message.auth) {
       return '보기&수정&공유';
@@ -14,6 +18,7 @@ export default function MypageAddCalendar({ connectcalendarauthority }: any) {
     }
   };
   const { messages } = useSelector((state: RootState) => state.mypageCalendarMessagesM);
+  const [newMessage, setNewMessage] = useState(messages);
   let messageList = messages.map((el: any) => {
     return (
       <Userbox key={el.id}>
@@ -21,15 +26,19 @@ export default function MypageAddCalendar({ connectcalendarauthority }: any) {
         <UserBoxSetting>{el.shareCalendarName}</UserBoxSetting>
         <UserBoxAuth>{judgeAuth(el) + ' 권한'}</UserBoxAuth>
         <Admit
-          onClick={() => {
+          onClick={async () => {
             connectcalendarauthority(el.id, true);
+            await getMessage();
+            await handleGetMessage(true);
           }}
         >
           수락
         </Admit>
         <Admit
-          onClick={() => {
+          onClick={async () => {
             connectcalendarauthority(el.id, false);
+            await getMessage();
+            await handleGetMessage(true);
           }}
         >
           거절
