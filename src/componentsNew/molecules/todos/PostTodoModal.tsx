@@ -10,8 +10,11 @@ import DatePicker from 'react-datepicker';
 
 import { Label, Input } from '../../atoms';
 import EachTagForTodoModal from './EachTagForTodoModal';
+import { AiFillTags } from 'react-icons/ai';
 
 import REACT_APP_URL from '../../../config';
+
+import './PostTodoModal.css';
 
 interface PostTodoModalProp {
   showModal: boolean;
@@ -211,56 +214,94 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
 
   let modalContents = (
     <>
-      <header style={{ display: 'flex', justifyContent: 'center' }}>
-        <h5>새로운 Todo를 작성해 보세요!</h5>
+      <header style={{ display: 'flex', justifyContent: 'center', margin: '0px' }}>
+        <h5 style={{ margin: '0px' }}>새로운 Todo를 작성해 보세요!</h5>
       </header>
       <HrLine />
       <main style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-        <div style={{ flex: 1, margin: '5px' }}>
+        {/* <div style={{ flex: 1, margin: '5px' }}>
           <input type="checkbox" />
           축하합니다! 오늘 하루도 성공!
-        </div>
+        </div> */}
         <div
           style={{
+            display: 'flex',
             flex: 1,
-            margin: '5px',
+            margin: '10px',
+            justifyContent: 'space-between',
             alignItems: 'center',
           }}
         >
-          <Label text="제목을 입력해 주세요" smLabel={1}></Label>
-          <Input
-            type="text"
-            name="title"
-            placeholder="제목을 입력해 주세요."
-            smInput={1.5}
-            handleChange={handleTitleInput}
-            autoFocus={true}
-            className="PostTodoModal__titleInput"
-          ></Input>
-        </div>
-        <div style={{ flex: 1, margin: '5px' }}>
           <div>
-            <Label text="언제 하실 일인가요?" smLabel={1}></Label>
+            <Label text="제목을 입력해 주세요." smLabel={1}></Label>
+          </div>
+          <div style={{ width: '210px' }}>
+            <Input
+              type="text"
+              name="title"
+              smInput={1}
+              handleChange={handleTitleInput}
+              autoFocus={true}
+              className="PostTodoModal__titleInput"
+            ></Input>
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flex: 1,
+            margin: '10px',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <div>
+            <Label text="날짜를 선택하세요." smLabel={1}></Label>
+          </div>
+          <div style={{ flex: 1.5, display: 'flex', justifyContent: 'flex-end', width: '210px' }}>
             <DatePicker selected={startDate} onChange={handleDate} dateFormat="yyyy/MM/dd" />
           </div>
-          <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>{' '}
-          {/* 이 부분이 필요할까? */}
         </div>
-        <div style={{ flex: 1, margin: '5px' }}>
-          <Label text="캘린더를 선택해 주세요." smLabel={1}></Label>
-          <select className="selectedCalendar" onChange={handleSelectOption}>
-            {defaultCalendersForSelectOptions}
-            {calendersForSelectOptions}
-          </select>
-        </div>
-        <div style={{ flex: 1, margin: '5px', position: 'relative' }}>
-          <div onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}>
-            <Label text="이 영역을 클릭하여 태그를 선택해 주세요." smLabel={1}></Label>
+        <div
+          style={{
+            display: 'flex',
+            flex: 1,
+            margin: '10px',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <div>
+            <Label text="캘린더를 선택하세요." smLabel={1}></Label>
           </div>
+          <div>
+            <select
+              style={{ width: '210px', height: '30px' }}
+              className="selectedCalendar"
+              onChange={handleSelectOption}
+            >
+              {defaultCalendersForSelectOptions}
+              {calendersForSelectOptions}
+            </select>
+          </div>
+        </div>
+        <div style={{ flex: 1, margin: '10px', position: 'relative' }}>
+          <div
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+            onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}
+          >
+            <div>
+              <Label text="태그를 선택해 주세요." smLabel={1}></Label>
+            </div>
+            <div>
+              <AiFillTags size="1.5em" />
+            </div>
+          </div>
+
           {tagsSelectOptions}
           <div style={{ display: 'flex' }}>{selectedTags}</div>
         </div>
-        <div style={{ flex: 1, margin: '5px' }}>그 외 부분들은 어떤 것이 들어가면 좋을까요?</div>
+        {/* <div style={{ flex: 1, margin: '10px' }}>그 외 부분들은 어떤 것이 들어가면 좋을까요?</div> */}
       </main>
       <HrLine />
       <footer style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -313,7 +354,7 @@ const PostTodoModalContents = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px 10px;
-  width: 450px;
+  width: 420px;
   /* height: 450px; */
   border-radius: 10px;
   border: 1px solid black;
@@ -329,6 +370,7 @@ const HrLine = styled.hr`
   width: 100%;
   background-color: gray;
   height: 1px;
+  margin: 8px 0px;
 `;
 
 const TagSelectWindow = styled.div`

@@ -8,6 +8,7 @@ import { Label, Input } from '../../atoms';
 import EachTagForTodoModal from './EachTagForTodoModal';
 import DatePicker from 'react-datepicker';
 import REACT_APP_URL from '../../../config';
+import { GiConsoleController } from 'react-icons/gi';
 
 interface scheduleDateType {
   year: number;
@@ -20,6 +21,7 @@ interface TodoProps {
   id: number;
   key: number;
   calendarId: number;
+  calendarColor: string;
   scheduleDate: scheduleDateType;
   defaultArrayOfTagsId: number[];
   setTodoDeletedOrUpdated: (todoDeleted: boolean) => void;
@@ -37,6 +39,7 @@ export default function Todo({
   title,
   id,
   calendarId,
+  calendarColor,
   scheduleDate,
   defaultArrayOfTagsId,
   setTodoDeletedOrUpdated,
@@ -415,7 +418,7 @@ export default function Todo({
   return (
     <>
       <TodoWrap onClick={() => setDisplayFixOrDelTodoModal(true)}>
-        <div style={{ display: 'flex', flex: 1, margin: '10px' }}>title : {title}</div>
+        <div style={{ display: 'flex', flex: 1, margin: '10px', fontSize: '20px' }}>{title}</div>
         <div
           style={{
             display: 'flex',
@@ -447,8 +450,12 @@ export default function Todo({
 const TodoWrap = styled.div`
   display: flex;
   width: 100%;
+  height: 50px;
   align-items: center;
   justify-content: 'space-between';
+  border: 2px solid lightgrey;
+  margin: 3px 0px;
+  border-radius: 10px;
 `;
 
 const FixOrDelTodoModalWrap = styled.div`
