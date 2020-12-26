@@ -8,6 +8,7 @@ import {
   handleTodayFailure,
 } from '../../modules/handleToday';
 
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import styled from 'styled-components';
 
 export default function NaviButton() {
@@ -58,18 +59,42 @@ export default function NaviButton() {
   };
 
   return (
-    <>
-      <LeftAndRightNaviButton onClick={() => getNextday(-1)}>left</LeftAndRightNaviButton>
-      <LeftAndRightNaviButton onClick={() => getNextday(1)}>right</LeftAndRightNaviButton>
-    </>
+    <ButtonContainer>
+      <HoverCircle>
+        <FiChevronLeft
+          style={{ height: '20px', width: '20px' }}
+          onClick={() => getNextday(-1)}
+        ></FiChevronLeft>
+      </HoverCircle>
+      <HoverCircle>
+        <FiChevronRight
+          style={{ height: '20px', width: '20px' }}
+          onClick={() => getNextday(1)}
+        ></FiChevronRight>
+      </HoverCircle>
+    </ButtonContainer>
   );
 }
 
-const LeftAndRightNaviButton = styled.button`
-  width: 60px;
-  height: 40px;
-  border-radius: 5px;
-  background-color: skyblue;
-  margin-left: 5px;
-  margin-right: 5px;
+const ButtonContainer = styled.div`
+  flex: 0.5;
+  display: flex;
+  flex-direction: row;
+`;
+
+const HoverCircle = styled.div`
+  flex: 1;
+  margin: 3px;
+  width: 20px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    outline: none;
+    background-color: #f0f2f1;
+    color: black;
+  }
 `;

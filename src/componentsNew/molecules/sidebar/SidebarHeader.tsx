@@ -133,9 +133,9 @@ export default function SidebarHeader() {
         to={`/mypage/profile`}
         style={{ textDecoration: 'none', color: 'black', alignSelf: 'center' }}
       >
-        <h3>{nickname} 님</h3>
+        <SidebarNickName>{nickname} 님</SidebarNickName>
       </Link>
-      <h4 style={{ alignSelf: 'center' }}>안녕하세요</h4>
+      <div style={{ alignSelf: 'center', fontSize: '16px', marginBottom: '4px' }}>안녕하세요</div>
       {/* <div onClick={handleCloseModalChoice}> 환영합니다!</div> */}
 
       <BtnArea>
@@ -158,6 +158,10 @@ const SidebarHeaderContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+`;
+
+const SidebarNickName = styled.div`
+  font-size: 25px;
 `;
 const BtnArea = styled.div`
   flex: 1;
