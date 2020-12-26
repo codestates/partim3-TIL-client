@@ -91,18 +91,19 @@ export default function Tag({
   );
 
   let editButton = !openEditTag ? (
-    <Label onClick={() => setOpenEditTag(true)}>Edit</Label>
+    <TagEditDeleteButton onClick={() => setOpenEditTag(true)}>Edit</TagEditDeleteButton>
   ) : (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Label
+      <TagEditDeleteButton
+        style={{ width: '100px' }}
         onClick={() => {
           updateTag(userId, tagId, newTagName, newCalcolor, newTagDescription);
           setOpenEditTag(false); // 태그 수정이 성공할 때에만 이렇게 가야 하는데...
         }}
       >
         Complete
-      </Label>
-      <Label onClick={() => setOpenEditTag(false)}>Cancel</Label>
+      </TagEditDeleteButton>
+      <TagEditDeleteButton onClick={() => setOpenEditTag(false)}>Cancel</TagEditDeleteButton>
     </div>
   );
 
@@ -115,7 +116,9 @@ export default function Tag({
   //     ''
   //   );
 
-  let deleteButton = <Label onClick={() => deleteTag(userId, tagId)}>Delete</Label>;
+  let deleteButton = (
+    <TagEditDeleteButton onClick={() => deleteTag(userId, tagId)}>Delete</TagEditDeleteButton>
+  );
 
   // useEffect(() => {
   //   console.log('태그 변경시마다?');
@@ -138,25 +141,27 @@ const TagWarp = styled.div`
   justify-content: flex-end;
   align-items: center;
   margin: 10px 3px;
-  /* height: 20px; */
+  height: 40px;
 `;
 
 const TagsName = styled.div`
   display: flex;
-  flex: 3;
+  flex: 4;
   text-align: justify;
   margin-left: 10px;
 `;
 const TagsDescription = styled.div`
   display: flex;
-  flex: 5;
+  flex: 4;
   margin-left: 10px;
 `;
 
 const TagsEdit = styled.div`
   flex: 2;
   text-align: right;
-  margin-left: 10px;
+  margin: 0px 10px;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const TagsDelete = styled.div`
@@ -175,4 +180,17 @@ const TagIcon = styled.div<{ tagColor: string }>`
   color: white;
   font-weight: bold;
   padding: 4px;
+  margin: 4px;
+  box-shadow: 5px 5px 5px grey;
+`;
+
+const TagEditDeleteButton = styled.button`
+  width: 80px;
+  height: 40px;
+  margin: 0px 0px 0px 50px;
+  background-color: grey;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
 `;

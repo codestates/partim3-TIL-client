@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import styled from 'styled-components';
-import ColorPicker from '../molecules/sidebar/sidebarCalUnits/ColorPicker';
 
 import { PostNewTagBox, RenderTagsBox } from '../oraganisms/MypageTags';
-import { InputMolecule } from '../molecules';
+import { Input } from '../atoms';
 
 interface MypageTagsProps {
   userId: number;
@@ -52,21 +51,19 @@ export default function MypageTags({ userId, postNewTag, updateTag, deleteTag }:
       <MainHeader>
         <MainHeaderBox>
           <MainHeaderSearch>
-            <InputMolecule
-              text="Tag 검색"
+            <Input
+              className="SearchAllTags"
               type="text"
               name="SearchAllTags"
-              placeholder="Search All Tags"
-              smLabel={1}
-              smInput={3}
               handleChange={searchTag}
-              className="SearchAllTags"
+              placeholder="Search All Tags"
+              smInput={3}
             />
           </MainHeaderSearch>
           {/* <MainHeaderTitle>Tag 검색</MainHeaderTitle>
           <MainHeaderSearch placeholder="Search all tags" onChange={searchTag}></MainHeaderSearch> */}
           <MainHeaderBtnSpace>
-            <MainHeaderBtn onClick={togglePostNewTagBoxButton}>New Tag</MainHeaderBtn>
+            <MainHeaderBtn onClick={togglePostNewTagBoxButton}>Create New Tag</MainHeaderBtn>
           </MainHeaderBtnSpace>
         </MainHeaderBox>
         <PostNewTagBox
@@ -93,13 +90,13 @@ export default function MypageTags({ userId, postNewTag, updateTag, deleteTag }:
 const MainHeader = styled.div`
   margin: 10px;
   margin-bottom: 0px;
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
   flex: 0.8;
   display: flex;
   flex-direction: column;
 `;
 const MainHeaderBox = styled.div`
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
   flex: 1;
   display: flex;
   flex-direction: row;
@@ -121,9 +118,18 @@ const MainHeaderBtnSpace = styled.span`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
+  height: 60px;
 `;
 const MainHeaderBtn = styled.button`
   margin-right: 4vw;
+  width: 200px;
+  height: 50px;
+  background-color: grey;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 10px;
 `;
 
 const MainBody = styled.div`
@@ -135,7 +141,7 @@ const MainBody = styled.div`
 
 const MainBodyTitle = styled.div`
   flex: 1;
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
   text-align: justify;
   margin: 10px;
   margin-bottom: 0px;
