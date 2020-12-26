@@ -2,19 +2,25 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import sendReview from '../utils/sendReviewF';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RootState } from '../../modules';
 import getToday from '../../componentsNew/utils/todayF';
 import { useForm } from 'react-hook-form';
+import { AiFillTags } from 'react-icons/ai';
+import EachTagForTodoModal from '../molecules/todos/EachTagForTodoModal';
 
 export default function BigModal(props: any) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const { tags } = useSelector((state: RootState) => state.handleTags);
 
   const [title, setTitle] = useState('');
   const [context, setContext] = useState('');
   const [hour, setHour] = useState(getToday().hour);
   const [min, setMin] = useState(getToday().min);
 
+  const [showTagsSelectOptions, setShowTagsSelectOptions] = useState(false);
+  const [checkedTagArray, setCheckedTagArray] = useState<number[]>([]);
   const [selectedCalendar, setSelectedCalendar] = useState(NaN);
   // const { register, handleSubmit, reset, errors } = useForm();
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
@@ -90,6 +96,7 @@ export default function BigModal(props: any) {
     setShow(false);
     setHour(0);
     props.onHide();
+    setCheckedTagArray([]);
   };
 
   // useEffect(() => {
@@ -129,6 +136,102 @@ export default function BigModal(props: any) {
     setInputMin(true);
   };
 
+  const handleCheckedTags = (tagId: number, isChecked: boolean) => {
+    let checkedTagIndex = checkedTagArray.indexOf(tagId);
+    if (checkedTagIndex === -1 && isChecked === true) {
+      setCheckedTagArray([...checkedTagArray, tagId]);
+    } else {
+      let delBefore = checkedTagArray.slice(0, checkedTagIndex);
+      let delAfter = checkedTagArray.slice(checkedTagIndex + 1);
+      setCheckedTagArray([...delBefore, ...delAfter]);
+    }
+  };
+
+  // 태그 선택을 위한 드롭다운 창에 나열될, 유저가 가지고 있는 모든 태그들
+  let tagsList =
+    tags.length === 0 ? (
+      <span>
+        <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
+      </span>
+    ) : (
+      tags.map(eachTag => {
+        let alreadyChecked = checkedTagArray.indexOf(eachTag.id) !== -1 ? true : false;
+        return (
+          <EachTagForTodoModal
+            key={eachTag.id}
+            tagId={eachTag.id}
+            tagName={eachTag.tagName}
+            tagColor={eachTag.tagColor}
+            handleCheckedTags={handleCheckedTags!}
+            alreadyChecked={alreadyChecked}
+          />
+        );
+      })
+    );
+
+  // 태그 선택을 위한 드롭다운 창(onClick 이벤트로 이 창을 토글)
+  let tagsSelectOptions = showTagsSelectOptions ? (
+    <div
+      style={{
+        position: 'absolute',
+        right: '0px',
+        zIndex: 2,
+      }}
+    >
+      <div
+        // 바깥을 클릭하면 닫히도록 하는 기능인 듯
+        style={{
+          position: 'fixed',
+          top: '0px',
+          right: '0px',
+          bottom: '0px',
+          left: '0px',
+        }}
+        onClick={() => {
+          setShowTagsSelectOptions(false);
+        }}
+      ></div>
+      <TagSelectWindow>
+        <div
+          className="TagSettingIcon"
+          style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
+        >
+          {/* <div>(검색창이 들어올 자리?)</div> */}
+          <Link to="/mypage/tags">
+            <button type="button" style={{ border: 'none', padding: '0px', marginRight: '5px' }}>
+              <img
+                src="/img/settingIcon.png"
+                alt="캘린더 설정하기"
+                width="25px"
+                height="25px"
+              ></img>
+            </button>
+          </Link>
+        </div>
+        <HrLine style={{ margin: '5px', width: '95%' }} />
+        {tagsList}
+      </TagSelectWindow>
+    </div>
+  ) : null;
+
+  // 드롭다운 창에서 유저가 선택한 태그들(tags에서 checkedTagArray를 기준으로 필터링한 결과물임)
+  let selectedTags =
+    tags.length === 0 ? (
+      <span>
+        <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
+      </span>
+    ) : (
+      tags.map(eachTag => {
+        if (checkedTagArray.indexOf(eachTag.id) !== -1) {
+          return (
+            <TagIcon key={eachTag.id} tagId={eachTag.id} tagColor={eachTag.tagColor}>
+              {eachTag.tagName}
+            </TagIcon>
+          );
+        }
+      })
+    );
+
   return (
     <ModalMask show={props.show}>
       <Modal>
@@ -166,6 +269,24 @@ export default function BigModal(props: any) {
             {defaultmyCalendersForSelectOptions}
             {myCalendersForSelectOptions}
           </SelectCal>
+          {/* TagSelectOption : 여기가 태그 넣는 부분입니다. 위치 수정하시면 됩니다. */}
+          <TagSelectOption>
+            <div style={{ flex: 1, margin: '10px', position: 'relative' }}>
+              <div
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+                onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}
+              >
+                <div>
+                  <label>"태그를 선택해 주세요."</label>
+                </div>
+                <div>
+                  <AiFillTags size="1.5em" />
+                </div>
+              </div>
+              <div>{tagsSelectOptions}</div>
+              <div style={{ display: 'flex', marginLeft: '10px' }}>{selectedTags}</div>
+            </div>
+          </TagSelectOption>
           <Space></Space>
         </TimeHeader>
         <TitleInput placeholder="제목" onChange={titleChange}></TitleInput>
@@ -197,6 +318,7 @@ export default function BigModal(props: any) {
                 scheduleDate,
                 scheduleTime,
                 calendarId,
+                checkedTagArray,
               );
               //scheduleTime, calendarId
               // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
@@ -321,7 +443,7 @@ const TimeHeader = styled.div`
   flex: 1.5;
   width: 75vw;
   display: flex;
-  justify-contents: flex-start;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
 `;
@@ -329,7 +451,7 @@ const Hour = styled.span`
   background: white;
 `;
 const MonthAndDay = styled.div`
-  width: 70px;
+  width: 90px;
   background: #aed581;
   justify-self: flex-start;
 `;
@@ -364,4 +486,46 @@ const SpaceTime = styled.div`
 `;
 const SelectCal = styled.select`
   flex: 3;
+  margin-right: 20px;
+`;
+
+const HrLine = styled.hr`
+  border: 0;
+  clear: both;
+  display: block;
+  width: 100%;
+  background-color: gray;
+  height: 1px;
+  margin: 8px 0px;
+`;
+
+const TagSelectOption = styled.div`
+  flex: 5;
+  margin-right: 20px;
+`;
+
+const TagSelectWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid red;
+  background-color: white;
+  width: 250px;
+  z-index: 7;
+  padding: 5px;
+`;
+
+const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
+  border-radius: 5px;
+  background-color: ${props => props.tagColor};
+  color: white;
+  font-weight: bold;
+  padding: 4px;
+  margin: 4px;
+  box-shadow: 1px 1px 1px grey;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

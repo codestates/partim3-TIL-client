@@ -68,7 +68,7 @@ export default function SidebarTag() {
         position: 'absolute',
         top: '30px',
         left: '30px',
-        zIndex: 2,
+        zIndex: 200,
       }}
     >
       <div
