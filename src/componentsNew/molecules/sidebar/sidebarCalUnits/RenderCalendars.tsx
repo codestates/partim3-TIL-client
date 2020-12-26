@@ -65,4 +65,11 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
 
 const RenderCalendarsWrap = styled.div`
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  &:hover {
+    background-color: #f0f2f1;
+    color: black;
+    border-radius: 2px;
+  }
 `;

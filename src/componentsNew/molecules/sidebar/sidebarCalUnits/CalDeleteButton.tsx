@@ -88,12 +88,7 @@ export default function CalDeleteButton({ calId, calName, delCalendar }: CalDele
 const Btn = styled.button`
   outline: none;
   border: 0px;
-  background-color: #aed581;
-  &:hover {
-    background-color: #f0f2f1;
-    color: black;
-    border-radius: 2px;
-  }
+  background-color: transparent;
 `;
 
 const DeleteModalWrap = styled.div`

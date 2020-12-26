@@ -22,10 +22,5 @@ export default function CalSettingButton({ eachCalendarName }: CalSettingButtonP
 const Btn = styled.button`
   outline: none;
   border: 0px;
-  background-color: #aed581;
-  &:hover {
-    background-color: #f0f2f1;
-    color: black;
-    border-radius: 2px;
-  }
+  background-color: transparent;
 `;

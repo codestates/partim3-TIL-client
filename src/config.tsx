@@ -1,7 +1,6 @@
 let REACT_APP_URL: string = '';
 if (process.env.NODE_ENV === 'production') {
-
-  REACT_APP_URL = 'http://52.79.214.183:8080';
+  REACT_APP_URL = 'https://api.til-log.me';
 
   // REACT_APP_URL = 'https://til-log.me';
 } else if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
