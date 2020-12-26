@@ -147,7 +147,6 @@ const FilteredTodosAndReviewsHeader = styled.div`
 
 const FilteredTodosAndReviewsMain = styled.div`
   flex: 1;
-
   display: flex;
   /* border: 1px solid purple; */
 `;
