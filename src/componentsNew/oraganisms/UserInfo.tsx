@@ -4,10 +4,9 @@ import { Input } from '../../componentsNew/atoms';
 
 interface UserInfoProps {
   handleChange(e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement }): void;
-  currentNickname: string;
 }
 
-export default function UserInfo({ handleChange, currentNickname }: UserInfoProps) {
+export default function UserInfo({ handleChange }: UserInfoProps) {
   return (
     <UserInfoWrap>
       <LabelInputSet>
@@ -70,7 +69,8 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
 const UserInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0% 30%;
+  /* margin: 0% 30%; */
+  align-items: center;
 `;
 
 const UserInfoLabel = styled.label`
@@ -82,4 +82,5 @@ const LabelInputSet = styled.div`
   display: flex;
   flex-direction: column;
   margin: 10px 0px;
+  width: 300px;
 `;

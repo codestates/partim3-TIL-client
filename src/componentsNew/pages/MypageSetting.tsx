@@ -24,7 +24,7 @@ export default function MypageSetting({
         </div>
       </MypageSettingWelcomeMessage>
 
-      <UserInfo handleChange={handleChange} currentNickname={currentNickname} />
+      <UserInfo handleChange={handleChange} />
       <div
         style={{
           display: 'flex',
@@ -47,21 +47,23 @@ const MypageSettingWrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const MypageSettingWelcomeMessage = styled.div`
   display: flex;
-  height: 35%;
+  height: 25%;
   /* border: 1px solid black; */
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   padding-top: 40px;
 `;
 
 const Text = styled.span`
   text-align: left;
-  font-size: 50px;
-  margin-left: 20%;
+  font-size: 40px;
+  /* margin-left: 30%; */
+  align-items: center;
 `;
 
 const UpdateUserInfoReqButton = styled.button`
