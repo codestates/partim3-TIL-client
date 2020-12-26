@@ -47,36 +47,57 @@ export default function Header(today: todayProps) {
 
   return (
     <HeaderWrap>
-      <div style={{ flex: 1 }}>
-        <GiHamburgerMenu size="3em" onClick={showSidebar} />
+      <div style={{ flex: 0.2 }}>
+        <GiHamburgerMenu
+          size="3em"
+          onClick={showSidebar}
+          style={{ color: '#94af76', width: '30px' }}
+        />
       </div>
-      <div style={{ flex: 1 }}>
-        <Link to="/">(logo)</Link>
-      </div>
-      <div style={{ flex: 1 }}>
-        <TodayButton onClick={goToday}>today btn</TodayButton>
-      </div>
-      <div style={{ flex: 1 }}>
-        <NaviButton />
-      </div>
-      <div style={{ flex: 1 }}>
-        <h4>{todayView}</h4>
-      </div>
+      <Logo>
+        <Link to="/" style={{ textDecoration: 'none', color: '#1b5e20', display: 'flex' }}>
+          TIL
+        </Link>
+      </Logo>
+      <TodayButton onClick={goToday}>오늘</TodayButton>
+      <NaviButton />
+      <Today>{todayView}</Today>
     </HeaderWrap>
   );
 }
 
 const HeaderWrap = styled.div`
   flex: 1;
+  margin-left: 10px;
+  border-bottom: 1px solid #dadce0;
   display: flex;
   justify-content: center;
   align-items: center;
-  align-content: center;
 `;
 
 const TodayButton = styled.button`
-  width: 100px;
-  height: 40px;
-  border-radius: 5px;
-  background-color: skyblue;
+  width: 50px;
+  height: 30px;
+  font-size: 15px;
+  outline: none;
+  border: 1px solid #dadce0;
+  color: #3c4043;
+  background-color: white;
+  &:hover {
+    outline: none;
+    background-color: #f0f2f1;
+    color: black;
+  }
+`;
+
+const Logo = styled.div`
+  flex: 0.5;
+  justify-self: flex-start;
+  font-size: 25px;
+`;
+
+const Today = styled.div`
+  flex: 6;
+  font-size: 20px;
+  color: #3c4043;
 `;
