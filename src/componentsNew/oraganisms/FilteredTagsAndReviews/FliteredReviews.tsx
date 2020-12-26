@@ -17,11 +17,11 @@ import {
 } from '../../../modules/handleCheckedCal';
 import { todayProps } from '../../../types';
 
-interface andFilteredTodoIdType {
+interface andFilteredReviewIdType {
   [name: string]: number;
 }
 
-export default function FliteredTodos() {
+export default function FliteredReviews() {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -36,12 +36,12 @@ export default function FliteredTodos() {
   );
   const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
 
-  const goToClickedTodo_CalendarDayPage = (
-    eachTodoCalendarId: number,
-    clickedTodo_Date: todayProps,
+  const goToClickedReview_CalendarDayPage = (
+    eachReviewCalendarId: number,
+    clickedReview_Date: todayProps,
   ) => {
     dispatch(handleTodayStart());
-    dispatch(handleTodaySuccess(clickedTodo_Date));
+    dispatch(handleTodaySuccess(clickedReview_Date));
 
     let delTime = checkedCalArray.length - 1;
 
@@ -50,14 +50,14 @@ export default function FliteredTodos() {
       dispatch(handleCheckedCalSuccess_del(checkedCalArray.indexOf(checkedCalArray[i])));
     }
 
-    dispatch(handleCheckedCalSuccess_add(eachTodoCalendarId));
+    dispatch(handleCheckedCalSuccess_add(eachReviewCalendarId));
 
     history.push('/calendar/day');
   };
 
-  let andFilteredTodoId: andFilteredTodoIdType = {};
+  let andFilteredReviewId: andFilteredReviewIdType = {};
 
-  let filteredtodosList =
+  let filteredReviewsList =
     filteredTodosAndReviews.length === 0
       ? 'Tag가 없습니다. 먼저 Tag를 만들고, Todo에 등록해 보세요!'
       : filteredTodosAndReviews.map(eachTagsResult => {
@@ -65,35 +65,38 @@ export default function FliteredTodos() {
             let tagId = eachTagsResult.id;
             let tagColor = eachTagsResult.tagColor;
             let tagName = eachTagsResult.tagName;
-            let todosFilteredByTag = eachTagsResult.todoTags;
-            return todosFilteredByTag.map(eachTodo => {
-              if (eachTodo.todo === null) {
+            let ReviewsFilteredByTag = eachTagsResult.reviewTags;
+            return ReviewsFilteredByTag.map(eachReview => {
+              if (eachReview.review === null) {
                 ('');
               } else {
-                if (cals_ArrayForFiltering.indexOf(eachTodo.todo.calendar.id) !== -1) {
-                  let eachTodoId = eachTodo.todo.id;
-                  let eachTodoTitle = eachTodo.todo.title;
-                  let eachTodoScheduleDate = JSON.parse(eachTodo.todo.scheduleDate);
-                  let eachTodoCalendarId = eachTodo.todo.calendar.id;
-                  let eachTodoCalendarName = eachTodo.todo.calendar.name;
-                  let eachTodoCalendarColor = eachTodo.todo.calendar.color;
+                if (cals_ArrayForFiltering.indexOf(eachReview.review.calendar.id) !== -1) {
+                  let eachReviewId = eachReview.review.id;
+                  let eachReviewTitle = eachReview.review.title;
+                  let eachReviewScheduleDate = JSON.parse(eachReview.review.scheduleDate);
+                  let eachReviewCalendarId = eachReview.review.calendar.id;
+                  let eachReviewCalendarName = eachReview.review.calendar.name;
+                  let eachReviewCalendarColor = eachReview.review.calendar.color;
 
-                  andFilteredTodoId[eachTodoId] === undefined
-                    ? (andFilteredTodoId[eachTodoId] = 1)
-                    : andFilteredTodoId[eachTodoId]++;
+                  andFilteredReviewId[eachReviewId] === undefined
+                    ? (andFilteredReviewId[eachReviewId] = 1)
+                    : andFilteredReviewId[eachReviewId]++;
 
-                  if (andFilteredTodoId[eachTodoId] === tags_ArrayForFiltering.length) {
+                  if (andFilteredReviewId[eachReviewId] === tags_ArrayForFiltering.length) {
                     return (
-                      <FilteredTodos_byTags
-                        key={eachTodoId}
-                        tagId={eachTodoId}
+                      <FilteredReviews_byTags
+                        key={eachReviewId}
+                        tagId={eachReviewId}
                         onClick={() => {
-                          goToClickedTodo_CalendarDayPage(eachTodoCalendarId, eachTodoScheduleDate);
+                          goToClickedReview_CalendarDayPage(
+                            eachReviewCalendarId,
+                            eachReviewScheduleDate,
+                          );
                         }}
                       >
                         <div style={{ display: 'flex', flex: 2, margin: '10px' }}>
                           {/* Title :  */}
-                          {eachTodoTitle}
+                          {eachReviewTitle}
                         </div>
                         <div
                           style={{
@@ -104,7 +107,7 @@ export default function FliteredTodos() {
                           }}
                         >
                           {/* Date&nbsp;:&nbsp; */}
-                          {`${eachTodoScheduleDate.year}. ${eachTodoScheduleDate.month}. ${eachTodoScheduleDate.day}`}
+                          {`${eachReviewScheduleDate.year}. ${eachReviewScheduleDate.month}. ${eachReviewScheduleDate.day}`}
                         </div>
                         <div
                           style={{
@@ -114,13 +117,13 @@ export default function FliteredTodos() {
                             justifyContent: 'flex-end',
                           }}
                         >
-                          {/* {`(서버 요청) todo 별로 캘린더아이디가 따라와야, 캘린더별 필터링 가능`} */}
+                          {/* {`(서버 요청) review 별로 캘린더아이디가 따라와야, 캘린더별 필터링 가능`} */}
                           {/* <span>Calendar&nbsp;:&nbsp;</span> */}
-                          <span style={{ color: `${eachTodoCalendarColor}` }}>
-                            {eachTodoCalendarName}
+                          <span style={{ color: `${eachReviewCalendarColor}` }}>
+                            {eachReviewCalendarName}
                           </span>
                         </div>
-                      </FilteredTodos_byTags>
+                      </FilteredReviews_byTags>
                     );
                   }
                 }
@@ -129,41 +132,40 @@ export default function FliteredTodos() {
           }
         });
 
-  let filteredTodoEmpty;
+  let filteredReviewEmpty;
 
-  for (let passedTime in andFilteredTodoId) {
-    if (andFilteredTodoId[passedTime] === tags_ArrayForFiltering.length) {
-      filteredTodoEmpty = '';
+  for (let passedTime in andFilteredReviewId) {
+    if (andFilteredReviewId[passedTime] === tags_ArrayForFiltering.length) {
+      filteredReviewEmpty = '';
       break;
     } else {
-      filteredTodoEmpty = '필터링된 결과가 없습니다.';
+      filteredReviewEmpty = '필터링된 결과가 없습니다.';
     }
   }
 
-  if (Object.keys(andFilteredTodoId).length === 0) {
-    filteredTodoEmpty = '필터링된 결과가 없습니다.';
+  if (Object.keys(andFilteredReviewId).length === 0) {
+    filteredReviewEmpty = '필터링된 결과가 없습니다.';
   }
 
   return (
-    <FliteredTodosWrap>
-      {filteredtodosList}
-      {filteredTodoEmpty}
-    </FliteredTodosWrap>
+    <FliteredReviewsWrap>
+      {filteredReviewsList}
+      {filteredReviewEmpty}
+    </FliteredReviewsWrap>
   );
 }
 
-const FliteredTodosWrap = styled.div`
+const FliteredReviewsWrap = styled.div`
   display: flex;
   flex-direction: column;
   /* border: 1px solid red; */
   margin: 2px;
   /* flex-grow: 1; */
-  height: 30%;
-  overflow: auto;
+  height: 65%;
+  overflow: scroll;
 `;
 
-// Tag별 개별 Todo들
-const FilteredTodos_byTags = styled.div<{ tagId: number }>`
+const FilteredReviews_byTags = styled.div<{ tagId: number }>`
   display: flex;
   /* flex: 1; */
   border: 1px solid grey;
@@ -172,17 +174,3 @@ const FilteredTodos_byTags = styled.div<{ tagId: number }>`
   align-items: center;
   justify-content: 'space-between';
 `;
-
-// const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
-//   border-radius: 5px;
-//   background-color: ${props => props.tagColor};
-//   color: white;
-//   font-weight: bold;
-//   padding: 4px;
-//   margin: 4px;
-//   box-shadow: 1px 1px 1px grey;
-//   height: 25px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
