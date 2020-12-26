@@ -99,7 +99,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
 
   return (
     <SidebarMyCalWrap>
-      <h6>새 캘린더 추가하기</h6>
+      <h6 style={{ color: 'white' }}>새 캘린더 추가하기</h6>
       <MakeNewCal
         handleNewCalName={handleNewCalName}
         handleNewCalColor={handleNewCalColor}
@@ -122,4 +122,5 @@ const SidebarMyCalWrap = styled.div`
 const MycalTitle = styled.h6`
   flex: 1;
   margin-top: 15px;
+  color: white;
 `;

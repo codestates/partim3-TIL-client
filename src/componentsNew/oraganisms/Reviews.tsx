@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import Review from '../molecules/reviews/Review';
@@ -7,6 +7,8 @@ import BigModal from '../atoms/BigModal';
 import getToday from '../../componentsNew/utils/todayF';
 import styled from 'styled-components';
 import { BiPen } from 'react-icons/bi';
+import REACT_APP_URL from '../../config';
+import axios from 'axios';
 
 interface ReviewsProps {
   setNewPosted: (newPosted: boolean) => void;
@@ -14,7 +16,33 @@ interface ReviewsProps {
 
 export default function Reviews({ setNewPosted }: ReviewsProps) {
   const { reviews } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
-  const [modalShow, setModalShow] = React.useState(false);
+  const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+
+  const [modalShow, setModalShow] = useState(false);
+  const [delStatus, setDelStatus] = useState('start');
+
+  const handleDel = (reviewId: any, calendarId: any) => {
+    return axios
+      .delete(`${REACT_APP_URL}/calendar/deletereview`, {
+        data: {
+          userId: currentUser,
+          reviewId,
+          calendarId,
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        setDelStatus('delete');
+      })
+      .catch(err => {
+        console.log({ err });
+      });
+  };
+
+  useEffect(() => {
+    console.log('use');
+    setDelStatus('start');
+  }, [delStatus]);
 
   let reviewList;
 
@@ -36,14 +64,11 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
     let sortedList = addTotalTime.sort(function (a, b) {
       return parseFloat(a.totalTime) - parseFloat(b.totalTime);
     });
-    const hadleModalShow = () => {
-      setModalShow(true);
-    };
 
     reviewList = sortedList.map((el: any) => {
-      const { id, title, context, imageUrl, scheduleDate, scheduleTime } = el;
-      //  {/* <BiGame style={{ flex: 1, zIndex: 100, background: 'red' }}></BiGame> */}
-      //       {/* <TimeLine></TimeLine> */}
+      const { id, title, context, imageUrl, scheduleDate, scheduleTime, calendarId } = el;
+      console.log(title);
+
       return (
         <div>
           <Review
@@ -54,6 +79,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
             imageUrl={imageUrl}
             scheduleDate={scheduleDate}
             scheduleTime={scheduleTime}
+            calendarId={calendarId}
+            handleDel={handleDel}
           ></Review>
         </div>
       );
@@ -75,7 +102,7 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
             </AddReviewBtn>
           </ReviewTitle>
         </TitleAndBtn>
-        <div>{reviewList}</div>
+        <ReviwList>{reviewList}</ReviwList>
         <BigModal
           show={modalShow}
           onHide={() => setModalShow(false)}
@@ -124,6 +151,11 @@ const AddReviewBtn = styled.button`
     background-color: #f0f2f1;
     color: black;
   }
+`;
+
+const ReviwList = styled.div`
+  margin-top: 3px;
+  margin-bottom: 3px;
 `;
 // render review get요청으로 받아와서, 화면에 리뷰들을 뿌려주는 부분을 구현해야함.
 // molecules로 review를 구현

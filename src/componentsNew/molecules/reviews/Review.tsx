@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { BiGame } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
-import BigModal from '../../atoms/BigModal';
+import { FaCheckCircle } from 'react-icons/fa';
 
+import { RootState } from '../../../modules';
+import { useSelector, useDispatch } from 'react-redux';
 // VscCircleOutline
 
 //형태만 만든다고 하면 어떤 모양일까?
@@ -25,6 +25,8 @@ interface Props {
   scheduleDate: scheduleDateI;
   scheduleTime: scheduleTimeI;
   id: number;
+  calendarId: number;
+  handleDel: any;
 }
 
 export default function Review({
@@ -34,50 +36,38 @@ export default function Review({
   imageUrl,
   scheduleDate,
   scheduleTime,
+  calendarId,
+  handleDel,
 }: Props) {
-  console.log(context.length);
-  const [origin, setOrigin] = useState(true);
-  const [newTitle, setNewTitle] = useState(false);
-  const editOrigin = () => {
-    setOrigin(false);
-    setNewTitle(true);
+  const handleDelReview = () => {
+    handleDel(id, calendarId);
   };
-  const editNew = () => {
-    setOrigin(true);
-    setNewTitle(false);
-  };
-  // style={{ flex: 8, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}
 
+  console.log(title);
   return (
     <Box>
-      {/* <TimeLine></TimeLine> */}
-
       <ReviewBox>
-        <BiGame
+        <FaCheckCircle
           style={{
             marginLeft: '5px',
             zIndex: 100,
-            background: 'red',
+            background: 'white',
             position: 'absolute',
             margin: '5px',
           }}
-        ></BiGame>
+        ></FaCheckCircle>
         <TimeLine>
           <TimeAndTitle>
             <Time>{scheduleTime.hour + ':' + scheduleTime.min}</Time>
-            <Title onClick={editOrigin} show={origin}>
-              {/* <Link to="/reviewUpdate">{title}</Link> */}
-              {title}
-            </Title>
-            <TitleEdit defaultValue={title} show={newTitle}></TitleEdit>
-            <Link to="/reviewUpdate">
-              <button onClick={editNew}>수정</button>
-            </Link>
-            <button onClick={editNew}>삭제</button>
+            <Title>{title}</Title>
           </TimeAndTitle>
           <ContexAndLine show={context.length === 0 ? false : true}>
             <Context>{context}</Context>
           </ContexAndLine>
+          <ReviewSetting>
+            <Edit>수정</Edit>
+            <Del onClick={handleDelReview}>삭제</Del>
+          </ReviewSetting>
         </TimeLine>
       </ReviewBox>
     </Box>
@@ -100,9 +90,6 @@ const ReviewBox = styled.div`
 `;
 
 const TimeAndTitle = styled.div`
-  width: 50vw;
-  border: 0;
-  backgroud: blue;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -111,19 +98,22 @@ const TimeAndTitle = styled.div`
 `;
 
 const Time = styled.div`
+  margin-left: 6px;
   width: 40px;
   position: block;
   text-align: center;
+  color: #3c4043;
 `;
-const Title = styled.div<{ show?: boolean }>`
-  display: ${props => (props.show ? 'flex' : 'none')};
+const Title = styled.div`
+  margin-left: 10px;
+  font-size: 15px;
+  display: flex;
   flex: 5;
-  font-weight: bold;
-  width: 5vw;
+  color: black
   flex-direction: column;
 `;
-const TitleEdit = styled.input<{ show?: boolean }>`
-  display: ${props => (props.show ? 'flex' : 'none')};
+const TitleEdit = styled.input`
+  display: flex;
   flex: 5;
   font-weight: bold;
   width: 5vw;
@@ -134,11 +124,31 @@ const ContexAndLine = styled.div<{ show?: boolean }>`
   display: ${props => (props.show ? 'flex' : 'none')};
 `;
 const Context = styled.div`
+  margin-top: 3px;
+  margin-bottom: 3px;
   flex: 0.95;
-  margin-left: 2vw;
+  margin-left: 15px;
   margin-right: 2vw;
   border: 1px solid gray;
   background-color: white;
   padding: 10px;
   border-radius: 5px;
+`;
+
+const ReviewSetting = styled.div`
+  margin-left: 10px;
+`;
+
+const Edit = styled.span`
+  text-align: right-end;
+  margin-right: 10px;
+  margin-left: 72vw;
+  &:hover {
+    color: #1a73e8;
+  }
+`;
+const Del = styled.span`
+  &:hover {
+    color: red;
+  }
 `;

@@ -33,7 +33,7 @@ export default function SidebarCal() {
 
   return (
     <SidebarCalWrap>
-      <div>날짜를 선택해 주세요</div>
+      <div style={{ color: 'white' }}>날짜를 선택해 주세요</div>
       <DatePicker selected={startDate} onChange={handleDate} dateFormat="yyyy/MM/dd" />
     </SidebarCalWrap>
   );

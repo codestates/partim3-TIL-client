@@ -47,29 +47,36 @@ export default function Header(today: todayProps) {
 
   return (
     <HeaderWrap>
-      <div style={{ flex: 0.2 }}>
-        <GiHamburgerMenu
-          size="3em"
-          onClick={showSidebar}
-          style={{ color: '#94af76', width: '30px' }}
-        />
-      </div>
-      <Logo>
-        <Link to="/" style={{ textDecoration: 'none', color: '#1b5e20', display: 'flex' }}>
-          TIL
-        </Link>
-      </Logo>
-      <TodayButton onClick={goToday}>오늘</TodayButton>
-      <NaviButton />
-      <Today>{todayView}</Today>
+      <HeaderMargin>
+        <div style={{ flex: 0.2 }}>
+          <GiHamburgerMenu
+            size="3em"
+            onClick={showSidebar}
+            style={{ color: '#3c4043', width: '30px' }}
+          />
+        </div>
+        <Logo>
+          <Link to="/" style={{ textDecoration: 'none', color: '#263238', display: 'flex' }}>
+            TIL
+          </Link>
+        </Logo>
+        <TodayButton onClick={goToday}>오늘</TodayButton>
+        <NaviButton />
+        <Today>{todayView}</Today>
+      </HeaderMargin>
     </HeaderWrap>
   );
 }
 
 const HeaderWrap = styled.div`
   flex: 1;
-  margin-left: 10px;
   border-bottom: 1px solid #dadce0;
+`;
+
+const HeaderMargin = styled.div`
+  flex: 1;
+  margin-left: 10px;
+
   display: flex;
   justify-content: center;
   align-items: center;
