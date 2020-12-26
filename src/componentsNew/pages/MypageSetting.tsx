@@ -58,7 +58,7 @@ const MypageSettingWelcomeMessage = styled.div`
   padding-top: 40px;
 `;
 
-const Text = styled.text`
+const Text = styled.span`
   text-align: left;
   font-size: 50px;
   margin-left: 20%;
