@@ -24,7 +24,7 @@ import { FcGoogle } from 'react-icons/fc';
 // import dotenv from 'dotenv';
 // dotenv.config();
 
-console.log('url : ', process.env.REACT_APP_GOOGLE_LOGIN);
+// console.log('url : ', process.env.REACT_APP_GOOGLE_LOGIN);
 // url :  960834676018-h74urgi5pr09a6io2lu2cbc2mv9b61i3.apps.googleusercontent.com
 // 누르면 팝업창이 뜬 후 'DOMException: Failed to execute 'open' on 'XMLHttpRequest': Invalid URL' 에러 나오는 중
 

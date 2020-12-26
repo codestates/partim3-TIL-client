@@ -19,6 +19,8 @@ import REACT_APP_URL from '../../../config';
 import dotenv from 'dotenv';
 dotenv.config();
 
+import styled from 'styled-components';
+
 export default function SidebarHeader() {
   const { currentUser, nickname } = useSelector((state: RootState) => state.loginOut.status);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -112,10 +114,6 @@ export default function SidebarHeader() {
     />
   );
 
-  // const handleCloseModalChoice = () => {
-  //   setLogoutModalChoiceOpen(false);
-  // };
-
   const handleCloseModalChoice = () => {
     setLogoutModalChoiceOpen(!logoutModalChoiceOpen);
   };
@@ -130,37 +128,54 @@ export default function SidebarHeader() {
   );
 
   return (
-    <Col>
-      <Row>
-        <Link to={`/mypage/profile`}>
-          <Col className="m-auto pb-3">
-            <Image src="/img/cat.jpeg" height="40" width="40" roundedCircle />
-          </Col>
+    <SidebarHeaderContainer>
+      <Link
+        to={`/mypage/profile`}
+        style={{ textDecoration: 'none', color: 'black', alignSelf: 'center' }}
+      >
+        <h3>{nickname} 님</h3>
+      </Link>
+      <h4 style={{ alignSelf: 'center' }}>안녕하세요</h4>
+      {/* <div onClick={handleCloseModalChoice}> 환영합니다!</div> */}
+
+      <BtnArea>
+        <Btn onClick={handleLogout2}>logout</Btn>
+        <Link
+          to="/mypage/profile"
+          style={{ textDecoration: 'none', color: 'black', display: 'flex' }}
+        >
+          <Btn>setting</Btn>
         </Link>
-        <Col>
-          <div>{nickname} 님</div>
-          <div onClick={handleCloseModalChoice}> 환영합니다!</div>
-        </Col>
-      </Row>
-      <Row>
-        <Col onClick={handleLogout2}>
-          <Button>logout</Button>
-        </Col>
-        {/* <Col>
-          <GoogleLogout
-            clientId={`${process.env.REACT_APP_GOOGLE_LOGIN}`}
-            onLogoutSuccess={handleLogout}
-            onFailure={handleLogout}
-          />
-        </Col> */}
-        <Link to="/mypage/profile">
-          <Col>
-            <Button>setting</Button>
-          </Col>
-        </Link>
-      </Row>
+      </BtnArea>
       {logoutModal}
       {logoutModalChoice}
-    </Col>
+    </SidebarHeaderContainer>
   );
 }
+
+// background: yellow;
+const SidebarHeaderContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+const BtnArea = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Btn = styled.button`
+  flex: 1;
+  outline: none;
+  border: 0px;
+  border-radius: 2px;
+  background-color: #7da453;
+  margin-bottom: 4px;
+  padding: 3px;
+
+  &:hover {
+    background-color: #f0f2f1;
+    color: black;
+  }
+`;

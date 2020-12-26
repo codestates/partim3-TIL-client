@@ -174,15 +174,18 @@ export default function SidebarTag() {
   );
 }
 
+// width: 10px;
+/* width 속성을 이렇게 줘야 좀 작게 나열된다. 숫자는 어느정도 이하이기만 하면 되고, 그 이상 넘어가면 이상해짐 */
+/* 상위 컴포넌트에서 부트스트랩 코들르 지우고 넓이 지정을 제대로 해 주면 해결되지 않을까 생각함 */
+
 const SidebarTagWrap = styled.div`
+  margin-top: 15px;
+  padding: 2px;
   flex: 1;
+  border-radius: 2px;
+  background-color: white;
   display: flex;
   flex-direction: column;
-  width: 10px;
-  /* width 속성을 이렇게 줘야 좀 작게 나열된다. 숫자는 어느정도 이하이기만 하면 되고, 그 이상 넘어가면 이상해짐 */
-  /* 상위 컴포넌트에서 부트스트랩 코들르 지우고 넓이 지정을 제대로 해 주면 해결되지 않을까 생각함 */
-  border: 1px solid red;
-  margin: 5px 0px;
 `;
 
 const TagIcon = styled.div<{ tagId: number; tagColor: string }>`

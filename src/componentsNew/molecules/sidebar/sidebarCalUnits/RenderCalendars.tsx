@@ -64,10 +64,5 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
 }
 
 const RenderCalendarsWrap = styled.div`
-  /* flex: 1; */
   display: flex;
-  width: 100%;
-  align-items: flex-start;
-  justify-content: center;
-  padding-left: 10px;
 `;

@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 interface CalSettingButtonProps {
@@ -8,12 +9,23 @@ interface CalSettingButtonProps {
 export default function CalSettingButton({ eachCalendarName }: CalSettingButtonProps) {
   let url = `/mypage/calendar/mycal/${eachCalendarName}`;
   return (
-    <div style={{ flex: 1 }}>
+    <div>
       <Link to={url}>
-        <button type="button" style={{ border: 'none', padding: '0px' }}>
+        <Btn>
           <img src="/img/settingIcon.png" alt="캘린더 설정하기" width="23px" height="23px"></img>
-        </button>
+        </Btn>
       </Link>
     </div>
   );
 }
+
+const Btn = styled.button`
+  outline: none;
+  border: 0px;
+  background-color: #aed581;
+  &:hover {
+    background-color: #f0f2f1;
+    color: black;
+    border-radius: 2px;
+  }
+`;

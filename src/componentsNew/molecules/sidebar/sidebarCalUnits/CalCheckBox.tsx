@@ -56,7 +56,7 @@ export default function CalCheckBox({
   };
 
   return (
-    <label style={{ flex: 8, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+    <CalCheckBoxLabel>
       <Checkbox
         className={`checkbox_${eachCalendarId}`}
         calColor={eachCalendarColor}
@@ -64,9 +64,21 @@ export default function CalCheckBox({
         onChange={handleCheckboxChange}
       />
       <span style={{ marginRight: '5px', marginLeft: '5px' }}>{eachCalendarName}</span>
-    </label>
+    </CalCheckBoxLabel>
   );
 }
+
+const CalCheckBoxLabel = styled.label`
+  flex: 8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  &:hover {
+    background-color: #f0f2f1;
+    color: black;
+    border-radius: 2px;
+  }
+`;
 
 // 클릭하면 나타나는 '체크 기호' 부분
 const Icon = styled.svg`
