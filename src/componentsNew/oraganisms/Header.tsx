@@ -81,6 +81,7 @@ const TodayButton = styled.button`
   font-size: 15px;
   outline: none;
   border: 1px solid #dadce0;
+  border-radius: 2px;
   color: #3c4043;
   background-color: white;
   &:hover {

@@ -80,7 +80,7 @@ export default function ModalAlert({ title, isVisible, handleCloseModal }: Modal
 
 const ModalAlertWrap = styled.div<{ isVisible: boolean }>`
   position: 'absolute';
-  z-index: 1;
+  z-index: 300;
   display: ${props => (props.isVisible ? 'flex' : 'none')};
 `;
 
@@ -95,7 +95,7 @@ const ModalAlertBackground = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 3;
+  z-index: 301;
 `;
 
 const ModalAlertContents = styled.div`
@@ -107,6 +107,6 @@ const ModalAlertContents = styled.div`
   border-radius: 10px;
   border: 1px solid black;
   background-color: white;
-  z-index: 5;
+  z-index: 305;
   margin-top: 150px;
 `;

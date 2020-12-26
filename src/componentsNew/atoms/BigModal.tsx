@@ -147,7 +147,7 @@ export default function BigModal(props: any) {
             value={`${getToday().hour}`}
             onClick={renderInputHour}
             show={divHour}
-            hover={'yellowgreen'}
+            hover={'#aed581'}
             readOnly
           ></HourInput>
           <HourInput show={inputHour} onChange={handleHour}></HourInput>
@@ -156,7 +156,7 @@ export default function BigModal(props: any) {
             value={`${getToday().min}`}
             onClick={renderInputMin}
             show={divMin}
-            hover={'yellowgreen'}
+            hover={'#aed581'}
             readOnly
           ></MinInput>
           <MinInput show={inputMin} onChange={handleMin}></MinInput>
@@ -242,7 +242,7 @@ const ModalAndArrow = styled.span`
   text-align: center;
   height: 30px;
 
-  background: yellowgreen;
+  background: #aed581;
   color: white;
 `;
 
@@ -268,7 +268,7 @@ const ModalMask = styled.div<{ show?: boolean }>`
 const Modal = styled.div`
   width: 80vw;
   height: 80vh;
-  background-color: yellowgreen;
+  background-color: #aed581;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -291,7 +291,7 @@ const TitleInput = styled.input`
   width: 75vw;
   height: 5vh;
   border: 0px;
-  border-bottom: solid 5px yellowgreen;
+  border-bottom: solid 5px #aed581;
   background-color: white;
 `;
 const ContextArea = styled.textarea`
@@ -330,7 +330,7 @@ const Hour = styled.span`
 `;
 const MonthAndDay = styled.div`
   width: 70px;
-  background: yellowgreen;
+  background: #aed581;
   justify-self: flex-start;
 `;
 const HourInput = styled.input<{ show?: boolean; hover?: string }>`
