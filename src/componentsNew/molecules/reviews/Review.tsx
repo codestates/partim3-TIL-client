@@ -27,6 +27,7 @@ interface Props {
   id: number;
   calendarId: number;
   handleDel: any;
+  hadleUpdate: any;
 }
 
 export default function Review({
@@ -38,12 +39,17 @@ export default function Review({
   scheduleTime,
   calendarId,
   handleDel,
+  hadleUpdate,
 }: Props) {
   const handleDelReview = () => {
     handleDel(id, calendarId);
   };
 
-  console.log(title);
+  let tags: any = [];
+  const hadleUpdateReview = () => {
+    hadleUpdate(id, calendarId, scheduleTime, title, context, imageUrl, tags);
+  };
+
   return (
     <Box>
       <ReviewBox>
@@ -60,22 +66,18 @@ export default function Review({
           <TimeAndTitle>
             <Time>{scheduleTime.hour + ':' + scheduleTime.min}</Time>
             <Title>{title}</Title>
+            <Del onClick={handleDelReview}>삭제</Del>
           </TimeAndTitle>
           <ContexAndLine show={context.length === 0 ? false : true}>
             <Context>{context}</Context>
           </ContexAndLine>
-          <ReviewSetting>
-            <Edit>수정</Edit>
-            <Del onClick={handleDelReview}>삭제</Del>
-          </ReviewSetting>
+          <ReviewSetting>{/* <Edit onClick={hadleUpdateReview}>수정</Edit> */}</ReviewSetting>
         </TimeLine>
       </ReviewBox>
     </Box>
   );
 }
-const Box = styled.div`
-  width: 82vw;
-`;
+const Box = styled.div``;
 const TimeLine = styled.div`
   background: white;
   margin-left: 10px;
@@ -84,7 +86,6 @@ const TimeLine = styled.div`
 `;
 
 const ReviewBox = styled.div`
-  width: 85vw;
   display: flex;
   flex-direction: column;
 `;
@@ -99,7 +100,7 @@ const TimeAndTitle = styled.div`
 
 const Time = styled.div`
   margin-left: 6px;
-  width: 40px;
+  width: 50px;
   position: block;
   text-align: center;
   color: #3c4043;
@@ -108,15 +109,8 @@ const Title = styled.div`
   margin-left: 10px;
   font-size: 15px;
   display: flex;
-  flex: 5;
+  flex: 3;
   color: black
-  flex-direction: column;
-`;
-const TitleEdit = styled.input`
-  display: flex;
-  flex: 5;
-  font-weight: bold;
-  width: 5vw;
   flex-direction: column;
 `;
 
@@ -126,7 +120,7 @@ const ContexAndLine = styled.div<{ show?: boolean }>`
 const Context = styled.div`
   margin-top: 3px;
   margin-bottom: 3px;
-  flex: 0.95;
+  flex: 1;
   margin-left: 15px;
   margin-right: 2vw;
   border: 1px solid gray;
@@ -147,7 +141,10 @@ const Edit = styled.span`
     color: #1a73e8;
   }
 `;
-const Del = styled.span`
+const Del = styled.div`
+  flex: 0.12;
+  text-align: right-end;
+  margin-right: 10px;
   &:hover {
     color: red;
   }

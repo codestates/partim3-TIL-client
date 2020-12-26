@@ -8,6 +8,12 @@ import getToday from '../../componentsNew/utils/todayF';
 import styled from 'styled-components';
 import { BiPen } from 'react-icons/bi';
 import REACT_APP_URL from '../../config';
+import {
+  getCalendarsStart,
+  getCalendarsSuccess,
+  getCalendarsFailure,
+} from '../../modules/getAllCalendars';
+
 import axios from 'axios';
 
 interface ReviewsProps {
@@ -15,11 +21,11 @@ interface ReviewsProps {
 }
 
 export default function Reviews({ setNewPosted }: ReviewsProps) {
-  const { reviews } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
+  const { reviews, todos } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
-  const [delStatus, setDelStatus] = useState('start');
 
   const handleDel = (reviewId: any, calendarId: any) => {
     return axios
@@ -32,27 +38,75 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
         withCredentials: true,
       })
       .then(res => {
-        setDelStatus('delete');
+        getUpdatedCal();
       })
       .catch(err => {
         console.log({ err });
       });
   };
 
-  useEffect(() => {
-    console.log('use');
-    setDelStatus('start');
-  }, [delStatus]);
+  const hadleUpdate = (
+    reviewId: any,
+    calendarId: any,
+    scheduleTime: any,
+    title: any,
+    context: any,
+    imageUrl: any,
+    tags: any,
+  ) => {
+    return axios
+      .put(`${REACT_APP_URL}/calendar/updatereview`, {
+        data: {
+          userId: currentUser, // required
+          reviewId, // required
+          title,
+          context,
+          imageUrl,
+          scheduleTime, // required
+          calendarId, // required
+          tags,
+        },
+        withCredentials: true,
+      })
+      .then(res => {
+        getUpdatedCal();
+      })
+      .catch(err => {
+        console.log({ err });
+      });
+  };
+
+  const getUpdatedCal = () => {
+    let TodayForAxios = {
+      year: getToday().year,
+      month: getToday().month,
+      day: getToday().day,
+    };
+    return axios
+      .get(`${REACT_APP_URL}/calendar/day`, {
+        params: { userId: currentUser, date: TodayForAxios },
+        withCredentials: true,
+      })
+      .then(async res => {
+        let { myCalendars, shareCalendars } = res.data;
+        await dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
+        await setNewPosted(true);
+      })
+      .catch(err => console.log(err));
+  };
+
+  // useEffect(() => {
+  //   const orderF = async () => {
+  //     await getUpdatedCal();
+  //   };
+  //   orderF();
+  // }, [delStatus]);
 
   let reviewList;
 
   if (reviews === []) {
     reviewList = '';
   } else {
-    //시간 순서대로 랜더링.. 후..
-    //시간과 분을 숫자로 변환
-    // console.log('reviews');
-
     let addTotalTime = reviews.map((el: any) => {
       let date = el.scheduleDate;
       let time = el.scheduleTime;
@@ -67,22 +121,20 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
 
     reviewList = sortedList.map((el: any) => {
       const { id, title, context, imageUrl, scheduleDate, scheduleTime, calendarId } = el;
-      console.log(title);
 
       return (
-        <div>
-          <Review
-            key={id}
-            id={id}
-            title={title}
-            context={context}
-            imageUrl={imageUrl}
-            scheduleDate={scheduleDate}
-            scheduleTime={scheduleTime}
-            calendarId={calendarId}
-            handleDel={handleDel}
-          ></Review>
-        </div>
+        <Review
+          key={id}
+          id={id}
+          title={title}
+          context={context}
+          imageUrl={imageUrl}
+          scheduleDate={scheduleDate}
+          scheduleTime={scheduleTime}
+          calendarId={calendarId}
+          handleDel={handleDel}
+          hadleUpdate={hadleUpdate}
+        ></Review>
       );
     });
   }
@@ -133,13 +185,13 @@ const TitleAndBtn = styled.div`
 `;
 
 const ReviewTitle = styled.div`
-  flex: 0.5;
+  flex: 1;
 `;
 
 const AddReviewBtn = styled.button`
   width: 100px;
-  height: 30px;
-  font-size: 13px;
+  height: 35px;
+  font-size: 15px;
   outline: none;
   border: 0px;
   border-bottom: 1px solid #dadce0;

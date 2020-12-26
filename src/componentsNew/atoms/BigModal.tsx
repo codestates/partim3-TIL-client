@@ -299,7 +299,6 @@ export default function BigModal(props: any) {
           <SubmitBtn
             onClick={async () => {
               const today = getToday();
-              console.log(currentUser);
               const userId = currentUser;
               const scheduleDate = {
                 year: today.year,

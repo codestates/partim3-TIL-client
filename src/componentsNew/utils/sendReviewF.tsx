@@ -35,8 +35,6 @@ export default function sendReview(
       { withCredentials: true },
     )
     .then(res => {
-      const { reviews } = res.data;
-      console.log(reviews);
       // dispatch(calendarSuccess(todos, reviews));
     })
     .catch(err => {

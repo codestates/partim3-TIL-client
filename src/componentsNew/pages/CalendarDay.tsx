@@ -52,6 +52,8 @@ export default function CalendarDay({
     );
   });
 
+  let width = sidebar ? 8 : 1;
+
   return (
     <Container>
       {sidebar ? (
@@ -61,7 +63,7 @@ export default function CalendarDay({
       ) : (
         <span></span>
       )}
-      <MainArea>
+      <MainArea width={width}>
         <Header {...today} />
         <Todos setNewPosted={setNewPosted} setTodoDeletedOrUpdated={setTodoDeletedOrUpdated} />
         <Reviews setNewPosted={setNewPosted} />
@@ -84,7 +86,7 @@ const SidebarArea = styled.div`
   background-color: #102027;
 `;
 
-const MainArea = styled.div`
-  flex: 8;
+const MainArea = styled.div<{ width?: any }>`
+  flex: ${props => props.width};
   background-color: white;
 `;
