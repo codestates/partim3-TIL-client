@@ -67,8 +67,9 @@ const RenderCalendarsWrap = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  color: white;
   &:hover {
-    background-color: #f0f2f1;
+    background-color: white;
     color: black;
     border-radius: 2px;
   }

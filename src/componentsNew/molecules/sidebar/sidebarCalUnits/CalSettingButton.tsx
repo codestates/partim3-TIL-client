@@ -12,7 +12,13 @@ export default function CalSettingButton({ eachCalendarName }: CalSettingButtonP
     <div>
       <Link to={url}>
         <Btn>
-          <img src="/img/settingIcon.png" alt="캘린더 설정하기" width="23px" height="23px"></img>
+          <img
+            src="/img/settingIcon.png"
+            alt="캘린더 설정하기"
+            width="23px"
+            height="23px"
+            color="white"
+          ></img>
         </Btn>
       </Link>
     </div>
@@ -23,4 +29,5 @@ const Btn = styled.button`
   outline: none;
   border: 0px;
   background-color: transparent;
+  color: white;
 `;

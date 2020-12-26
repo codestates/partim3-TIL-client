@@ -71,15 +71,17 @@ export default function CalendarDay({
   );
 }
 
+//리뷰가 길어지면 문제.. ㅠ
+//미디어 쿼리로 짜주어야 될 것 같지만 시간이 없다..
 const Container = styled.div`
   display: flex;
-  height: 100vh;
   width: 100vw;
+  height: 100vh;
   flex-direction: row;
 `;
 const SidebarArea = styled.div`
   flex: 1;
-  background-color: #aed581;
+  background-color: #102027;
 `;
 
 const MainArea = styled.div`

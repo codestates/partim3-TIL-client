@@ -135,7 +135,9 @@ export default function SidebarHeader() {
       >
         <SidebarNickName>{nickname} 님</SidebarNickName>
       </Link>
-      <div style={{ alignSelf: 'center', fontSize: '16px', marginBottom: '4px' }}>안녕하세요</div>
+      <div style={{ alignSelf: 'center', fontSize: '16px', marginBottom: '4px', color: 'white' }}>
+        안녕하세요
+      </div>
       {/* <div onClick={handleCloseModalChoice}> 환영합니다!</div> */}
 
       <BtnArea>
@@ -162,6 +164,7 @@ const SidebarHeaderContainer = styled.div`
 
 const SidebarNickName = styled.div`
   font-size: 25px;
+  color: white;
 `;
 const BtnArea = styled.div`
   flex: 1;
@@ -174,12 +177,12 @@ const Btn = styled.button`
   outline: none;
   border: 0px;
   border-radius: 2px;
-  background-color: #7da453;
+  background-color: #b3b3b3;
   margin-bottom: 4px;
   padding: 3px;
 
   &:hover {
-    background-color: #f0f2f1;
+    background-color: #cfd8dc;
     color: black;
   }
 `;
