@@ -47,19 +47,19 @@ export default function Header(today: todayProps) {
 
   return (
     <HeaderWrap>
-      <div style={{ flex: 1, border: '1px solid black' }}>
+      <div style={{ flex: 1 }}>
         <GiHamburgerMenu size="3em" onClick={showSidebar} />
       </div>
-      <div style={{ flex: 1, border: '1px solid black' }}>
+      <div style={{ flex: 1 }}>
         <Link to="/">(logo)</Link>
       </div>
-      <div style={{ flex: 1, border: '1px solid black' }}>
+      <div style={{ flex: 1 }}>
         <TodayButton onClick={goToday}>today btn</TodayButton>
       </div>
-      <div style={{ flex: 1, border: '1px solid black' }}>
+      <div style={{ flex: 1 }}>
         <NaviButton />
       </div>
-      <div style={{ flex: 1, border: '1px solid black' }}>
+      <div style={{ flex: 1 }}>
         <h4>{todayView}</h4>
       </div>
     </HeaderWrap>
@@ -67,8 +67,8 @@ export default function Header(today: todayProps) {
 }
 
 const HeaderWrap = styled.div`
+  flex: 1;
   display: flex;
-  width: 100%;
   justify-content: center;
   align-items: center;
   align-content: center;

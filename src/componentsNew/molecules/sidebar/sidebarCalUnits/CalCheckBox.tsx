@@ -71,13 +71,10 @@ export default function CalCheckBox({
 const CalCheckBoxLabel = styled.label`
   flex: 8;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  &:hover {
-    background-color: #f0f2f1;
-    color: black;
-    border-radius: 2px;
-  }
+  text-align: center;
 `;
 
 // 클릭하면 나타나는 '체크 기호' 부분
