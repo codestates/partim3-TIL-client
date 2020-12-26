@@ -14,33 +14,33 @@ export default function MypageCalSidebar({ myCalendar, shareCalendar }: any) {
 
   let myCalList = myCalendar.map((el: any) => {
     return (
-      <AddCal key={el.id}>
+      <EachCal key={el.id}>
         <Link
           to={`/mypage/calendar/mycal/${el.name}`}
           style={{ textDecoration: 'none', color: 'black' }}
         >
           <CalendarList>
             <ColorCircle color={el.color}></ColorCircle>
-            <div>{el.name}</div>
+            <div style={{ fontSize: '20px' }}>{el.name}</div>
           </CalendarList>
         </Link>
-      </AddCal>
+      </EachCal>
     );
   });
 
   let shareCalList = shareCalendar.map((el: any) => {
     return (
-      <AddCal key={el.id}>
+      <EachCal key={el.id}>
         <Link
           to={`/mypage/calendar/share/${el.name}`}
           style={{ textDecoration: 'none', color: 'black' }}
         >
           <CalendarList key={el.id}>
             <ColorCircle color={el.color}></ColorCircle>
-            <div>{el.name}</div>
+            <div style={{ fontSize: '20px' }}>{el.name}</div>
           </CalendarList>
         </Link>
-      </AddCal>
+      </EachCal>
     );
   });
 
@@ -48,12 +48,12 @@ export default function MypageCalSidebar({ myCalendar, shareCalendar }: any) {
     <CalendarContainer>
       <AddCal>
         <Link to={`/mypage/calendar`} style={{ textDecoration: 'none', color: 'black' }}>
-          캘린더 추가
+          <span style={{ marginLeft: '50px' }}>캘린더 추가</span>
         </Link>
       </AddCal>
-      <div>내 캘린더</div>
+      <div style={{ margin: '10px 0px', fontSize: '20px' }}>내 캘린더</div>
       <div>{myCalList}</div>
-      <div>공유받은 캘린더</div>
+      <div style={{ margin: '10px 0px', fontSize: '20px' }}>공유받은 캘린더</div>
       <div>{shareCalList}</div>
     </CalendarContainer>
   );
@@ -73,14 +73,14 @@ const CalendarList = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 2px;
+  margin: 2px 10px 2px 60px;
 `;
 
 const ColorCircle = styled.div<{ color?: string }>`
-  margin-right: 3px;
+  margin-right: 5px;
   text-align: center;
-  height: 20px;
-  width: 20px;
+  height: 25px;
+  width: 25px;
   background-color: ${props => props.color};
   border-radius: 50%;
   display: inline-block;
@@ -88,9 +88,22 @@ const ColorCircle = styled.div<{ color?: string }>`
 
 //나중에 픽셀로 고정으로 잡을 것.
 const AddCal = styled.div`
+  margin: 5px 5px 5px -50px;
+  font-size: 20px;
   &:hover {
-    margin-left: -0.5vw;
-    padding-left: 0.5vw;
+    /* margin-left: -0.5vw;
+    padding-left: 0.5vw; */
+    background-color: #f0f2f1;
+    color: black;
+    border-radius: 0 10px 10px 0;
+  }
+`;
+
+const EachCal = styled.div`
+  margin: 5px 5px 5px -50px;
+  &:hover {
+    /* margin-left: -0.5vw;
+    padding-left: 0.5vw; */
     background-color: #f0f2f1;
     color: black;
     border-radius: 0 10px 10px 0;
