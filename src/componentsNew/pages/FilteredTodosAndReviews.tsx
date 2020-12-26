@@ -77,7 +77,15 @@ export default function FilteredTodosAndReviews() {
   return (
     <FilteredTodosAndReviewsWrap>
       <FilteredTodosAndReviewsHeader>
-        <Link to="/calendar/day">/calendar/day 로 돌아가기(임시)</Link>
+        {/* <Link to="/calendar/day">/calendar/day 로 돌아가기(임시)</Link> */}
+        <Link to="/calendar/day">
+          <img
+            src="/img/cat.jpeg"
+            height="90"
+            width="110"
+            style={{ borderRadius: '50%', margin: '5px' }}
+          />
+        </Link>
       </FilteredTodosAndReviewsHeader>
       <FilteredTodosAndReviewsMain>
         <FilteredTodosAndReviewsSidebar>
@@ -86,15 +94,17 @@ export default function FilteredTodosAndReviews() {
             {/* <HrLine />
             <SelectedTagsListRendering handleClickTagIcon={handleClickTagIcon} /> */}
           </SideBarTags>
-          <HrLine />
+          {/* <HrLine /> */}
           <SideBarCalendars>
-            필터링할 캘린더를 선택해 주세요.<br></br>
-            내 캘린더
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              필터링할 캘린더를 선택하세요.
+            </div>
+            <HrLine />
             <MyCalendarsForFiltering />
           </SideBarCalendars>
         </FilteredTodosAndReviewsSidebar>
         <FilteredTodosAndReviewsBody>
-          FliteredTodos
+          {/* FliteredTodos */}
           <SelectedTagsListRendering handleClickTagIcon={handleClickTagIcon} />
           {filteredTodosAndReviews === undefined ? <></> : <FliteredTodos />}
           {/* <FliteredTodos />
@@ -103,7 +113,7 @@ export default function FilteredTodosAndReviews() {
             filteredTodosAndReviews가 undefined로 잡힘 
           */}
           <HrLine />
-          <FliteredReviews>FliteredReviews</FliteredReviews>
+          <FliteredReviews>FliteredReviews - coming soon</FliteredReviews>
         </FilteredTodosAndReviewsBody>
       </FilteredTodosAndReviewsMain>
     </FilteredTodosAndReviewsWrap>
@@ -123,13 +133,14 @@ const HrLine = styled.hr`
   display: block;
   width: 100%;
   background-color: gray;
-  height: 1px;
+  height: 2px;
   margin: 10px 0px;
 `;
 
 const FilteredTodosAndReviewsHeader = styled.div`
   display: flex;
-  border: 1px solid red;
+  /* border: 1px solid red; */
+  border-bottom: 2px solid lightgrey;
   width: 100%;
   height: 100px;
 `;
@@ -138,13 +149,14 @@ const FilteredTodosAndReviewsMain = styled.div`
   flex: 1;
 
   display: flex;
-  border: 1px solid purple;
+  /* border: 1px solid purple; */
 `;
 
 const FilteredTodosAndReviewsSidebar = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  border-right: 2px solid lightgrey;
   flex: 0 0 auto;
   height: 100%;
   width: 250px;
@@ -154,22 +166,22 @@ const FilteredTodosAndReviewsBody = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  border: 5px solid yellow;
+  /* border: 5px solid yellow; */
   padding: 10px;
 `;
 
 const FliteredReviews = styled.div``;
 
 const SideBarTags = styled.div`
-  flex: 0 0 30%;
-  border: 1px solid blue;
+  flex: 0 0 40%;
+  /* border: 1px solid blue; */
   width: 100%;
   padding: 10px;
 `;
 
 const SideBarCalendars = styled.div`
   /* flex: 1; */
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   width: 100%;
   padding: 10px;
 `;
