@@ -16,54 +16,26 @@ export default function MypageSetting({
 }: MypageSettingProps) {
   return (
     <MypageSettingWrap>
-      {/* 상단 2개 구역 - 필요할까? */}
-      <div
-        style={{
-          display: 'flex',
-          height: '15%',
-          border: '1px solid black',
-        }}
-      >
-        <div
-          style={{
-            flex: 8,
-            border: '1px solid black',
-          }}
-        >
-          Setting
+      <MypageSettingWelcomeMessage>
+        {/* <div style={{ flex: 3 }}>사진 자리?</div> */}
+        <div style={{ flex: 9, display: 'flex', flexDirection: 'column' }}>
+          <Text>{currentNickname}님</Text>
+          <Text>&nbsp;&nbsp;환영합니다!</Text>
         </div>
-        <div
-          style={{
-            flex: 4,
-            border: '1px solid black',
-          }}
-        ></div>
-      </div>
+      </MypageSettingWelcomeMessage>
 
-      {/* 중간 1개 구역 - 필요할까? */}
-      <div
-        style={{
-          display: 'flex',
-          height: '15%',
-          border: '1px solid black',
-        }}
-      >
-        아이콘 및 기본정보(?)
-      </div>
-
-      {/* 개인정보 수정 부분 */}
       <UserInfo handleChange={handleChange} currentNickname={currentNickname} />
       <div
         style={{
           display: 'flex',
-          border: '1px solid black',
+          // border: '1px solid black',
           justifyContent: 'center',
-
           alignItems: 'center',
+          marginTop: '50px',
         }}
       >
         <UpdateUserInfoReqButton type="button" onClick={updateUserInfoReq}>
-          회원정보 수정하기
+          Update UserInfo
         </UpdateUserInfoReqButton>
       </div>
     </MypageSettingWrap>
@@ -77,11 +49,28 @@ const MypageSettingWrap = styled.div`
   flex-direction: column;
 `;
 
+const MypageSettingWelcomeMessage = styled.div`
+  display: flex;
+  height: 35%;
+  /* border: 1px solid black; */
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 40px;
+`;
+
+const Text = styled.text`
+  text-align: left;
+  font-size: 50px;
+  margin-left: 20%;
+`;
+
 const UpdateUserInfoReqButton = styled.button`
-  background-color: blue;
+  background-color: grey;
   color: white;
   border-radius: 5px;
-  width: 200px;
-  height: 40px;
+  width: 300px;
+  height: 50px;
   margin: 5px;
+  /* font-weight: bold; */
+  font-size: 25px;
 `;
