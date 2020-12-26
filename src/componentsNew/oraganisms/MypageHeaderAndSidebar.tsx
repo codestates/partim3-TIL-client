@@ -33,6 +33,7 @@ export default function MypageHeaderAndSidebar({ childComponent }: any) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const getAllCals = () => {
     axios
@@ -60,20 +61,28 @@ export default function MypageHeaderAndSidebar({ childComponent }: any) {
       <Header>
         <Title>Setting</Title>
         <Space>
-          <Link to="/calendar/day">
-            <Btn>완료</Btn>
-          </Link>
+          <Btn onClick={() => history.push('/calendar/day')}>Done</Btn>
         </Space>
       </Header>
       <Body>
         <Sidebar>
-          <Text>
-            <Link to="/mypage/profile">Profile</Link>
+          <Text
+            onClick={() => history.push('/mypage/profile')}
+            isLocated={window.location.pathname === '/mypage/profile' ? true : false}
+          >
+            Profile
           </Text>
-          <Text>
-            <Link to="/mypage/tags">Tags</Link>
+          <Text
+            onClick={() => history.push('/mypage/tags')}
+            isLocated={window.location.pathname === '/mypage/tags' ? true : false}
+          >
+            Tags
           </Text>
-          <Text>Calendars</Text>
+          <Text
+            isLocated={window.location.pathname.indexOf('/mypage/calendar') !== -1 ? true : false}
+          >
+            Calendars
+          </Text>
 
           <MypageCalSidebar
             myCalendar={myCalendarsNames}
@@ -102,6 +111,8 @@ const Header = styled.div`
 
 const Title = styled.h2`
   flex: 5;
+  font-size: 40px;
+  margin-left: 20px;
 `;
 const Space = styled.span`
   flex: 1;
@@ -117,22 +128,27 @@ const Btn = styled.button`
   border: 0.1px;
   border-radius: 8px;
   background: green;
+  font-size: 25px;
 `;
 
 const Body = styled.div`
   flex: 14;
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
 `;
 // 사이드바는 고정값을 가지게 할 수 없을까
 // 미디어 쿼리를 써야하나?
 // 사이드바의 명칭을 더 명확히 하는게 좋을까?
 const Sidebar = styled.div`
-  flex: 1;
-  border-right: 0.1px solid gray;
+  flex: 0 0 auto;
+  width: 250px;
+  border-right: 2px solid lightgrey;
 `;
-const Text = styled.h5`
-  margin: 10px;
+const Text = styled.h5<{ isLocated: boolean }>`
+  margin: 25px 0px 10px 20px;
+  font-size: 30px;
+  padding-left: 5px;
+  border-left: ${props => (props.isLocated ? '4px solid green' : '4px solid white')};
 `;
 const Main = styled.div`
   flex: 7;

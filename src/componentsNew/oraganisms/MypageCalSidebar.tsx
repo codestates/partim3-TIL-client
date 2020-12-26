@@ -66,7 +66,7 @@ export default function MypageCalSidebar({ myCalendar, shareCalendar }: any) {
 const CalendarContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0.5vw;
+  margin-left: 30px;
 `;
 
 const CalendarList = styled.div`
