@@ -8,7 +8,7 @@ import { Label, Input } from '../../atoms';
 import EachTagForTodoModal from './EachTagForTodoModal';
 import DatePicker from 'react-datepicker';
 import REACT_APP_URL from '../../../config';
-import { GiConsoleController } from 'react-icons/gi';
+import { AiFillTags } from 'react-icons/ai';
 
 interface scheduleDateType {
   year: number;
@@ -293,10 +293,10 @@ export default function Todo({
   } else {
     fixOrDelTodoModal = (
       <div>
-        <header>
-          <h5>작성하신 Todo를 수정/삭제하실 수 있습니다.</h5>
+        <header style={{ display: 'flex', justifyContent: 'center', margin: '0px' }}>
+          <h5 style={{ margin: '0px' }}>작성하신 Todo를 수정/삭제하실 수 있습니다.</h5>
         </header>
-        <hr style={{ borderColor: 'black' }}></hr>
+        <HrLine />
         <main
           style={{
             display: 'flex',
@@ -307,78 +307,87 @@ export default function Todo({
         >
           <div
             style={{
-              margin: '5px',
-              flex: 1,
               display: 'flex',
-            }}
-          >
-            <label
-              style={{
-                flex: 1,
-                margin: 0,
-                flexDirection: 'column',
-                display: 'flex',
-                alignContent: 'center',
-                justifyContent: 'center',
-                marginLeft: '5px',
-                marginRight: '5px',
-              }}
-            >
-              title :{' '}
-            </label>
-            <Input
-              type="text"
-              name="title"
-              placeholder={title}
-              smInput={7}
-              handleChange={handleChange}
-              autoFocus={true}
-            />
-          </div>
-          <div
-            style={{
-              margin: '5px',
               flex: 1,
-              // display: 'flex',
+              margin: '10px',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
             <div>
-              언제 하실 일인가요?{' '}
+              <Label text="제목을 입력해 주세요." smLabel={1}></Label>
+            </div>
+            <div style={{ width: '210px' }}>
+              <Input
+                type="text"
+                name="title"
+                placeholder={title}
+                smInput={7}
+                handleChange={handleChange}
+                autoFocus={true}
+              />
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              margin: '10px',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <div>
+              <Label text="날짜를 선택하세요." smLabel={1}></Label>
+            </div>
+            <div style={{ flex: 1.5, display: 'flex', justifyContent: 'flex-end', width: '210px' }}>
               <DatePicker selected={startDate} onChange={handleDate} dateFormat="yyyy/MM/dd" />
             </div>
-            <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div>
+            {/* <div>(클릭하여 선택하시거나 '연도/월/일' 방식으로 입력해 주세요.)</div> */}
           </div>
 
-          <div style={{ flex: 1, margin: '5px' }}>
-            <Label text="캘린더를 선택해 주세요." smLabel={1}></Label>
-            <select
-              defaultValue={calendarId}
-              className="selectedCalendar"
-              onChange={handleSelectOption}
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              margin: '10px',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <div>
+              <Label text="캘린더를 선택하세요." smLabel={1}></Label>
+            </div>
+            <div>
+              <select
+                style={{ width: '210px', height: '30px' }}
+                defaultValue={calendarId}
+                className="selectedCalendar"
+                onChange={handleSelectOption}
+              >
+                {myCalendersForSelectOptions}
+              </select>
+            </div>
+          </div>
+
+          <div style={{ flex: 1, margin: '10px', position: 'relative' }}>
+            <div
+              style={{ display: 'flex', justifyContent: 'space-between' }}
+              onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}
             >
-              {myCalendersForSelectOptions}
-            </select>
-          </div>
-
-          <div style={{ flex: 1, margin: '5px', position: 'relative' }}>
-            <div onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}>
-              <Label text="태그를 추가/삭제하실 수 있습니다." smLabel={1}></Label>
+              <div>
+                <Label text="태그를 선택해 주세요." smLabel={1}></Label>
+              </div>
+              <div>
+                <AiFillTags size="1.5em" />
+              </div>
             </div>
             {tagsSelectOptions}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                minHeight: '40px',
-                flexWrap: 'wrap',
-              }}
-            >
-              {selectedTags}
-            </div>
+            <div style={{ display: 'flex', marginLeft: '10px' }}>{selectedTags}</div>
           </div>
-          <div style={{ flex: 1, margin: '5px' }}>그 외 부분들은 어떤 것이 들어가면 좋을까요?</div>
+          {/* <div style={{ flex: 1, margin: '5px' }}>그 외 부분들은 어떤 것이 들어가면 좋을까요?</div> */}
         </main>
-        <hr style={{ borderColor: 'black' }}></hr>
+        <HrLine />
         <footer
           style={{
             display: 'flex',
@@ -460,7 +469,7 @@ const TodoWrap = styled.div`
 
 const FixOrDelTodoModalWrap = styled.div`
   position: 'absolute';
-  z-index: 1;
+  z-index: 2;
 `;
 
 const FixOrDelTodoModalBackground = styled.div`
@@ -471,7 +480,7 @@ const FixOrDelTodoModalBackground = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 3; // 이렇게 해도 리뷰가 더 위에 올라온다.
@@ -480,22 +489,14 @@ const FixOrDelTodoModalBackground = styled.div`
 const FixOrDelTodoModalContents = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 10px;
-  width: 500px;
+  padding: 10px;
+  width: 420px;
   /* height: 400px; */
   border-radius: 10px;
   border: 1px solid black;
   background-color: white;
   z-index: 5;
-`;
-
-const HrLine = styled.hr`
-  border: 0;
-  clear: both;
-  display: block;
-  width: 100%;
-  background-color: gray;
-  height: 1px;
+  margin-top: 150px;
 `;
 
 const TagSelectWindow = styled.div`
@@ -517,5 +518,15 @@ const TagIcon = styled.div<{ tagId: number; tagColor: string }>`
   font-weight: bold;
   padding: 2px;
   margin: 2px;
-  box-shadow: 1px 1px 1px grey; // 클릭한 것만 이런 강조 효과를 주고 싶었는데,
+  box-shadow: 1px 1px 1px grey;
+`;
+
+const HrLine = styled.hr`
+  border: 0;
+  clear: both;
+  display: block;
+  width: 100%;
+  background-color: gray;
+  height: 1px;
+  margin: 8px 0px;
 `;
