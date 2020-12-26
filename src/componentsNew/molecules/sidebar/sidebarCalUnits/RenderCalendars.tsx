@@ -16,7 +16,7 @@ interface RenderCalendarsProps {
     name: string;
     color: string;
   }>;
-  delCalendar?: (calId: number) => void;
+  delCalendar: (calId: number) => void;
 }
 
 export default function RenderCalendars({ calendars, delCalendar }: RenderCalendarsProps) {
@@ -63,14 +63,8 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
   return <>{eachCalendars}</>;
 }
 
-interface RenderCalendarsWrapProps {
-  key: number;
-}
-
-const RenderCalendarsWrap = styled.div.attrs((props: RenderCalendarsWrapProps) => ({
-  key: props.key,
-}))`
-  flex: 1;
+const RenderCalendarsWrap = styled.div`
+  /* flex: 1; */
   display: flex;
   width: 100%;
   align-items: flex-start;

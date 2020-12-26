@@ -23,6 +23,14 @@ interface TodoProps {
   scheduleDate: scheduleDateType;
   defaultArrayOfTagsId: number[];
   setTodoDeletedOrUpdated: (todoDeleted: boolean) => void;
+  todoTags: Array<{
+    tag: {
+      id: number;
+      tagName: string;
+      tagColor: string;
+      description: string;
+    };
+  }>;
 }
 
 export default function Todo({
@@ -32,6 +40,7 @@ export default function Todo({
   scheduleDate,
   defaultArrayOfTagsId,
   setTodoDeletedOrUpdated,
+  todoTags,
 }: TodoProps) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { tags } = useSelector((state: RootState) => state.handleTags);
@@ -142,13 +151,33 @@ export default function Todo({
     }
   };
 
+  // 내가 가진 tag는 모두 다 표시하고,
+  let concattedTagsArray = tags.slice();
+  let concattedTagsArrayId: Array<number> = [];
+
+  for (let j = 0; j < concattedTagsArray.length; j++) {
+    concattedTagsArrayId.push(concattedTagsArray[j].id);
+  }
+
+  // 공유받은 todo에 걸려있는 tag는, 내꺼는 중복되지 않게 필터링해서, 합친 tag 목록을 만듬
+  for (let i = 0; i < todoTags.length; i++) {
+    if (todoTags[i].tag !== null) {
+      if (concattedTagsArrayId.indexOf(todoTags[i].tag.id) === -1) {
+        concattedTagsArray.push(todoTags[i].tag);
+      }
+    }
+  }
+
+  // todo를 수정할 때, 내 tag는 언제든 넣고 뺄 수 있지만,
+  // 공유받을 때 따라온 태그는, 내가 삭제해서 todo를 수정하면 다시 열어서는 붙일 수 없고,
+  // 공유해준 소유자한테 다시 태그를 붙여달라고 요청해야 함
   let tagsList =
-    tags.length === 0 ? (
+    concattedTagsArray.length === 0 ? (
       <span>
         <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
       </span>
     ) : (
-      tags.map(eachTag => {
+      concattedTagsArray.map(eachTag => {
         let alreadyChecked = newArrayOfTagsId.indexOf(eachTag.id) !== -1 ? true : false;
         return (
           <EachTagForTodoModal
@@ -212,17 +241,31 @@ export default function Todo({
     newArrayOfTagsId.length === 0 ? (
       <span>(선택된 태그가 없습니다.)</span>
     ) : (
-      // 추가/삭제를 해야 하니, tags와 비교할수밖에 없다.
-      tags.map(eachTag => {
-        if (newArrayOfTagsId.indexOf(eachTag.id) !== -1) {
-          return (
-            <TagIcon key={eachTag.id} tagId={eachTag.id} tagColor={eachTag.tagColor}>
-              {eachTag.tagName}
-            </TagIcon>
-          );
+      // concattedTagsArray : 내가 가진 모든 태그들과, 공유받은 todo라면 그에 붙어서 온 태그들
+      concattedTagsArray.map(eachTag => {
+        if (eachTag !== null) {
+          if (newArrayOfTagsId.indexOf(eachTag.id) !== -1) {
+            return (
+              <TagIcon key={eachTag.id} tagId={eachTag.id} tagColor={eachTag.tagColor}>
+                {eachTag.tagName}
+              </TagIcon>
+            );
+          }
         }
       })
     );
+
+  // 이건 서버에서 받아온 todo에 이미 연결된 tag들을 나열하는 것이므로,
+  // todo 수정 모달에서 tag를 다르게 선택하더라도 실제 수정요청이 나가지 않으면 여기는 수정되면 안된다
+  let attachedTags = todoTags.map(eachTag => {
+    if (eachTag.tag !== null) {
+      return (
+        <TagIcon key={eachTag.tag.id} tagId={eachTag.tag.id} tagColor={eachTag.tag.tagColor}>
+          {eachTag.tag.tagName}
+        </TagIcon>
+      );
+    }
+  });
 
   const handleSelectOption = (
     e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
@@ -382,7 +425,7 @@ export default function Todo({
             marginRight: '5px',
           }}
         >
-          {selectedTags}
+          {attachedTags}
         </div>
       </TodoWrap>
       {displayFixOrDelTodoModal ? (

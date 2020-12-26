@@ -23,6 +23,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
   const [title, setTitle] = useState('');
 
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const { shareCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const { tags } = useSelector((state: RootState) => state.handleTags);
   const [checkedTagArray, setCheckedTagArray] = useState<number[]>([]);
   const [selectedCalendar, setSelectedCalendar] = useState(NaN); // startDate : Date 객체 상태임
@@ -31,8 +32,8 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
   const [startDate, setStartDate] = useState(new Date(`${today.year} ${today.month} ${today.day}`)); // startDate : Date 객체 상태임
   const [showTagsSelectOptions, setShowTagsSelectOptions] = useState(false);
 
-  let defaultmyCalendersForSelectOptions = <option>클릭해서 선택해 주세요.</option>;
-  let myCalendersForSelectOptions = myCalendar.map(calendar => {
+  let defaultCalendersForSelectOptions = <option>클릭해서 선택해 주세요.</option>;
+  let calendersForSelectOptions = [...myCalendar, ...shareCalendar].map(calendar => {
     return (
       <option key={calendar.id} value={calendar.id}>
         {calendar.name}
@@ -195,7 +196,11 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
         setNewPosted(true); // 다시 렌더링하기 위해 상위 컴포넌트를 조작함(?)
       })
       .catch(err => {
-        alert(`${err}`);
+        if (err.response.data === '쓰기 권한 없음') {
+          alert(
+            `이 캘린더에서의 Todo 작성 권한을 보유하지 않고 있습니다. \r\n캘린더 설정 버튼을 눌러 권한을 확인하시거나, 다른 캘린더를 선택해 주세요.`,
+          );
+        }
       });
   };
 
@@ -244,8 +249,8 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
         <div style={{ flex: 1, margin: '5px' }}>
           <Label text="캘린더를 선택해 주세요." smLabel={1}></Label>
           <select className="selectedCalendar" onChange={handleSelectOption}>
-            {defaultmyCalendersForSelectOptions}
-            {myCalendersForSelectOptions}
+            {defaultCalendersForSelectOptions}
+            {calendersForSelectOptions}
           </select>
         </div>
         <div style={{ flex: 1, margin: '5px', position: 'relative' }}>
@@ -287,7 +292,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
 
 const PostTodoModalWrap = styled.div`
   position: 'absolute';
-  z-index: 1;
+  z-index: 2;
 `;
 
 const PostTodoModalBackground = styled.div`

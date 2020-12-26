@@ -29,6 +29,7 @@ export default function Input({
       placeholder={placeholder}
       smInput={smInput}
       autoFocus={autoFocus}
+      autoComplete={name}
     />
   );
 }

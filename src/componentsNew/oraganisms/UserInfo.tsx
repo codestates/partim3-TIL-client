@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Form, Row, Col } from 'react-bootstrap';
-import InputMolecule from '../molecules/mypageSetting/InputMolecule';
+import { Input } from '../../componentsNew/atoms';
 
 interface UserInfoProps {
   handleChange(e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement }): void;
@@ -11,50 +10,59 @@ interface UserInfoProps {
 export default function UserInfo({ handleChange, currentNickname }: UserInfoProps) {
   return (
     <UserInfoWrap>
-      <InputMolecule
-        className="newNickname"
-        text="닉네임"
-        controlId="formBasicEmail"
-        type="text"
-        name="nickname"
-        placeholder={currentNickname}
-        handleChange={handleChange}
-        smLabel={1}
-        smInput={2}
-      />
+      <LabelInputSet>
+        <UserInfoLabel>nickname</UserInfoLabel>
+        <form style={{ display: 'flex' }}>
+          <Input
+            className="newNickname"
+            smInput={2}
+            type="text"
+            name="nickname"
+            handleChange={handleChange}
+            // placeholder={currentNickname}
+            autoFocus={true}
+          />
+        </form>
+      </LabelInputSet>
 
-      <InputMolecule
-        className="oldPassword"
-        text="기존 비밀번호"
-        controlId="formBasicPassword"
-        type="password"
-        name="oldPassword"
-        handleChange={handleChange}
-        smLabel={1}
-        smInput={2}
-      />
+      <LabelInputSet>
+        <UserInfoLabel>old password</UserInfoLabel>
+        <form style={{ display: 'flex' }}>
+          <Input
+            className="oldPassword"
+            smInput={2}
+            type="password"
+            name="oldPassword"
+            handleChange={handleChange}
+          />
+        </form>
+      </LabelInputSet>
 
-      <InputMolecule
-        className="newPassword"
-        text="새 비밀번호"
-        controlId="formBasicPassword"
-        type="password"
-        name="newPassword"
-        handleChange={handleChange}
-        smLabel={1}
-        smInput={2}
-      />
+      <LabelInputSet>
+        <UserInfoLabel>new password</UserInfoLabel>
+        <form style={{ display: 'flex' }}>
+          <Input
+            className="newPassword"
+            smInput={2}
+            type="password"
+            name="newPassword"
+            handleChange={handleChange}
+          />
+        </form>
+      </LabelInputSet>
 
-      <InputMolecule
-        className="newPasswordConfirm"
-        text="새 비밀번호 확인"
-        controlId="formBasicPassword"
-        type="password"
-        name="newPasswordConfirm"
-        handleChange={handleChange}
-        smLabel={1}
-        smInput={2}
-      />
+      <LabelInputSet>
+        <UserInfoLabel>new password confirm</UserInfoLabel>
+        <form style={{ display: 'flex' }}>
+          <Input
+            className="newPasswordConfirm"
+            smInput={2}
+            type="password"
+            name="newPasswordConfirm"
+            handleChange={handleChange}
+          />
+        </form>
+      </LabelInputSet>
     </UserInfoWrap>
   );
 }
@@ -62,5 +70,16 @@ export default function UserInfo({ handleChange, currentNickname }: UserInfoProp
 const UserInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0% 25%;
+  margin: 0% 30%;
+`;
+
+const UserInfoLabel = styled.label`
+  margin: 10px 0px 0px 0px;
+  font-weight: bold;
+`;
+
+const LabelInputSet = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px;
 `;

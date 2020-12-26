@@ -28,15 +28,15 @@ export default function MypageCalendar({
   const history = useHistory();
 
   const [handleModalDropbox, setHandleModalDropbox] = useState(false);
-  const [serchNickName, setSerchNickName] = useState('닉네임 검색');
+  const [searchNickName, setsearchNickName] = useState('닉네임 검색');
   const [dropboxDefaltValue, setDropboxDefaultValue] = useState('캘린더 보기');
-  // console.log('5번 닉네임 변경확인   :', serchNickName);
+  // console.log('5번 닉네임 변경확인   :', searchNickName);
 
   const { calAuth } = useSelector((state: RootState) => state.calendarAuthM);
 
   const handleCloseModal = () => {
     setHandleModalDropbox(false);
-    setSerchNickName('닉네임 검색');
+    setsearchNickName('닉네임 검색');
   };
   const openAddUserModal = () => {
     setHandleModalDropbox(true);
@@ -47,12 +47,12 @@ export default function MypageCalendar({
     setHandleModalDropbox(false);
   };
 
-  const serchUser = (serchNickName: string) => {
+  const searchUser = (searchNickName: string) => {
     axios
       .post(
         `${REACT_APP_URL}/user/isuser`,
         {
-          nickname: serchNickName,
+          nickname: searchNickName,
         },
         { withCredentials: true },
       )
@@ -60,7 +60,7 @@ export default function MypageCalendar({
         // console.log(res.data);
       })
       .catch(err => {
-        setSerchNickName('존재하지 않는 유저입니다.');
+        setsearchNickName('존재하지 않는 유저입니다.');
         console.log(err);
       });
   };
@@ -83,16 +83,19 @@ export default function MypageCalendar({
       auth = true;
     }
     console.log({ select }, { read }, { write }, { auth });
+    console.log({ searchNickName });
     axios
       .post(
         `${REACT_APP_URL}/user/message`,
         {
           userId: currentUser,
-          otherNickname: serchNickName,
+          SharedNickname: searchNickName,
           read,
           write,
           auth,
           calendarId: curCalId,
+          otherNickname: searchNickName,
+          description: '',
         },
         { withCredentials: true },
       )
@@ -146,11 +149,11 @@ export default function MypageCalendar({
       handleCloseModal={handleCloseModal}
       dropboxMenus={['캘린더 보기', '보기 & 편집', '보기 & 편집 & 공유']}
       dropboxDefaltValue={dropboxDefaltValue}
-      value={serchNickName}
+      value={searchNickName}
       handleChange={async (inputVal: string) => {
         // console.log('6번 :', inputVal, '최종전달지로 받음');
-        await setSerchNickName(inputVal);
-        await serchUser(inputVal);
+        await setsearchNickName(inputVal);
+        await searchUser(inputVal);
       }}
     />
   );

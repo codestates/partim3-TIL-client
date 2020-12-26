@@ -12,7 +12,16 @@ import {
   getCalendarsSuccess,
   getCalendarsFailure,
 } from '../modules/getAllCalendars';
+
 import { calendarAuth } from '../modules/calendarAuthM';
+
+import {
+  handle_rerenderCalendarDay_Start,
+  handle_rerenderCalendarDay_Success,
+  handle_rerenderCalendarDay_Failure,
+} from '../modules/handle_rerenderCalendarDay';
+import { ModalDropbox } from '../componentsNew/atoms';
+
 
 export default function MypageCalendarContainer({ match }: any) {
   const history = useHistory();
@@ -103,7 +112,7 @@ export default function MypageCalendarContainer({ match }: any) {
       .then(async res => {
         let { myCalendars, shareCalendars } = res.data;
         await dispatch(getCalendarsSuccess(myCalendars, shareCalendars));
-        // console.log('update redux success');
+        dispatch(handle_rerenderCalendarDay_Success(true));
       })
       .catch(err => console.log(err));
   };
