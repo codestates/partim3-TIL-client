@@ -58,9 +58,9 @@ const TagsBox = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  border: 1px solid gray;
+  border-radius: 10px;
+  border: 2px solid lightgrey;
   margin: 10px;
-  margin-top: 0px;
   padding: 10px;
   overflow: auto;
 `;

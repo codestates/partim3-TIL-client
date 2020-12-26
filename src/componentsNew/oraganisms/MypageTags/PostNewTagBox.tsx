@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ColorPicker from '../../molecules/sidebar/sidebarCalUnits/ColorPicker';
 
 import { InputMolecule } from '../../molecules';
+import { Input } from '../../atoms';
 
 interface PostNewTagBoxProps {
   userId: number;
@@ -54,45 +55,29 @@ export default function PostNewTagBox({
 
   return (
     <NewTagBox showPostNewTagBox={showPostNewTagBox}>
-      <div style={{ flex: 3, display: 'flex', width: '100%', justifyContent: 'center' }}>
-        <InputMolecule
-          text="Tag 이름"
+      <InputBox style={{ flex: 3 }}>
+        <Input
+          className="NewTagName"
           type="text"
           name="New Tagname"
-          placeholder="New Tagname"
-          smLabel={1}
-          smInput={3}
           handleChange={handleNewTagName}
-          className="NewTagName"
+          placeholder="New Tagname"
+          smInput={3}
         />
-      </div>
+      </InputBox>
 
-      <div style={{ flex: 3, display: 'flex', width: '100%', justifyContent: 'center' }}>
-        <InputMolecule
-          text="Tag 설명"
+      <InputBox style={{ flex: 3 }}>
+        <Input
+          className="NewTagDescription"
           type="text"
           name="Description(Optional)"
-          placeholder="Description(Optional)"
-          smLabel={1}
-          smInput={3}
           handleChange={handleSetNewTagDes}
-          className="NewTagDescription"
+          placeholder="Description(Optional)"
+          smInput={3}
         />
-      </div>
+      </InputBox>
 
-      <div style={{ flex: 1, display: 'flex', width: '100%', justifyContent: 'center' }}>
-        <div
-          style={{
-            flex: 2,
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          Tag color
-        </div>
-
+      <InputBox style={{ flex: 1 }}>
         <div
           style={{
             flex: 1,
@@ -104,30 +89,27 @@ export default function PostNewTagBox({
         >
           <ColorPicker handleNewCalColor={handleNewCalColor} currentColor={newCalcolor} />
         </div>
-      </div>
+      </InputBox>
 
-      <div
+      <InputBox
         style={{
-          flex: 2,
+          flex: 3,
           display: 'flex',
           width: '100%',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        <button style={{ width: '70px', height: '40px' }} onClick={togglePostNewTagBoxButton}>
-          cancel
-        </button>
+        <NewTagButton onClick={togglePostNewTagBoxButton}>cancel</NewTagButton>
 
-        <button
-          style={{ width: '70px', height: '40px' }}
+        <NewTagButton
           onClick={() => {
             postNewTag(userId, newCalcolor, newTagName, newTagDes);
           }}
         >
           create
-        </button>
-      </div>
+        </NewTagButton>
+      </InputBox>
     </NewTagBox>
   );
 }
@@ -136,5 +118,28 @@ const NewTagBox = styled.div<{ showPostNewTagBox?: boolean }>`
   display: ${props => (props.showPostNewTagBox ? 'flex' : 'none')};
   flex: 1;
   width: 100%;
-  padding: 5px;
+  height: 60px;
+  margin: 10px 0px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid lightgrey;
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 15px;
+`;
+
+const NewTagButton = styled.button`
+  width: 80px;
+  height: 40px;
+  margin: 0px 10px;
+  background-color: grey;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 10px;
 `;
