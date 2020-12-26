@@ -292,7 +292,7 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
 
 const PostTodoModalWrap = styled.div`
   position: 'absolute';
-  z-index: 1;
+  z-index: 2;
 `;
 
 const PostTodoModalBackground = styled.div`
