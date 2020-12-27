@@ -125,9 +125,9 @@ const Btn = styled.button`
   height: 5vh;
   width: 13vw;
   color: white;
-  border: 0.1px;
+  /* border: 0.1px; */
   border-radius: 8px;
-  background: green;
+  background-color: grey;
   font-size: 25px;
 `;
 
