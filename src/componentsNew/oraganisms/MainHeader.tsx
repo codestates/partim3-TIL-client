@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Navbar, Nav, Col } from 'react-bootstrap';
 import { RootState } from '../../modules';
+import styled from 'styled-components';
 
 export default function MainHeader() {
   const { currentUser, nickname } = useSelector((state: RootState) => state.loginOut.status);
@@ -18,7 +19,6 @@ export default function MainHeader() {
     <Nav>
       <Nav.Link href="/mypage/profile">마이페이지</Nav.Link>
       <Nav.Link href="/calendar/day">내 캘린더</Nav.Link>
-      {/* <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link> */}
     </Nav>
   );
 
@@ -40,7 +40,7 @@ export default function MainHeader() {
         collapseOnSelect
         variant="dark"
         className="justify-content-between"
-        style={{ background: '#8FBC8F' }}
+        style={{ background: 'black', height: '8vh' }}
       >
         <Container fluid>
           <Navbar.Brand href="/">TIL</Navbar.Brand>
