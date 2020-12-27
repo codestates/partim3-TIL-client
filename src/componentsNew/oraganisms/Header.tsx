@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import './Header.css';
 
 import {
   handleTodayStart,
