@@ -142,13 +142,15 @@ const Body = styled.div`
 const Sidebar = styled.div`
   flex: 0 0 auto;
   width: 250px;
-  border-right: 2px solid lightgrey;
+  /* border-right: 2px solid lightgrey; */
+  background-color: #102027;
 `;
 const Text = styled.h5<{ isLocated: boolean }>`
   margin: 25px 0px 10px 20px;
   font-size: 30px;
   padding-left: 5px;
-  border-left: ${props => (props.isLocated ? '4px solid green' : '4px solid white')};
+  border-left: ${props => (props.isLocated ? '4px solid white' : '4px solid #102027')};
+  color: white;
 `;
 const Main = styled.div`
   flex: 7;

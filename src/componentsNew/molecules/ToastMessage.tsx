@@ -53,11 +53,14 @@ export default function ToastMessage({
           marginTop: '5px',
         }}
       >
-        <button style={{ marginLeft: '5px' }} onClick={() => history.push('/mypage/calendar')}>
+        <button
+          style={{ marginLeft: '5px', borderRadius: '5px' }}
+          onClick={() => history.push('/mypage/calendar')}
+        >
           캘린더 확인
         </button>
         <button
-          style={{ marginLeft: '5px' }}
+          style={{ marginLeft: '5px', borderRadius: '5px' }}
           onClick={() => {
             setIsVisible(false);
           }}
