@@ -52,30 +52,13 @@ export default function MypageAddCalendar({
       <CalendarShare>
         <SmallTitle>캘린더 공유요청 수락</SmallTitle>
         <Changebox>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              height: '40px',
-              borderBottom: '4px solid grey',
-              marginBottom: '10px',
-            }}
-          >
+          <ChangeboxHeader>
             <UserBoxSetting>Calendar Owner</UserBoxSetting>
             <UserBoxSetting>Calendar Name</UserBoxSetting>
             <UserBoxSetting>Given Auth</UserBoxSetting>
-            <div
-              style={{ flex: 1, marginRight: '10px', display: 'flex', justifyContent: 'flex-end' }}
-            >
-              Accept
-            </div>
-            <div
-              style={{ flex: 1, marginRight: '10px', display: 'flex', justifyContent: 'flex-end' }}
-            >
-              Refuse
-            </div>
-          </div>
+            <ChangeboxHeaderAcceptRefuse>Accept</ChangeboxHeaderAcceptRefuse>
+            <ChangeboxHeaderAcceptRefuse>Refuse</ChangeboxHeaderAcceptRefuse>
+          </ChangeboxHeader>
           <div>{messages.length === 0 ? <div>캘린더 공유 요청이 없습니다</div> : messageList}</div>
         </Changebox>
       </CalendarShare>
@@ -95,9 +78,10 @@ const CalendarContainer = styled.div`
 //캘린더 공유 수락 페이지
 const Admit = styled.button`
   flex: 1;
-  margin-right: 10px;
+  padding: 0px;
+  margin: 0px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   outline: none;
   border: 0px;
   background-color: #f0f2f1;
@@ -127,16 +111,15 @@ const SmallTitle = styled.div`
 `;
 
 const Userbox = styled.div`
-  border-bottom: 1px solid gray;
-  /* padding: 0.5vh; */
   padding: 10px 0px;
   display: flex;
-
-  /* justify-content: flex-start; */
-  /* align-items: center; */
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid gray;
 `;
+
 const UserBoxSetting = styled.div`
-  flex: 2;
+  flex: 3;
   margin-left: 10px;
 `;
 
@@ -147,4 +130,34 @@ const Changebox = styled.div`
   margin: 15px 20px;
   display: flex;
   flex-direction: column;
+`;
+
+const ChangeboxHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 40px;
+  border-bottom: 4px solid grey;
+  margin-bottom: 10px;
+`;
+
+const ChangeboxHeaderAcceptRefuse = styled.div`
+  flex: 1;
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  outline: none;
+  border: 0px;
+  background-color: #f0f2f1;
+  color: black;
+  font-size: 15px;
+`;
+
+const ChangeboxContents = styled.div`
+  padding: 10px 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid gray;
 `;
