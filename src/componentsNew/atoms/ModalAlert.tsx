@@ -65,7 +65,7 @@ export default function ModalAlert({ title, isVisible, handleCloseModal }: Modal
             <div>
               <h5>{title}</h5>
             </div>
-            <hr style={{ borderColor: 'black', marginBottom: '5px' }}></hr>
+            <HrLine />
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <button onClick={() => handleCloseModal()} style={{ margin: '5px' }}>
                 확인
@@ -106,7 +106,18 @@ const ModalAlertContents = styled.div`
   /* height: 120px; */
   border-radius: 10px;
   border: 1px solid black;
-  background-color: white;
+  background-color: #102027;
+  color: white;
   z-index: 305;
   margin-top: 150px;
+`;
+
+const HrLine = styled.hr`
+  border: 0;
+  clear: both;
+  display: block;
+  width: 100%;
+  background-color: white;
+  height: 1px;
+  margin: 10px 0px;
 `;

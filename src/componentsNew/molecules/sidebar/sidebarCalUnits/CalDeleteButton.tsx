@@ -137,6 +137,7 @@ const DeleteModalContents = styled.div`
   height: 100px;
   border-radius: 10px;
   border: 1px solid black;
-  background-color: white;
+  background-color: #102027;
   z-index: 5;
+  color: white;
 `;
