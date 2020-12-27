@@ -10,50 +10,51 @@ import MypageCalendar from '../pages/MypageCalendar';
 export default function MypageCalSidebar({ myCalendar, shareCalendar }: any) {
   //curComponent가 mypageCalendar일때 캘린더들의 리스트를 랜더링
 
+  const history = useHistory();
   //동기적으로 처리해주기 위해서 useEffect사용.
 
   let myCalList = myCalendar.map((el: any) => {
     return (
-      <EachCal key={el.id}>
-        <Link
-          to={`/mypage/calendar/mycal/${el.name}`}
-          style={{ textDecoration: 'none', color: 'black' }}
-        >
-          <CalendarList>
-            <ColorCircle color={el.color}></ColorCircle>
-            <div style={{ fontSize: '20px' }}>{el.name}</div>
-          </CalendarList>
-        </Link>
+      <EachCal
+        key={el.id}
+        onClick={() => {
+          history.push(`/mypage/calendar/mycal/${el.name}`);
+        }}
+      >
+        <CalendarList>
+          <ColorCircle color={el.color}></ColorCircle>
+          {el.name}
+        </CalendarList>
       </EachCal>
     );
   });
 
   let shareCalList = shareCalendar.map((el: any) => {
     return (
-      <EachCal key={el.id}>
-        <Link
-          to={`/mypage/calendar/share/${el.name}`}
-          style={{ textDecoration: 'none', color: 'black' }}
-        >
-          <CalendarList key={el.id}>
-            <ColorCircle color={el.color}></ColorCircle>
-            <div style={{ fontSize: '20px' }}>{el.name}</div>
-          </CalendarList>
-        </Link>
+      <EachCal
+        key={el.id}
+        onClick={() => {
+          history.push(`/mypage/calendar/share/${el.name}`);
+        }}
+      >
+        <CalendarList>
+          <ColorCircle color={el.color}></ColorCircle>
+          {el.name}
+        </CalendarList>
       </EachCal>
     );
   });
 
   return (
     <CalendarContainer>
-      <AddCal>
-        <Link to={`/mypage/calendar`} style={{ textDecoration: 'none', color: 'black' }}>
-          <span style={{ marginLeft: '50px' }}>캘린더 추가</span>
-        </Link>
-      </AddCal>
-      <div style={{ margin: '10px 0px', fontSize: '20px' }}>내 캘린더</div>
+      <Link to={`/mypage/calendar`} style={{ textDecoration: 'none', color: 'white' }}>
+        <AddCal>캘린더 추가</AddCal>
+      </Link>
+      <div style={{ margin: '10px 0px 0px 5px', fontSize: '18px', color: 'white' }}>내 캘린더</div>
       <div>{myCalList}</div>
-      <div style={{ margin: '10px 0px', fontSize: '20px' }}>공유받은 캘린더</div>
+      <div style={{ margin: '10px 0px 0px 5px', fontSize: '18px', color: 'white' }}>
+        공유받은 캘린더
+      </div>
       <div>{shareCalList}</div>
     </CalendarContainer>
   );
@@ -73,7 +74,7 @@ const CalendarList = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 2px 10px 2px 60px;
+  margin: 2px 10px 2px 70px;
 `;
 
 const ColorCircle = styled.div<{ color?: string }>`
@@ -88,8 +89,10 @@ const ColorCircle = styled.div<{ color?: string }>`
 
 //나중에 픽셀로 고정으로 잡을 것.
 const AddCal = styled.div`
-  margin: 5px 5px 5px -50px;
+  margin: 5px 15px 5px -50px;
+  padding-left: 50px;
   font-size: 20px;
+  color: white;
   &:hover {
     /* margin-left: -0.5vw;
     padding-left: 0.5vw; */
@@ -100,7 +103,10 @@ const AddCal = styled.div`
 `;
 
 const EachCal = styled.div`
-  margin: 5px 5px 5px -50px;
+  margin: 5px 15px 5px -50px;
+  color: white;
+  height: 30px;
+  display: flex;
   &:hover {
     /* margin-left: -0.5vw;
     padding-left: 0.5vw; */
