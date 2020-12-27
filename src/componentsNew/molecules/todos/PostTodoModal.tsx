@@ -304,15 +304,14 @@ export default function PostTodoModal({ showModal, closeModal, setNewPosted }: P
       </main>
       <HrLine />
       <footer style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button
+        <ModalButton
           onClick={() => PostNewTodo(selectedCalendar, title, JSON.stringify(TodayForAxios))}
-          style={{ margin: '5px' }}
         >
           Post new Todo!
-        </button>
-        <button onClick={closeModal} style={{ margin: '5px' }}>
-          Close Modal
-        </button>
+        </ModalButton>
+        <ModalButton onClick={closeModal} style={{ width: '80px' }}>
+          Close
+        </ModalButton>
       </footer>
     </>
   );
@@ -396,4 +395,13 @@ const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ModalButton = styled.button`
+  background-color: grey;
+  color: white;
+  border-radius: 5px;
+  width: 130px;
+  height: 30px;
+  margin: 5px;
 `;

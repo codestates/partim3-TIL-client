@@ -290,30 +290,17 @@ export default function UpdateTodoModal({
             justifyContent: 'flex-end',
           }}
         >
-          <button
-            onClick={() => updateTodo(id)}
-            // style={{
-            //   flex: 3,
-            //   marginLeft: '5px',
-            //   marginRight: '5px',
-            //   padding: '0',
-            // }}
-            style={{ marginLeft: '5px', marginRight: '5px' }}
-          >
-            todo 수정하기
-          </button>
-          <button onClick={() => deleteTodo(id)} style={{ marginLeft: '5px', marginRight: '5px' }}>
-            todo 삭제하기
-          </button>
-          <button
+          <ModalButton onClick={() => updateTodo(id)}>Update Todo</ModalButton>
+          <ModalButton onClick={() => deleteTodo(id)}>Delete Todo</ModalButton>
+          <ModalButton
             onClick={() => {
               setNewArrayOfTagsId(defaultArrayOfTagsId);
               setDisplayFixOrDelTodoModal(false);
             }}
-            style={{ marginLeft: '5px', marginRight: '5px' }}
+            style={{ width: '80px' }}
           >
-            닫기
-          </button>
+            Close
+          </ModalButton>
         </footer>
       </div>
     );
@@ -398,4 +385,13 @@ const TagIcon = styled.div<{ tagId: number; tagColor: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ModalButton = styled.button`
+  background-color: grey;
+  color: white;
+  border-radius: 5px;
+  width: 110px;
+  height: 30px;
+  margin: 5px;
 `;
