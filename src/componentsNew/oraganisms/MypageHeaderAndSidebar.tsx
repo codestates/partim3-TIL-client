@@ -61,7 +61,7 @@ export default function MypageHeaderAndSidebar({ childComponent }: any) {
       <Header>
         <Title>Setting</Title>
         <Space>
-          <Btn onClick={() => history.push('/calendar/day')}>Done</Btn>
+          <Btn onClick={() => history.push('/calendar/day')}>완료</Btn>
         </Space>
       </Header>
       <Body>
@@ -98,37 +98,43 @@ export default function MypageHeaderAndSidebar({ childComponent }: any) {
 const Container = styled.div`
   display: flex;
   height: 100vh;
-
   flex-direction: column;
 `;
 // 화면의 비율이 항상 100%인가? 그 이상으로도 높이를 조정할 수 있는데
 const Header = styled.div`
   flex: 1;
   display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
-  border-bottom: 1px solid;
+  background-color: black;
+  color: white;
 `;
 
 const Title = styled.h2`
-  flex: 5;
+  flex: 1;
   font-size: 40px;
   margin-left: 20px;
 `;
-const Space = styled.span`
+const Space = styled.div`
   flex: 1;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
 `;
+
 const Btn = styled.button`
-  height: 5vh;
-  width: 13vw;
+  flex: 0.1;
+  margin-right: 2vw;
+  height: 40px;
+  width: 5vw;
   color: white;
-  /* border: 0.1px; */
-  border-radius: 8px;
-  background-color: grey;
-  font-size: 25px;
+  outline: none;
+  border: 2px;
+  border-radius: 2px;
+  background: #6ab04c;
+  font-size: 20px;
+  font-weight: 500;
 `;
 
 const Body = styled.div`

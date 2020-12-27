@@ -17,12 +17,11 @@ export default function Signup({ handleChange, postSignupReq }: SignupProps) {
   return (
     <SignupPage>
       <SignupWrap>
-        <div style={{ margin: '10px 0px' }}>
-          {/* 고양이 이미지 */}
-          <Link to="/">
-            <img src="img/cat.jpeg" height="171" width="180" style={{ borderRadius: '50%' }} />
+        <TILlogo>
+          <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+            TIL
           </Link>
-        </div>
+        </TILlogo>
 
         <div style={{ margin: '10px 0px', width: '100%' }}>
           <SignupGeneral handleChange={handleChange} />
@@ -31,14 +30,14 @@ export default function Signup({ handleChange, postSignupReq }: SignupProps) {
         <div style={{ margin: '10px 0px', width: '100%' }}>
           {/* 회원가입 버튼 */}
           <ButtonWrap value="Get started!" onClick={postSignupReq}>
-            <VscDebugStart size="1.7em" style={{ flex: 1, color: '#585858' }} />
+            <VscDebugStart size="1.7em" style={{ flex: 1, color: '#e6e6e6' }} />
             <span style={{ flex: 5, fontSize: '20px' }}>Get Started!</span>
           </ButtonWrap>
         </div>
 
         <div>
           {/* 가로선 */}
-          <hr style={{ height: 3, width: '280px', background: 'gray', margin: '5px 0px' }}></hr>
+          <hr style={{ height: 1, width: '280px', background: '#dadce0', margin: '5px 0px' }}></hr>
         </div>
 
         <div style={{ margin: '10px 0px', width: '100%' }}>
@@ -87,4 +86,19 @@ const ButtonWrap = styled.button`
   height: 60px;
   width: 100%;
   border-radius: 5px;
+  background-color: black;
+  border: 0px;
+  outline: none;
+  color: #e6e6e6;
+  font-weight: 600;
+`;
+
+const TILlogo = styled.div`
+  font-size: 60px;
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  width: 280px;
+  text-align: center;
+  margin-bottom: 20px;
 `;

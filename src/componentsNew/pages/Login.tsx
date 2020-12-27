@@ -18,12 +18,11 @@ export default function Login({ handleChange, postLoginReq }: LoginProps) {
   return (
     <LoginPage>
       <LoginWrap>
-        <div style={{ margin: '10px 0px' }}>
-          {/* 고양이 이미지 */}
-          <Link to="/">
-            <img src="img/cat.jpeg" height="171" width="180" style={{ borderRadius: '50%' }} />
+        <TILlogo>
+          <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+            TIL
           </Link>
-        </div>
+        </TILlogo>
 
         <div style={{ margin: '10px 0px', width: '100%' }}>
           {/* 일반 로그인 */}
@@ -33,14 +32,14 @@ export default function Login({ handleChange, postLoginReq }: LoginProps) {
         <div style={{ margin: '10px 0px', width: '100%' }}>
           {/* 로그인 버튼 */}
           <ButtonWrap value="Get started!" onClick={postLoginReq}>
-            <GoSignIn size="1.7em" style={{ flex: 1, color: '#585858' }} />
+            <GoSignIn size="1.7em" style={{ flex: 1, color: '#e6e6e6' }} />
             <span style={{ flex: 5, fontSize: '20px' }}>Sign in!</span>
           </ButtonWrap>
         </div>
 
         <div>
           {/* 가로선 */}
-          <hr style={{ height: 3, width: '280px', background: 'gray', margin: '5px 0px' }}></hr>
+          <hr style={{ height: 1, width: '280px', background: '#dadce0', margin: '5px 0px' }}></hr>
         </div>
 
         <div style={{ margin: '10px 0px', width: '100%' }}>
@@ -84,9 +83,24 @@ const LoginWrap = styled.div`
 
 const ButtonWrap = styled.button`
   display: flex;
+  background-color: black;
   align-items: center;
+  border: 0px;
+  outline: none;
+  color: #e6e6e6;
+  font-weight: 600;
   padding: 10px;
   height: 60px;
   width: 100%;
   border-radius: 5px;
+`;
+
+const TILlogo = styled.div`
+  font-size: 60px;
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  width: 280px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
