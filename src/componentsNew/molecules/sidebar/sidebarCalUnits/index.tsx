@@ -5,6 +5,7 @@ import RenderCalendars from './RenderCalendars';
 import CalSettingButton from './CalSettingButton';
 import CalDeleteButton from './CalDeleteButton';
 import CalCheckBox from './CalCheckBox';
+import EachCalendarSet from './EachCalendarSet';
 
 export {
   ColorPicker,
@@ -14,4 +15,5 @@ export {
   CalSettingButton,
   CalDeleteButton,
   CalCheckBox,
+  EachCalendarSet,
 };

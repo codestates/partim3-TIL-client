@@ -3,14 +3,21 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../modules';
 import { TwitterPicker } from 'react-color';
+import { GoTrashcan } from 'react-icons/go';
 
 interface CalDeleteButtonProps {
   calId: number;
   calName: string;
   delCalendar: (calId: number) => void;
+  mouseOver: boolean;
 }
 
-export default function CalDeleteButton({ calId, calName, delCalendar }: CalDeleteButtonProps) {
+export default function CalDeleteButton({
+  calId,
+  calName,
+  delCalendar,
+  mouseOver,
+}: CalDeleteButtonProps) {
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const [displayDeleteModal, setDisplayDeleteModal] = useState(false);
 
@@ -66,7 +73,14 @@ export default function CalDeleteButton({ calId, calName, delCalendar }: CalDele
           setDisplayDeleteModal(true);
         }}
       >
-        <img src="/img/deleteIcon.png" alt="캘린더 삭제하기" width="23px" height="23px"></img>
+        {/* <img
+          src="/img/deleteIcon.png"
+          alt="캘린더 삭제하기"
+          width="25px"
+          height="25px"
+          color="white"
+        ></img> */}
+        <GoTrashcan size="1.2em" color={mouseOver ? 'black' : 'white'} />
       </Btn>
 
       {displayDeleteModal ? (
@@ -89,6 +103,11 @@ const Btn = styled.button`
   outline: none;
   border: 0px;
   background-color: transparent;
+  padding: 0px;
+  margin-right: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DeleteModalWrap = styled.div`
@@ -118,6 +137,7 @@ const DeleteModalContents = styled.div`
   height: 100px;
   border-radius: 10px;
   border: 1px solid black;
-  background-color: white;
+  background-color: #102027;
   z-index: 5;
+  color: white;
 `;

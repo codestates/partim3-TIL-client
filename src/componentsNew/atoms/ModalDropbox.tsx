@@ -195,7 +195,7 @@ const Changebox = styled.div`
   margin-top: -8px;
   display: flex;
   flex-direction: column;
-  justify-contents: center;
+  justify-content: center;
 `;
 
 //#f0f2f1;
@@ -204,7 +204,7 @@ const Space = styled.div`
   background: #f0f2f1;
   display: flex;
   flex-direction: column;
-  justify-contents: flex-start;
+  justify-content: flex-start;
 `;
 
 const DropboxArea = styled.div`
@@ -213,7 +213,7 @@ const DropboxArea = styled.div`
   background: #f0f2f1;
   display: flex;
   flex-direction: column;
-  justify-contents: flex-start;
+  justify-content: flex-start;
 `;
 const DropboxTitle = styled.div`
   padding-left: 4px;

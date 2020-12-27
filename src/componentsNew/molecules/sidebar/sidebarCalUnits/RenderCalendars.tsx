@@ -9,6 +9,7 @@ import {
   handleCheckedCalSuccess_del,
   handleCheckedCalFailure,
 } from '../../../../modules/handleCheckedCal';
+import { EachCalendarSet } from './';
 
 interface RenderCalendarsProps {
   calendars: Array<{
@@ -17,9 +18,14 @@ interface RenderCalendarsProps {
     color: string;
   }>;
   delCalendar: (calId: number) => void;
+  isMyCalendar: boolean;
 }
 
-export default function RenderCalendars({ calendars, delCalendar }: RenderCalendarsProps) {
+export default function RenderCalendars({
+  calendars,
+  delCalendar,
+  isMyCalendar,
+}: RenderCalendarsProps) {
   const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
 
   const dispatch = useDispatch();
@@ -41,36 +47,18 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
   } else {
     eachCalendars = calendars.map(eachCalendar => {
       return (
-        <RenderCalendarsWrap key={eachCalendar.id}>
-          <CalCheckBox
-            eachCalendarId={eachCalendar.id}
-            eachCalendarColor={eachCalendar.color}
-            eachCalendarName={eachCalendar.name}
-            calArrayForFiltering={checkedCalArray}
-            handleCheckBox={handleCheckBox}
-          />
-          <CalSettingButton eachCalendarName={eachCalendar.name} />
-          <CalDeleteButton
-            calId={eachCalendar.id}
-            calName={eachCalendar.name}
-            delCalendar={delCalendar!}
-          />
-        </RenderCalendarsWrap>
+        <EachCalendarSet
+          key={eachCalendar.id}
+          eachCalendarId={eachCalendar.id}
+          eachCalendarColor={eachCalendar.color}
+          eachCalendarName={eachCalendar.name}
+          handleCheckBox={handleCheckBox}
+          delCalendar={delCalendar}
+          isMyCalendar={isMyCalendar}
+        />
       );
     });
   }
 
   return <>{eachCalendars}</>;
 }
-
-const RenderCalendarsWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: white;
-  &:hover {
-    background-color: white;
-    color: black;
-    border-radius: 2px;
-  }
-`;

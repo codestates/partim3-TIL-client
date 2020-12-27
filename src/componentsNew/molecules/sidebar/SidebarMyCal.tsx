@@ -99,7 +99,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
 
   return (
     <SidebarMyCalWrap>
-      <h6 style={{ color: 'white' }}>새 캘린더 추가하기</h6>
+      <h6 style={{ color: 'white', marginBottom: '3px' }}>새 캘린더 추가하기</h6>
       <MakeNewCal
         handleNewCalName={handleNewCalName}
         handleNewCalColor={handleNewCalColor}
@@ -107,7 +107,7 @@ export default function SidebarMyCal({ setNewCalPosted, setCalDeleted }: Sidebar
         currentColor={newCalcolor}
       />
       <MycalTitle>내 캘린더</MycalTitle>
-      <RenderCalendars calendars={myCalendar} delCalendar={delCalendar} />
+      <RenderCalendars calendars={myCalendar} delCalendar={delCalendar} isMyCalendar={true} />
     </SidebarMyCalWrap>
   );
 }

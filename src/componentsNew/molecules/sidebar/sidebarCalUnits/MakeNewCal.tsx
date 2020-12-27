@@ -28,6 +28,7 @@ export default function MakeNewCal({
         onChange={handleNewCalName}
         style={{
           border: '0px',
+          margin: '0px 2px',
         }}
       ></input>
       <ColorPicker handleNewCalColor={handleNewCalColor} currentColor={currentColor} />
