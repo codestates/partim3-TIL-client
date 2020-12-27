@@ -17,9 +17,14 @@ interface RenderCalendarsProps {
     color: string;
   }>;
   delCalendar: (calId: number) => void;
+  isMyCalendar: boolean;
 }
 
-export default function RenderCalendars({ calendars, delCalendar }: RenderCalendarsProps) {
+export default function RenderCalendars({
+  calendars,
+  delCalendar,
+  isMyCalendar,
+}: RenderCalendarsProps) {
   const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
 
   const dispatch = useDispatch();
@@ -40,8 +45,14 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
     eachCalendars = '';
   } else {
     eachCalendars = calendars.map(eachCalendar => {
+      const [mouseOver, setMouseOver] = useState(false);
+
       return (
-        <RenderCalendarsWrap key={eachCalendar.id}>
+        <RenderCalendarsWrap
+          key={eachCalendar.id}
+          onMouseOver={() => setMouseOver(true)}
+          onMouseOut={() => setMouseOver(false)}
+        >
           <CalCheckBox
             eachCalendarId={eachCalendar.id}
             eachCalendarColor={eachCalendar.color}
@@ -49,12 +60,17 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
             calArrayForFiltering={checkedCalArray}
             handleCheckBox={handleCheckBox}
           />
-          <CalSettingButton eachCalendarName={eachCalendar.name} />
-          <CalDeleteButton
-            calId={eachCalendar.id}
-            calName={eachCalendar.name}
-            delCalendar={delCalendar!}
-          />
+          <CalSettingButton eachCalendarName={eachCalendar.name} mouseOver={mouseOver} />
+          {!isMyCalendar ? (
+            ''
+          ) : (
+            <CalDeleteButton
+              calId={eachCalendar.id}
+              calName={eachCalendar.name}
+              delCalendar={delCalendar!}
+              mouseOver={mouseOver}
+            />
+          )}
         </RenderCalendarsWrap>
       );
     });
@@ -64,10 +80,12 @@ export default function RenderCalendars({ calendars, delCalendar }: RenderCalend
 }
 
 const RenderCalendarsWrap = styled.div`
+  margin-left: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
   color: white;
+  justify-content: center;
   &:hover {
     background-color: white;
     color: black;

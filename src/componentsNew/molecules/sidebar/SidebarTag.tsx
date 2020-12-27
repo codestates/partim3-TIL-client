@@ -46,7 +46,10 @@ export default function SidebarTag() {
 
   let tagsList =
     filteredTags.length === 0 ? (
-      <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
+      <span style={{ marginLeft: '5px', fontSize: '15px' }}>
+        아직 만들어진 태그가 없습니다.<br></br>
+        태그를 먼저 만들어 주세요.
+      </span>
     ) : (
       filteredTags.map(eachTag => {
         return (
@@ -118,7 +121,7 @@ export default function SidebarTag() {
             {/* </button> */}
           </Link>
         </div>
-        <HrLine style={{ margin: '5px', width: '95%' }} />
+        {/* <HrLine style={{ margin: '5px', width: '95%' }} /> */}
         <div
           className="EachTag_Sidebar"
           style={{
@@ -137,8 +140,18 @@ export default function SidebarTag() {
 
   return (
     <SidebarTagWrap className="SidebarTagWrap">
-      <div style={{ flex: 1, margin: '5px', position: 'relative' }}>
-        <div onClick={() => setShowTagsSelectOptions(true)}>tag 필터링하기</div>
+      <div style={{ flex: 1, position: 'relative', borderRadius: '10px' }}>
+        <div
+          onClick={() => setShowTagsSelectOptions(true)}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '18px',
+          }}
+        >
+          Tag로 검색하기
+        </div>
         {tagsSelectOptions}
       </div>
 
@@ -216,7 +229,7 @@ const TagSelectWindow = styled.div`
   flex-direction: column;
   position: relative;
   border-radius: 10px;
-  border: 1px solid red;
+  border: 1px solid lightgrey;
   background-color: white;
   width: 280px;
   z-index: 7;
