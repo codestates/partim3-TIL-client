@@ -9,6 +9,7 @@ import {
   handleCheckedCalSuccess_del,
   handleCheckedCalFailure,
 } from '../../../../modules/handleCheckedCal';
+import { EachCalendarSet } from './';
 
 interface RenderCalendarsProps {
   calendars: Array<{
@@ -45,50 +46,19 @@ export default function RenderCalendars({
     eachCalendars = '';
   } else {
     eachCalendars = calendars.map(eachCalendar => {
-      const [mouseOver, setMouseOver] = useState(false);
-
       return (
-        <RenderCalendarsWrap
+        <EachCalendarSet
           key={eachCalendar.id}
-          onMouseOver={() => setMouseOver(true)}
-          onMouseOut={() => setMouseOver(false)}
-        >
-          <CalCheckBox
-            eachCalendarId={eachCalendar.id}
-            eachCalendarColor={eachCalendar.color}
-            eachCalendarName={eachCalendar.name}
-            calArrayForFiltering={checkedCalArray}
-            handleCheckBox={handleCheckBox}
-          />
-          <CalSettingButton eachCalendarName={eachCalendar.name} mouseOver={mouseOver} />
-          {!isMyCalendar ? (
-            ''
-          ) : (
-            <CalDeleteButton
-              calId={eachCalendar.id}
-              calName={eachCalendar.name}
-              delCalendar={delCalendar!}
-              mouseOver={mouseOver}
-            />
-          )}
-        </RenderCalendarsWrap>
+          eachCalendarId={eachCalendar.id}
+          eachCalendarColor={eachCalendar.color}
+          eachCalendarName={eachCalendar.name}
+          handleCheckBox={handleCheckBox}
+          delCalendar={delCalendar}
+          isMyCalendar={isMyCalendar}
+        />
       );
     });
   }
 
   return <>{eachCalendars}</>;
 }
-
-const RenderCalendarsWrap = styled.div`
-  margin-left: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: white;
-  justify-content: center;
-  &:hover {
-    background-color: white;
-    color: black;
-    border-radius: 2px;
-  }
-`;
