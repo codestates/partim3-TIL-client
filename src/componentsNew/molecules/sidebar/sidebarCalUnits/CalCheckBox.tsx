@@ -63,7 +63,7 @@ export default function CalCheckBox({
         checked={isChecked}
         onChange={handleCheckboxChange}
       />
-      <span style={{ marginRight: '5px', marginLeft: '5px' }}>{eachCalendarName}</span>
+      <span style={{ marginLeft: '5px' }}>{eachCalendarName}</span>
     </CalCheckBoxLabel>
   );
 }
@@ -75,6 +75,7 @@ const CalCheckBoxLabel = styled.label`
   align-items: center;
   justify-content: flex-start;
   text-align: center;
+  margin: 2px;
 `;
 
 // 클릭하면 나타나는 '체크 기호' 부분
@@ -111,7 +112,7 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 const StyledCheckbox = styled.div`
   width: 16px;
   height: 16px;
-  background: ${(props: StyledCheckboxProps) => (props.checked ? props.calColor : 'papayawhip')};
+  background: ${(props: StyledCheckboxProps) => (props.checked ? props.calColor : 'white')};
   border: 2px solid;
   border-color: ${(props: StyledCheckboxProps) => props.calColor};
   border-radius: 3px;

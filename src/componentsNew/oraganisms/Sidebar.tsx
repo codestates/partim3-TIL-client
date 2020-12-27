@@ -27,7 +27,7 @@ export default function Sidebar({ setNewCalPosted, setCalDeleted }: SidebarProps
 }
 
 const SidebarContainer = styled.div`
-  margin: 5px;
+  /* margin: 5px; */
   display: flex;
   flex-direction: column;
   padding: 10px;
