@@ -95,13 +95,6 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
       .catch(err => console.log(err));
   };
 
-  // useEffect(() => {
-  //   const orderF = async () => {
-  //     await getUpdatedCal();
-  //   };
-  //   orderF();
-  // }, [delStatus]);
-
   let reviewList;
 
   if (reviews === []) {

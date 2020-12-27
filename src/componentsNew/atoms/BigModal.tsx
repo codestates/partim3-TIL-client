@@ -15,8 +15,6 @@ export default function BigModal(props: any) {
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const { tags } = useSelector((state: RootState) => state.handleTags);
 
-  const [title, setTitle] = useState('');
-  const [context, setContext] = useState('');
   const [hour, setHour] = useState(getToday().hour);
   const [min, setMin] = useState(getToday().min);
 
@@ -98,6 +96,8 @@ export default function BigModal(props: any) {
     setHour(0);
     props.onHide();
     setCheckedTagArray([]);
+    setTitle('');
+    setContext('');
   };
 
   // useEffect(() => {
@@ -116,6 +116,8 @@ export default function BigModal(props: any) {
   const [inputHour, setInputHour] = useState(false);
   const [divMin, setDivMin] = useState(true);
   const [inputMin, setInputMin] = useState(false);
+  const [title, setTitle] = useState('');
+  const [context, setContext] = useState('');
 
   const hideInput = () => {
     // 범위는 나중에 고민해 봐야할듯 하다..
@@ -177,9 +179,8 @@ export default function BigModal(props: any) {
     <div
       style={{
         position: 'absolute',
-        right: '0px',
+        left: '5px',
         zIndex: 2,
-        width: '100px',
       }}
     >
       <div
@@ -190,27 +191,16 @@ export default function BigModal(props: any) {
           right: '0px',
           bottom: '0px',
           left: '0px',
-          width: '100px',
         }}
         onClick={() => {
           setShowTagsSelectOptions(false);
         }}
       ></div>
       <TagSelectWindow>
-        <div
-          className="TagSettingIcon"
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}
-        >
+        <div>
           {/* <div>(검색창이 들어올 자리?)</div> */}
           <Link to="/mypage/tags">
-            <button style={{ border: 'none', padding: '0px', marginRight: '5px' }}>
-              {/* <img src="/img/settingIcon.png" alt="캘린더 설정하기"></img> */}
-              tag 만들기
-            </button>
+            <TagBtn>+ new tag</TagBtn>
           </Link>
         </div>
         {tagsList}
@@ -237,6 +227,12 @@ export default function BigModal(props: any) {
     );
 
   // background-color: #f2f2f2;
+  // &:hover {
+  //   outline: none;
+  //   background-color: #f0f2f1;// 흐릿한 회색
+  //   color: black;
+  // }
+  //#1a73e8 버튼 하늘색
   return (
     <ModalMask show={props.show}>
       <Modal>
@@ -296,8 +292,8 @@ export default function BigModal(props: any) {
             </div>
           </TagSelectOption>
           <Space></Space>
-          <div>
-            <CloseBtn onClick={handleCloseBtn}>X</CloseBtn>
+          <BtnArea>
+            <CloseBtn onClick={handleCloseBtn}>cancel</CloseBtn>
             <SubmitBtn
               onClick={async () => {
                 const today = getToday();
@@ -310,7 +306,6 @@ export default function BigModal(props: any) {
                 const scheduleTime = { hour: hour, min: min };
                 const imageUrl = 'www.';
                 const calendarId = selectedCalendar;
-                console.log(calendarId);
                 await sendReview(
                   userId,
                   title,
@@ -323,27 +318,44 @@ export default function BigModal(props: any) {
                 );
                 //scheduleTime, calendarId
                 // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
-                props.setNewPosted(true);
-                props.onHide();
                 await setTitle('');
                 await setContext('');
+                props.setNewPosted(true);
+                props.onHide();
               }}
             >
               submit
             </SubmitBtn>
-          </div>
+          </BtnArea>
         </ModalSetting>
         <TitleAndContext>
-          <TitleInput placeholder="제목" onChange={titleChange}></TitleInput>
+          <TitleInput placeholder="제목" onChange={titleChange} value={title}></TitleInput>
           <ContextArea
             placeholder="쓰고 싶은 내용을 자유롭게 남겨주세요"
             onChange={contextChange}
+            value={context}
           ></ContextArea>
         </TitleAndContext>
       </Modal>
     </ModalMask>
   );
 }
+
+const BtnArea = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const TagBtn = styled.button`
+  outline: none;
+  border: 0px;
+  background-color: white;
+  &:hover {
+    color: #1a73e8;
+  }
+`;
 
 const CalText = styled.div`
   flex: 1;
@@ -401,7 +413,7 @@ const ModalSetting = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-right: 1vw;
+  margin-right: 20px;
 `;
 const TitleAndContext = styled.div`
   flex: 6;
@@ -409,15 +421,17 @@ const TitleAndContext = styled.div`
   flex-direction: column;
 `;
 const CloseBtn = styled.button`
-  width: 50px;
-  height: 35px;
+  width: 100px;
+  height: 5vh;
   background: black;
   outline: none;
   color: white;
-  font-size: 15px;
+  font-size: 20px;
   border: 2px solid black;
   border-radius: 2px;
   margin-right: 2vw;
+  &:hover {
+  }
 `;
 const TitleInput = styled.input`
   flex: 1;
@@ -427,9 +441,10 @@ const TitleInput = styled.input`
 `;
 const ContextArea = styled.textarea`
   flex: 16;
-  border: 0;
+  border: 0px;
   border-radius: 3px;
   background-color: white;
+  outline: none;
 `;
 const SubmitBtn = styled.button`
   flex: 1;
@@ -438,8 +453,8 @@ const SubmitBtn = styled.button`
   background: black;
   outline: none;
   color: white;
-  font-size: 1em;
-  margin: 1em;
+  font-size: 20px;
+  margin-left: -15px;
   padding: 0.25em 1em;
   border: 2px solid black;
   border-radius: 2px;
@@ -503,6 +518,7 @@ const TagSelectWindow = styled.div`
   background-color: white;
   z-index: 7;
   padding: 5px;
+  width: 194px;
 `;
 
 const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
