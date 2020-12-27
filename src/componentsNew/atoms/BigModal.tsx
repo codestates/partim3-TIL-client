@@ -8,6 +8,7 @@ import getToday from '../../componentsNew/utils/todayF';
 import { useForm } from 'react-hook-form';
 import { AiFillTags } from 'react-icons/ai';
 import EachTagForTodoModal from '../molecules/todos/EachTagForTodoModal';
+import { FcCalendar } from 'react-icons/fc';
 
 export default function BigModal(props: any) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
@@ -118,15 +119,17 @@ export default function BigModal(props: any) {
 
   const hideInput = () => {
     // 범위는 나중에 고민해 봐야할듯 하다..
-
     setDivHour(true);
     setInputHour(false);
     setDivMin(true);
     setInputMin(false);
   };
   const renderInputHour = () => {
-    console.log('hi');
+    setDivHour(false);
+    setInputHour(true);
+  };
 
+  const handleOnBlur = () => {
     setDivHour(false);
     setInputHour(true);
   };
@@ -176,6 +179,7 @@ export default function BigModal(props: any) {
         position: 'absolute',
         right: '0px',
         zIndex: 2,
+        width: '100px',
       }}
     >
       <div
@@ -186,6 +190,7 @@ export default function BigModal(props: any) {
           right: '0px',
           bottom: '0px',
           left: '0px',
+          width: '100px',
         }}
         onClick={() => {
           setShowTagsSelectOptions(false);
@@ -194,21 +199,20 @@ export default function BigModal(props: any) {
       <TagSelectWindow>
         <div
           className="TagSettingIcon"
-          style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
         >
           {/* <div>(검색창이 들어올 자리?)</div> */}
           <Link to="/mypage/tags">
-            <button type="button" style={{ border: 'none', padding: '0px', marginRight: '5px' }}>
-              <img
-                src="/img/settingIcon.png"
-                alt="캘린더 설정하기"
-                width="25px"
-                height="25px"
-              ></img>
+            <button style={{ border: 'none', padding: '0px', marginRight: '5px' }}>
+              {/* <img src="/img/settingIcon.png" alt="캘린더 설정하기"></img> */}
+              tag 만들기
             </button>
           </Link>
         </div>
-        <HrLine style={{ margin: '5px', width: '95%' }} />
         {tagsList}
       </TagSelectWindow>
     </div>
@@ -232,55 +236,59 @@ export default function BigModal(props: any) {
       })
     );
 
+  // background-color: #f2f2f2;
   return (
     <ModalMask show={props.show}>
       <Modal>
-        <CloseBtnAndErrModal onClick={hideInput}>
-          <SpaceErr></SpaceErr>
-          <ModalAndArrow>
+        <ModalSetting>
+          <MonthAndDay>{`${getToday().month}월 ${getToday().day}일`}</MonthAndDay>
+
+          {/* 시간 */}
+          <TimeHeader>
+            <HourInput
+              value={`${getToday().hour}`}
+              onClick={renderInputHour}
+              onBlur={handleOnBlur}
+              show={divHour}
+              readOnly
+            ></HourInput>
+            <HourInput show={inputHour} onChange={handleHour}></HourInput>
+            <SpaceTime>시</SpaceTime>
+            <MinInput
+              value={`${getToday().min}`}
+              onClick={renderInputMin}
+              show={divMin}
+              readOnly
+            ></MinInput>
+            <MinInput show={inputMin} onChange={handleMin}></MinInput>
+            <span>분</span>
+          </TimeHeader>
+          {/* 에러메세지 */}
+          <ModalAndArrow onClick={hideInput}>
             <ErrModal show={errShow}>잘못된 시간</ErrModal>
           </ModalAndArrow>
-          <SpaceErr2></SpaceErr2>
-          <CloseBtn onClick={handleCloseBtn}>X</CloseBtn>
-        </CloseBtnAndErrModal>
 
-        <TimeHeader>
-          <MonthAndDay>{`${getToday().month}월 ${getToday().day}일`}</MonthAndDay>
-          <HourInput
-            value={`${getToday().hour}`}
-            onClick={renderInputHour}
-            show={divHour}
-            hover={'#aed581'}
-            readOnly
-          ></HourInput>
-          <HourInput show={inputHour} onChange={handleHour}></HourInput>
-          <SpaceTime>시</SpaceTime>
-          <MinInput
-            value={`${getToday().min}`}
-            onClick={renderInputMin}
-            show={divMin}
-            hover={'#aed581'}
-            readOnly
-          ></MinInput>
-          <MinInput show={inputMin} onChange={handleMin}></MinInput>
-          <span>분</span>
-          <Space></Space>
+          {/* 캘린더 선택 */}
+          <CalText>
+            <FcCalendar size="1.8em"></FcCalendar>
+            <span style={{ marginLeft: '2px' }}>리뷰를 남길 캘린더</span>
+          </CalText>
           <SelectCal onChange={handleSelectOption}>
             {defaultmyCalendersForSelectOptions}
             {myCalendersForSelectOptions}
           </SelectCal>
           {/* TagSelectOption : 여기가 태그 넣는 부분입니다. 위치 수정하시면 됩니다. */}
           <TagSelectOption>
-            <div style={{ flex: 1, margin: '10px', position: 'relative' }}>
+            <div style={{ flex: 1, position: 'relative' }}>
               <div
-                style={{ display: 'flex', justifyContent: 'space-between' }}
+                style={{ display: 'flex', justifyContent: 'flex-start' }}
                 onClick={() => setShowTagsSelectOptions(!showTagsSelectOptions)}
               >
                 <div>
-                  <label>"태그를 선택해 주세요."</label>
+                  <AiFillTags size="1.8em" />
                 </div>
                 <div>
-                  <AiFillTags size="1.5em" />
+                  <label>Tag 선택</label>
                 </div>
               </div>
               <div>{tagsSelectOptions}</div>
@@ -288,65 +296,65 @@ export default function BigModal(props: any) {
             </div>
           </TagSelectOption>
           <Space></Space>
-        </TimeHeader>
-        <TitleInput placeholder="제목" onChange={titleChange}></TitleInput>
-        <ContextArea
-          placeholder="쓰고 싶은 내용을 자유롭게 남겨주세요"
-          onChange={contextChange}
-        ></ContextArea>
-        <div>
-          <span>Add tags!</span>
-          <SubmitBtn
-            onClick={async () => {
-              const today = getToday();
-              const userId = currentUser;
-              const scheduleDate = {
-                year: today.year,
-                month: today.month,
-                day: today.day,
-              };
-              const scheduleTime = { hour: hour, min: min };
-              const imageUrl = 'www.';
-              const calendarId = selectedCalendar;
-              console.log(calendarId);
-              await sendReview(
-                userId,
-                title,
-                context,
-                imageUrl,
-                scheduleDate,
-                scheduleTime,
-                calendarId,
-                checkedTagArray,
-              );
-              //scheduleTime, calendarId
-              // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
-              props.setNewPosted(true);
-              props.onHide();
-              await setTitle('');
-              await setContext('');
-            }}
-          >
-            submit
-          </SubmitBtn>
-        </div>
+          <div>
+            <CloseBtn onClick={handleCloseBtn}>X</CloseBtn>
+            <SubmitBtn
+              onClick={async () => {
+                const today = getToday();
+                const userId = currentUser;
+                const scheduleDate = {
+                  year: today.year,
+                  month: today.month,
+                  day: today.day,
+                };
+                const scheduleTime = { hour: hour, min: min };
+                const imageUrl = 'www.';
+                const calendarId = selectedCalendar;
+                console.log(calendarId);
+                await sendReview(
+                  userId,
+                  title,
+                  context,
+                  imageUrl,
+                  scheduleDate,
+                  scheduleTime,
+                  calendarId,
+                  checkedTagArray,
+                );
+                //scheduleTime, calendarId
+                // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
+                props.setNewPosted(true);
+                props.onHide();
+                await setTitle('');
+                await setContext('');
+              }}
+            >
+              submit
+            </SubmitBtn>
+          </div>
+        </ModalSetting>
+        <TitleAndContext>
+          <TitleInput placeholder="제목" onChange={titleChange}></TitleInput>
+          <ContextArea
+            placeholder="쓰고 싶은 내용을 자유롭게 남겨주세요"
+            onChange={contextChange}
+          ></ContextArea>
+        </TitleAndContext>
       </Modal>
     </ModalMask>
   );
 }
 
-const CloseBtnAndErrModal = styled.div`
+const CalText = styled.div`
   flex: 1;
-  width: 80vw;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
+  font-size: 18px;
 `;
 
 const ErrModal = styled.span<{ show?: boolean }>`
-  width: 13vw;
   border-bottom: 2px solid red;
-  height: 5vh;
   padding-top: 3px;
   padding-left: 5px;
   text-align: left;
@@ -356,22 +364,13 @@ const ErrModal = styled.span<{ show?: boolean }>`
 `;
 
 const ModalAndArrow = styled.span`
-  width: 10vw;
-  flex: 1;
+  flex: 0.3;
   display: flex;
   flex-direction: column;
   text-align: center;
   height: 30px;
-
-  background: #aed581;
+  background: #f2f2f2;
   color: white;
-`;
-
-const SpaceErr = styled.span`
-  width: 3vw;
-`;
-const SpaceErr2 = styled.span`
-  flex: 1;
 `;
 
 const ModalMask = styled.div<{ show?: boolean }>`
@@ -387,38 +386,47 @@ const ModalMask = styled.div<{ show?: boolean }>`
 `;
 
 const Modal = styled.div`
-  width: 80vw;
-  height: 80vh;
-  background-color: #aed581;
+  width: 90vw;
+  height: 85vh;
+  padding: 2vh;
+  background-color: #f2f2f2;
   border-radius: 8px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: row;
   position: absolute;
   z-index: 500;
 `;
+
+const ModalSetting = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 1vw;
+`;
+const TitleAndContext = styled.div`
+  flex: 6;
+  display: flex;
+  flex-direction: column;
+`;
 const CloseBtn = styled.button`
-  flex: 0.1;
-  background: 'pink';
-  font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border-radius: 3px;
-  align-self: flex-end;
+  width: 50px;
+  height: 35px;
+  background: black;
+  outline: none;
+  color: white;
+  font-size: 15px;
+  border: 2px solid black;
+  border-radius: 2px;
+  margin-right: 2vw;
 `;
 const TitleInput = styled.input`
-  flex: 1.5;
-  width: 75vw;
-  height: 5vh;
+  flex: 1;
   border: 0px;
-  border-bottom: solid 5px #aed581;
+  outline: none;
   background-color: white;
 `;
 const ContextArea = styled.textarea`
-  flex: 17;
-  width: 75vw;
-  height: 60vh;
+  flex: 16;
   border: 0;
   border-radius: 3px;
   background-color: white;
@@ -427,80 +435,64 @@ const SubmitBtn = styled.button`
   flex: 1;
   width: 100px;
   height: 5vh;
-  background: green;
+  background: black;
+  outline: none;
   color: white;
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
-  border: 2px solid green;
-  border-radius: 3px;
+  border: 2px solid black;
+  border-radius: 2px;
   justify-self: flex-end;
   align-self: flex-end;
 `;
 
 const TimeHeader = styled.div`
-  flex: 1.5;
-  width: 75vw;
+  flex: 1;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
+  font-size: 23px;
 `;
-const Hour = styled.span`
-  background: white;
-`;
+
 const MonthAndDay = styled.div`
-  width: 90px;
-  background: #aed581;
+  flex: 1;
+  text-align: center;
+  font-size: 33px;
+  font-weight: 600;
+  background: #f2f2f2;
   justify-self: flex-start;
 `;
-const HourInput = styled.input<{ show?: boolean; hover?: string }>`
+const HourInput = styled.input<{ show?: boolean }>`
   display: ${props => (props.show ? 'block' : 'none')};
-  background: ${props => (props.hover ? props.hover : 'white')};
+  background: #f2f2f2;
   width: 30px;
   border: 0px;
-  border-bottom: 1px solid green;
   outline: none;
-  ::placeholder {
-    color: black;
-  }
 `;
-const MinInput = styled.input<{ show?: boolean; hover?: string }>`
+const MinInput = styled.input<{ show?: boolean }>`
   display: ${props => (props.show ? 'block' : 'none')};
-  background: ${props => (props.hover ? props.hover : 'white')};
+  background: #f2f2f2;
   width: 30px;
   border: 0px;
-  border-bottom: 1px solid green;
   outline: none;
-  ::placeholder {
-    color: black;
-  }
 `;
 const Space = styled.div`
-  width: 10px;
+  flex: 10;
 `;
 
 const SpaceTime = styled.div`
   margin-right: 10px;
 `;
 const SelectCal = styled.select`
-  flex: 3;
-  margin-right: 20px;
-`;
-
-const HrLine = styled.hr`
-  border: 0;
-  clear: both;
-  display: block;
-  width: 100%;
-  background-color: gray;
-  height: 1px;
-  margin: 8px 0px;
+  flex: 1;
 `;
 
 const TagSelectOption = styled.div`
-  flex: 5;
-  margin-right: 20px;
+  flex: 1;
+  margin-top: 2vh;
+  font-size: 18px;
 `;
 
 const TagSelectWindow = styled.div`
@@ -508,9 +500,7 @@ const TagSelectWindow = styled.div`
   flex-direction: column;
   position: relative;
   border-radius: 10px;
-  border: 1px solid red;
   background-color: white;
-  width: 250px;
   z-index: 7;
   padding: 5px;
 `;

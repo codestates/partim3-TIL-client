@@ -14,7 +14,6 @@ export default function LoginGeneral({ handleChange }: LoginGeneralProps) {
     <LoginGeneralWrap>
       <LoginGeneralElements>
         {/* 이메일 */}
-        {/* <BsFillAwardFill></BsFillAwardFill> */}
         <Input
           type="email"
           name="email"

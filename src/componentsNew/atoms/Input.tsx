@@ -46,4 +46,5 @@ const InputWrap = styled.input`
   border-top: 0;
   border-left: 0;
   border-right: 0;
+  border-bottom: 2px solid #dadce0;
 `;
