@@ -17,7 +17,8 @@ interface BigModalForUpdateReviewProps {
   handleUpdate: (
     reviewId: number,
     calendarId: number,
-    scheduleTime: { hour: number; min: number },
+    scheduleDate: string,
+    scheduleTime: string,
     title: string,
     context: string,
     imageUrl: string,
@@ -310,6 +311,12 @@ export default function BigModalForUpdateReview({
     </div>
   ) : null;
 
+  let TodayForAxios = {
+    year: startDate.getFullYear(),
+    month: startDate.getMonth() + 1,
+    day: startDate.getDate(),
+  };
+
   // background-color: #f2f2f2;
   // &:hover {
   //   outline: none;
@@ -385,7 +392,8 @@ export default function BigModalForUpdateReview({
                 handleUpdate(
                   id,
                   selectedCalendar,
-                  { hour, min },
+                  JSON.stringify(TodayForAxios),
+                  JSON.stringify({ hour, min }),
                   titleValue,
                   contextValue,
                   imageUrl,
