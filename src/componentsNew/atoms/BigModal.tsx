@@ -351,7 +351,7 @@ export default function BigModal(props: any) {
                   month: startDate.getMonth() + 1,
                   day: startDate.getDate(),
                 };
-                const scheduleTime = { hour: hour, min: min };
+                const scheduleTime = { hour: getToday().hour, min: getToday().min };
                 const imageUrl = 'www.';
                 const calendarId = selectedCalendar;
                 await sendReview(

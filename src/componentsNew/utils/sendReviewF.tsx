@@ -16,7 +16,7 @@ export default function sendReview(
   // dispatch(calendarStart());
   // return 이 없어도 axios는 잘 작동되는데 return이 필요한 이유?
   // 현재 유저를 매번 리덕스에서 확인하는 방식이 맞나..?
-
+  console.log('sendReview', scheduleTime);
   return axios
     .post(
       `${REACT_APP_URL}/calendar/review`,
