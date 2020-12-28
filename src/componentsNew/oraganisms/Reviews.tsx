@@ -95,42 +95,41 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
       .catch(err => console.log(err));
   };
 
-  let reviewList;
+  // let reviewList;
 
-  if (reviews === []) {
-    reviewList = '';
-  } else {
-    let addTotalTime = reviews.map((el: any) => {
-      let date = el.scheduleDate;
-      let time = el.scheduleTime;
-      let total = date.year + '/' + date.month + '/' + date.day + ' ' + time.hour + ':' + time.min;
-      let parseTime = Date.parse(total);
-      el['totalTime'] = parseTime;
-      return el;
-    });
-    let sortedList = addTotalTime.sort(function (a, b) {
-      return parseFloat(a.totalTime) - parseFloat(b.totalTime);
-    });
+  // if (reviews === []) {
+  //   reviewList = '';
+  // } else {
+  //   let addTotalTime = reviews.map((el: any) => {
+  //     let date = el.scheduleDate;
+  //     let time = el.scheduleTime;
+  //     let total = date.year + '/' + date.month + '/' + date.day + ' ' + time.hour + ':' + time.min;
+  //     let parseTime = Date.parse(total);
+  //     el['totalTime'] = parseTime;
+  //     return el;
+  //   });
+  //   let sortedList = addTotalTime.sort(function (a, b) {
+  //     return parseFloat(a.totalTime) - parseFloat(b.totalTime);
+  //   });
 
-    reviewList = sortedList.map((el: any) => {
-      const { id, title, context, imageUrl, scheduleDate, scheduleTime, calendarId } = el;
+  let reviewList = reviews.map((el: any) => {
+    const { id, title, context, imageUrl, scheduleDate, scheduleTime, calendarId } = el;
 
-      return (
-        <Review
-          key={id}
-          id={id}
-          title={title}
-          context={context}
-          imageUrl={imageUrl}
-          scheduleDate={scheduleDate}
-          scheduleTime={scheduleTime}
-          calendarId={calendarId}
-          handleDel={handleDel}
-          hadleUpdate={hadleUpdate}
-        ></Review>
-      );
-    });
-  }
+    return (
+      <Review
+        key={id}
+        id={id}
+        title={title}
+        context={context}
+        imageUrl={imageUrl}
+        scheduleDate={scheduleDate}
+        scheduleTime={scheduleTime}
+        calendarId={calendarId}
+        handleDel={handleDel}
+        hadleUpdate={hadleUpdate}
+      ></Review>
+    );
+  });
 
   return (
     <Box>

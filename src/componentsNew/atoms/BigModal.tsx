@@ -303,7 +303,7 @@ export default function BigModal(props: any) {
                   month: today.month,
                   day: today.day,
                 };
-                const scheduleTime = { hour: hour, min: min };
+                const scheduleTime = { hour: getToday().hour, min: getToday().min };
                 const imageUrl = 'www.';
                 const calendarId = selectedCalendar;
                 await sendReview(
