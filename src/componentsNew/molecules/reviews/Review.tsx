@@ -6,6 +6,8 @@ import { RootState } from '../../../modules';
 import { useSelector, useDispatch } from 'react-redux';
 // VscCircleOutline
 
+import { BigModalForUpdateReview, ModalChoice } from '../../atoms';
+
 //형태만 만든다고 하면 어떤 모양일까?
 
 interface scheduleDateI {
@@ -26,8 +28,26 @@ interface Props {
   scheduleTime: scheduleTimeI;
   id: number;
   calendarId: number;
+  reviewTags: Array<{
+    tag: {
+      id: number;
+      tagName: string;
+      tagColor: string;
+      description: string;
+    };
+  }>;
+  defaultArrayOfTagsId: number[];
   handleDel: any;
-  hadleUpdate: any;
+  handleUpdate: (
+    reviewId: number,
+    calendarId: number,
+    scheduleDate: string,
+    scheduleTime: string,
+    title: string,
+    context: string,
+    imageUrl: string,
+    tags: number[],
+  ) => void;
 }
 
 export default function Review({
@@ -39,15 +59,62 @@ export default function Review({
   scheduleTime,
   calendarId,
   handleDel,
-  hadleUpdate,
+  reviewTags,
+  defaultArrayOfTagsId,
+  handleUpdate,
 }: Props) {
   const handleDelReview = () => {
     handleDel(id, calendarId);
   };
 
-  let tags: any = [];
-  const hadleUpdateReview = () => {
-    hadleUpdate(id, calendarId, scheduleTime, title, context, imageUrl, tags);
+  // let tags: any = [];
+  // const handleUpdateReview = () => {
+  //   handleUpdate(reviewId, calendarId, scheduleTime, title, context, imageUrl, tags);
+  // };
+
+  const [handleModalChoice, setHandleModalChoice] = useState(false);
+
+  const [showUpdateReviewModal, setShowUpdateReviewModal] = useState(false);
+  const onHide = () => {
+    setShowUpdateReviewModal(false);
+  };
+
+  let updateReviewModal = !showUpdateReviewModal ? (
+    ''
+  ) : (
+    <BigModalForUpdateReview
+      show={showUpdateReviewModal}
+      onHide={onHide}
+      handleUpdate={handleUpdate}
+      id={id}
+      title={title}
+      context={context}
+      imageUrl={imageUrl === null ? '' : imageUrl}
+      scheduleDate={scheduleDate}
+      scheduleTime={scheduleTime}
+      calendarId={calendarId}
+      reviewTags={reviewTags}
+      defaultArrayOfTagsId={defaultArrayOfTagsId}
+    />
+  );
+
+  let attachedTags = reviewTags.map(eachTag => {
+    if (eachTag.tag !== null) {
+      return (
+        <TagIcon key={eachTag.tag.id} tagId={eachTag.tag.id} tagColor={eachTag.tag.tagColor}>
+          {eachTag.tag.tagName}
+        </TagIcon>
+      );
+    }
+  });
+
+  const handleDeleteAction = () => {
+    handleDelReview();
+    setHandleModalChoice(false);
+  };
+
+  const handleCloseModal = () => {
+    setHandleModalChoice(false);
   };
 
   return (
@@ -62,10 +129,25 @@ export default function Review({
             margin: '5px',
           }}
         ></FaCheckCircle>
-        <TimeLine>
+        <TimeLine
+        // style={{ border: '1px solid red' }}
+        >
           <TimeAndTitle>
             <Time>{scheduleTime.hour + ':' + scheduleTime.min}</Time>
             <Title>{title}</Title>
+            <div
+              style={{
+                display: 'flex',
+                flex: 4.5,
+                justifyContent: 'flex-end',
+                flexWrap: 'wrap',
+                // marginRight: '5px',
+              }}
+            >
+              {attachedTags}
+            </div>
+            <Edit onClick={() => setShowUpdateReviewModal(true)}>수정</Edit>
+            {/* <Del onClick={() => setHandleModalChoice(true)}>삭제</Del> */}
             <Del onClick={handleDelReview}>삭제</Del>
           </TimeAndTitle>
           <ContexAndLine show={context.length === 0 ? false : true}>
@@ -73,6 +155,13 @@ export default function Review({
           </ContexAndLine>
           <ReviewSetting>{/* <Edit onClick={hadleUpdateReview}>수정</Edit> */}</ReviewSetting>
         </TimeLine>
+        {updateReviewModal}
+        <ModalChoice
+          title={`'${title}' Review를 삭제하시겠습니까?`}
+          isVisible={handleModalChoice}
+          actionFunction={handleDeleteAction}
+          handleCloseModal={handleCloseModal}
+        />
       </ReviewBox>
     </Box>
   );
@@ -104,14 +193,21 @@ const Time = styled.div`
   position: block;
   text-align: center;
   color: #3c4043;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
 `;
 const Title = styled.div`
   margin-left: 10px;
   font-size: 15px;
   display: flex;
-  flex: 3;
-  color: black
+  flex: 1.5;
+  color: black;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 40px;
 `;
 
 const ContexAndLine = styled.div<{ show?: boolean }>`
@@ -127,6 +223,7 @@ const Context = styled.div`
   background-color: white;
   padding: 10px;
   border-radius: 5px;
+  white-space: pre;
 `;
 
 const ReviewSetting = styled.div`
@@ -134,18 +231,36 @@ const ReviewSetting = styled.div`
 `;
 
 const Edit = styled.span`
-  text-align: right-end;
+  flex: 0.5;
+  margin-left: 20px;
+  text-align: flex-end;
   margin-right: 10px;
-  margin-left: 72vw;
-  &:hover {
-    color: #1a73e8;
-  }
-`;
-const Del = styled.div`
-  flex: 0.12;
-  text-align: right-end;
-  margin-right: 10px;
+  cursor: pointer;
   &:hover {
     color: red;
   }
+`;
+const Del = styled.div`
+  flex: 0.5;
+  margin-left: 20px;
+  text-align: flex-end;
+  margin-right: 10px;
+  cursor: pointer;
+  &:hover {
+    color: red;
+  }
+`;
+
+const TagIcon = styled.div<{ tagId: number; tagColor: string }>`
+  border-radius: 5px;
+  background-color: ${props => props.tagColor};
+  color: white;
+  font-weight: bold;
+  padding: 4px;
+  margin: 4px;
+  box-shadow: 1px 1px 1px grey;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

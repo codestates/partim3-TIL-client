@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../../modules';
-import { Label, Input } from '../../atoms';
+import { Label, Input, ModalChoice } from '../../atoms';
 import DatePicker from 'react-datepicker';
 import { AiFillTags } from 'react-icons/ai';
 import EachTagForTodoModal from './EachTagForTodoModal';
@@ -56,8 +56,12 @@ export default function UpdateTodoModal({
   defaultArrayOfTagsId,
   setDisplayFixOrDelTodoModal,
 }: UpdateTodoModalProps) {
-  const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const { myCalendar, shareCalendar } = useSelector(
+    (state: RootState) => state.getAllCalendars.allCalendars,
+  );
   const { tags } = useSelector((state: RootState) => state.handleTags);
+
+  const [handleModalChoice, setHandleModalChoice] = useState(false);
 
   const handleCheckedTags = (tagId: number, isChecked: boolean) => {
     let checkedTagIndex = newArrayOfTagsId.indexOf(tagId);
@@ -70,7 +74,7 @@ export default function UpdateTodoModal({
     }
   };
 
-  let myCalendersForSelectOptions = myCalendar.map(calendar => {
+  let myCalendersForSelectOptions = [...myCalendar, ...shareCalendar].map(calendar => {
     return (
       // selected(option 태그) 대신 defaultValue(select 태그)/value(option 태그)를 쓰라는 react의 에러가 있었음
       // 질문 글 및 블로그 글을 올려 기록에 남겼음
@@ -291,7 +295,7 @@ export default function UpdateTodoModal({
           }}
         >
           <ModalButton onClick={() => updateTodo(id)}>Update Todo</ModalButton>
-          <ModalButton onClick={() => deleteTodo(id)}>Delete Todo</ModalButton>
+          <ModalButton onClick={() => setHandleModalChoice(true)}>Delete Todo</ModalButton>
           <ModalButton
             onClick={() => {
               setNewArrayOfTagsId(defaultArrayOfTagsId);
@@ -306,6 +310,15 @@ export default function UpdateTodoModal({
     );
   }
 
+  const handleDeleteAction = () => {
+    deleteTodo(id);
+    setHandleModalChoice(false);
+  };
+
+  const handleCloseModal = () => {
+    setHandleModalChoice(false);
+  };
+
   return (
     <>
       {displayFixOrDelTodoModal ? (
@@ -315,6 +328,12 @@ export default function UpdateTodoModal({
           </FixOrDelTodoModalBackground>
         </FixOrDelTodoModalWrap>
       ) : null}
+      <ModalChoice
+        title={`'${title}' Todo를 삭제하시겠습니까?`}
+        isVisible={handleModalChoice}
+        actionFunction={handleDeleteAction}
+        handleCloseModal={handleCloseModal}
+      />
     </>
   );
 }
