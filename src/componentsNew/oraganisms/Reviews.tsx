@@ -23,6 +23,9 @@ interface ReviewsProps {
 export default function Reviews({ setNewPosted }: ReviewsProps) {
   const { reviews, todos } = useSelector((state: RootState) => state.calendarDay.todosAndReviews);
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
+  const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
+  const { today } = useSelector((state: RootState) => state.handleToday);
+
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
@@ -45,29 +48,32 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
       });
   };
 
-  const hadleUpdate = (
-    reviewId: any,
-    calendarId: any,
-    scheduleTime: any,
-    title: any,
-    context: any,
-    imageUrl: any,
-    tags: any,
+  const handleUpdate = (
+    reviewId: number,
+    calendarId: number,
+    scheduleTime: { hour: number; min: number },
+    title: string,
+    context: string,
+    imageUrl: string,
+    tags: number[],
   ) => {
     return axios
-      .put(`${REACT_APP_URL}/calendar/updatereview`, {
-        data: {
+      .put(
+        `${REACT_APP_URL}/calendar/updatereview`,
+        {
           userId: currentUser, // required
           reviewId, // required
           title,
           context,
           imageUrl,
-          scheduleTime, // required
+          scheduleTime: JSON.stringify(scheduleTime), // required
           calendarId, // required
           tags,
         },
-        withCredentials: true,
-      })
+        {
+          withCredentials: true,
+        },
+      )
       .then(res => {
         getUpdatedCal();
       })
@@ -113,22 +119,45 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
     });
 
     reviewList = sortedList.map((el: any) => {
-      const { id, title, context, imageUrl, scheduleDate, scheduleTime, calendarId } = el;
+      if (checkedCalArray.indexOf(el.calendarId) !== -1) {
+        const {
+          id,
+          title,
+          context,
+          imageUrl,
+          scheduleDate,
+          scheduleTime,
+          calendarId,
+          reviewTags,
+        } = el;
 
-      return (
-        <Review
-          key={id}
-          id={id}
-          title={title}
-          context={context}
-          imageUrl={imageUrl}
-          scheduleDate={scheduleDate}
-          scheduleTime={scheduleTime}
-          calendarId={calendarId}
-          handleDel={handleDel}
-          hadleUpdate={hadleUpdate}
-        ></Review>
-      );
+        let defaultArrayOfTagsId: number[] = [];
+
+        if (el.reviewTags[0].tag === null) {
+          defaultArrayOfTagsId = [];
+        } else {
+          for (let j = 0; j < el.reviewTags.length; j++) {
+            defaultArrayOfTagsId.push(el.reviewTags[j].tag.id);
+          }
+        }
+
+        return (
+          <Review
+            key={id}
+            id={id}
+            title={title}
+            context={context}
+            imageUrl={imageUrl}
+            scheduleDate={scheduleDate}
+            scheduleTime={scheduleTime}
+            calendarId={calendarId}
+            reviewTags={reviewTags}
+            defaultArrayOfTagsId={defaultArrayOfTagsId}
+            handleDel={handleDel}
+            handleUpdate={handleUpdate}
+          ></Review>
+        );
+      }
     });
   }
 
@@ -153,6 +182,7 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
           onHide={() => setModalShow(false)}
           setNewPosted={setNewPosted}
           time={getToday()}
+          today={today}
         ></BigModal>
       </ReviewContainer>
     </Box>
@@ -201,6 +231,8 @@ const AddReviewBtn = styled.button`
 const ReviwList = styled.div`
   margin-top: 3px;
   margin-bottom: 3px;
+  height: 570px;
+  overflow: auto;
 `;
 // render review get요청으로 받아와서, 화면에 리뷰들을 뿌려주는 부분을 구현해야함.
 // molecules로 review를 구현

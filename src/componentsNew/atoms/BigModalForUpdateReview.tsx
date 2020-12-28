@@ -11,55 +11,100 @@ import EachTagForTodoModal from '../molecules/todos/EachTagForTodoModal';
 import { FcCalendar } from 'react-icons/fc';
 import DatePicker from 'react-datepicker';
 
-export default function BigModal(props: any) {
+interface BigModalForUpdateReviewProps {
+  show: boolean;
+  onHide: () => void;
+  handleUpdate: (
+    reviewId: number,
+    calendarId: number,
+    scheduleTime: { hour: number; min: number },
+    title: string,
+    context: string,
+    imageUrl: string,
+    tags: number[],
+  ) => void;
+  id: number;
+  title: string;
+  context: string;
+  imageUrl: string;
+  scheduleDate: {
+    year: number;
+    month: number;
+    day: number;
+  };
+  scheduleTime: { hour: number; min: number };
+  calendarId: number;
+  reviewTags: Array<{
+    tag: {
+      id: number;
+      tagName: string;
+      tagColor: string;
+      description: string;
+    };
+  }>;
+  defaultArrayOfTagsId: number[];
+}
+
+export default function BigModalForUpdateReview({
+  show,
+  onHide,
+  handleUpdate,
+  id,
+  title,
+  context,
+  imageUrl,
+  scheduleDate,
+  scheduleTime,
+  calendarId,
+  reviewTags,
+  defaultArrayOfTagsId,
+}: BigModalForUpdateReviewProps) {
+  // console.log({ scheduleDate, scheduleTime });
+
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
-  const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const { myCalendar, shareCalendar } = useSelector(
+    (state: RootState) => state.getAllCalendars.allCalendars,
+  );
   const { tags } = useSelector((state: RootState) => state.handleTags);
+
+  const [year, setYear] = useState(scheduleDate.year);
+  const [month, setMonth] = useState(scheduleDate.month);
+  const [day, setDay] = useState(scheduleDate.day);
+
   const { today } = useSelector((state: RootState) => state.handleToday);
-  const [startDate, setStartDate] = useState(
-    new Date(`${props.today.year} ${props.today.month} ${props.today.day}`),
-  ); // startDate : Date 객체 상태임
-
-  // 아래 3가지는 최종 post에서만 활용되는 값임
-  const [year, setYear] = useState(props.today.year);
-  const [month, setMonth] = useState(props.today.month);
-  const [day, setDay] = useState(props.today.day);
-
-  const [hour, setHour] = useState(getToday().hour);
-  const [min, setMin] = useState(getToday().min);
-
-  // 창을 열었을 때마다 최초값을 다시 설정하기 위한 것
-  useEffect(() => {
-    setHour(getToday().hour);
-    setMin(getToday().min);
-  });
-
+  const [startDate, setStartDate] = useState(new Date(`${year} ${month} ${day}`)); // startDate : Date 객체 상태임
   const handleDate = (date: Date | null) => {
     if (date !== null) {
       setStartDate(date);
       setMonth(date.getMonth() + 1);
       setDay(date.getDate());
-      setHour(getToday().hour);
-      setMin(getToday().min);
     }
   };
 
+  const [hour, setHour] = useState(scheduleTime.hour);
+  const [min, setMin] = useState(scheduleTime.min);
+
   const [showTagsSelectOptions, setShowTagsSelectOptions] = useState(false);
   const [checkedTagArray, setCheckedTagArray] = useState<number[]>([]);
-  const [selectedCalendar, setSelectedCalendar] = useState(NaN);
+  const [selectedCalendar, setSelectedCalendar] = useState(calendarId);
   // const { register, handleSubmit, reset, errors } = useForm();
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
   // const [timeChange, settimeChange] = React.useState(false);
 
-  let defaultmyCalendersForSelectOptions;
+  const [divHour, setDivHour] = useState(true);
+  const [inputHour, setInputHour] = useState(false);
+  const [divMin, setDivMin] = useState(true);
+  const [inputMin, setInputMin] = useState(false);
+
+  const [titleValue, setTitleValue] = useState(title);
+  const [contextValue, setContextValue] = useState(context);
+
   let myCalendersForSelectOptions;
 
   if (myCalendar === []) {
-    defaultmyCalendersForSelectOptions = '';
     myCalendersForSelectOptions = <option>먼저 캘린더를 만들어 주세요.</option>;
   } else {
-    defaultmyCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
-    myCalendersForSelectOptions = myCalendar.map(calendar => {
+    myCalendersForSelectOptions = [...myCalendar, ...shareCalendar].map(calendar => {
       return (
         <option key={calendar.id} value={calendar.id}>
           {calendar.name}
@@ -120,10 +165,10 @@ export default function BigModal(props: any) {
   const handleCloseBtn = () => {
     setShow(false);
     setHour(0);
-    props.onHide();
+    onHide();
     setCheckedTagArray([]);
-    setTitle('');
-    setContext('');
+    setTitleValue('');
+    setContextValue('');
   };
 
   // useEffect(() => {
@@ -131,19 +176,12 @@ export default function BigModal(props: any) {
   // }, []);
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setTitleValue(e.target.value);
   };
 
   const contextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContext(e.target.value);
+    setContextValue(e.target.value);
   };
-
-  const [divHour, setDivHour] = useState(true);
-  const [inputHour, setInputHour] = useState(false);
-  const [divMin, setDivMin] = useState(true);
-  const [inputMin, setInputMin] = useState(false);
-  const [title, setTitle] = useState('');
-  const [context, setContext] = useState('');
 
   const hideInput = () => {
     // 범위는 나중에 고민해 봐야할듯 하다..
@@ -168,35 +206,73 @@ export default function BigModal(props: any) {
   };
 
   const handleCheckedTags = (tagId: number, isChecked: boolean) => {
-    let checkedTagIndex = checkedTagArray.indexOf(tagId);
+    let checkedTagIndex = newArrayOfTagsId.indexOf(tagId);
     if (checkedTagIndex === -1 && isChecked === true) {
-      setCheckedTagArray([...checkedTagArray, tagId]);
+      setNewArrayOfTagsId([...newArrayOfTagsId, tagId]);
     } else {
-      let delBefore = checkedTagArray.slice(0, checkedTagIndex);
-      let delAfter = checkedTagArray.slice(checkedTagIndex + 1);
-      setCheckedTagArray([...delBefore, ...delAfter]);
+      let delBefore = newArrayOfTagsId.slice(0, checkedTagIndex);
+      let delAfter = newArrayOfTagsId.slice(checkedTagIndex + 1);
+      setNewArrayOfTagsId([...delBefore, ...delAfter]);
     }
   };
 
+  // 내가 가진 tag는 모두 다 표시하고,
+  let concattedTagsArray = tags.slice();
+  let concattedTagsArrayId: Array<number> = [];
+
+  for (let j = 0; j < concattedTagsArray.length; j++) {
+    concattedTagsArrayId.push(concattedTagsArray[j].id);
+  }
+
+  // 공유받은 todo에 걸려있는 tag는, 내꺼는 중복되지 않게 필터링해서, 합친 tag 목록을 만듬
+  for (let i = 0; i < reviewTags.length; i++) {
+    if (reviewTags[i].tag !== null) {
+      if (concattedTagsArrayId.indexOf(reviewTags[i].tag.id) === -1) {
+        concattedTagsArray.push(reviewTags[i].tag);
+      }
+    }
+  }
+
+  const [newArrayOfTagsId, setNewArrayOfTagsId] = useState<number[]>(defaultArrayOfTagsId);
+
   // 태그 선택을 위한 드롭다운 창에 나열될, 유저가 가지고 있는 모든 태그들
   let tagsList =
-    tags.length === 0 ? (
+    concattedTagsArray.length === 0 ? (
       <span>
         <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
       </span>
     ) : (
-      tags.map(eachTag => {
-        let alreadyChecked = checkedTagArray.indexOf(eachTag.id) !== -1 ? true : false;
+      concattedTagsArray.map(eachTag => {
+        let alreadyChecked = newArrayOfTagsId.indexOf(eachTag.id) !== -1 ? true : false;
         return (
           <EachTagForTodoModal
             key={eachTag.id}
             tagId={eachTag.id}
             tagName={eachTag.tagName}
             tagColor={eachTag.tagColor}
-            handleCheckedTags={handleCheckedTags!}
+            handleCheckedTags={handleCheckedTags}
             alreadyChecked={alreadyChecked}
           />
         );
+      })
+    );
+
+  // 드롭다운 창에서 유저가 선택한 태그들(tags에서 checkedTagArray를 기준으로 필터링한 결과물임)
+  let selectedTags =
+    newArrayOfTagsId.length === 0 ? (
+      <span>(선택된 태그가 없습니다.)</span>
+    ) : (
+      // concattedTagsArray : 내가 가진 모든 태그들과, 공유받은 todo라면 그에 붙어서 온 태그들
+      concattedTagsArray.map(eachTag => {
+        if (eachTag !== null) {
+          if (newArrayOfTagsId.indexOf(eachTag.id) !== -1) {
+            return (
+              <TagIcon key={eachTag.id} tagId={eachTag.id} tagColor={eachTag.tagColor}>
+                {eachTag.tagName}
+              </TagIcon>
+            );
+          }
+        }
       })
     );
 
@@ -234,31 +310,6 @@ export default function BigModal(props: any) {
     </div>
   ) : null;
 
-  // 드롭다운 창에서 유저가 선택한 태그들(tags에서 checkedTagArray를 기준으로 필터링한 결과물임)
-  let selectedTags =
-    tags.length === 0 ? (
-      <span>
-        <Link to="/mypage/tags">태그를 먼저 만들어 주세요</Link>
-      </span>
-    ) : (
-      tags.map(eachTag => {
-        if (checkedTagArray.indexOf(eachTag.id) !== -1) {
-          return (
-            <TagIcon key={eachTag.id} tagId={eachTag.id} tagColor={eachTag.tagColor}>
-              {eachTag.tagName}
-            </TagIcon>
-          );
-        }
-      })
-    );
-
-  useEffect(() => {
-    setStartDate(new Date(`${today.year} ${today.month} ${today.day}`));
-    setYear(today.year);
-    setMonth(today.month);
-    setDay(today.day);
-  }, [today]);
-
   // background-color: #f2f2f2;
   // &:hover {
   //   outline: none;
@@ -267,7 +318,7 @@ export default function BigModal(props: any) {
   // }
   //#1a73e8 버튼 하늘색
   return (
-    <ModalMask show={props.show}>
+    <ModalMask show={show}>
       <Modal>
         <ModalSetting>
           <MonthAndDay>{`${month}월 ${day}일`}</MonthAndDay>
@@ -275,7 +326,6 @@ export default function BigModal(props: any) {
           {/* 시간 */}
           <TimeHeader>
             <HourInput
-              // value={`${getToday().hour}`}
               value={hour}
               onClick={renderInputHour}
               onBlur={handleOnBlur}
@@ -284,13 +334,7 @@ export default function BigModal(props: any) {
             ></HourInput>
             <HourInput show={inputHour} onChange={handleHour}></HourInput>
             <SpaceTime>시</SpaceTime>
-            <MinInput
-              // value={`${getToday().min}`}
-              value={min}
-              onClick={renderInputMin}
-              show={divMin}
-              readOnly
-            ></MinInput>
+            <MinInput value={min} onClick={renderInputMin} show={divMin} readOnly></MinInput>
             <MinInput show={inputMin} onChange={handleMin}></MinInput>
             <span>분</span>
           </TimeHeader>
@@ -310,8 +354,7 @@ export default function BigModal(props: any) {
             <FcCalendar size="1.8em"></FcCalendar>
             <span style={{ marginLeft: '2px' }}>리뷰를 남길 캘린더</span>
           </CalText>
-          <SelectCal onChange={handleSelectOption}>
-            {defaultmyCalendersForSelectOptions}
+          <SelectCal onChange={handleSelectOption} defaultValue={calendarId}>
             {myCalendersForSelectOptions}
           </SelectCal>
           {/* TagSelectOption : 여기가 태그 넣는 부분입니다. 위치 수정하시면 됩니다. */}
@@ -338,51 +381,58 @@ export default function BigModal(props: any) {
           <BtnArea>
             <CloseBtn onClick={handleCloseBtn}>cancel</CloseBtn>
             <SubmitBtn
-              onClick={async () => {
-                const today = getToday();
-                // const userId = currentUser;
-                // const scheduleDate = {
-                //   year: today.year,
-                //   month: today.month,
-                //   day: today.day,
-                // };
-                const scheduleDate = {
-                  year: startDate.getFullYear(),
-                  month: startDate.getMonth() + 1,
-                  day: startDate.getDate(),
-                };
-                const scheduleTime = { hour: hour, min: min };
-                const imageUrl = 'www.';
-                const calendarId = selectedCalendar;
-                await sendReview(
-                  currentUser,
-                  title,
-                  context,
+              onClick={() => {
+                handleUpdate(
+                  id,
+                  selectedCalendar,
+                  { hour, min },
+                  titleValue,
+                  contextValue,
                   imageUrl,
-                  scheduleDate,
-                  scheduleTime,
-                  calendarId,
-                  checkedTagArray,
+                  newArrayOfTagsId,
                 );
-                //scheduleTime, calendarId
-                // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
-                await setTitle('');
-                await setContext('');
-                props.setNewPosted(true);
-                props.onHide();
+                onHide();
               }}
+              // onClick={async () => {
+              //   const today = getToday();
+              //   const userId = currentUser;
+              //   const scheduleDate = {
+              //     year: today.year,
+              //     month: today.month,
+              //     day: today.day,
+              //   };
+              //   const scheduleTime = { hour: hour, min: min };
+              //   const imageUrl = 'www.';
+              //   const calendarId = selectedCalendar;
+              //   await sendReview(
+              //     userId,
+              //     titleValue,
+              //     contextValue,
+              //     imageUrl,
+              //     scheduleDate,
+              //     scheduleTime,
+              //     calendarId,
+              //     checkedTagArray,
+              //   );
+              //   //scheduleTime, calendarId
+              //   // 스케줄데이트(3) / 스케줄타임(2)으로 나눠서 보내야 함
+              //   await setTitleValue('');
+              //   await setContextValue('');
+              //   // setNewPosted(true); // update 함수 안에 이미 있음
+              //   onHide();
+              // }}
             >
-              submit
+              update
             </SubmitBtn>
           </BtnArea>
         </ModalSetting>
         <TitleAndContext>
-          <TitleInput placeholder="제목" onChange={titleChange} value={title}></TitleInput>
+          <TitleInput placeholder="제목" onChange={titleChange} value={titleValue}></TitleInput>
           {/* <div style={{ border: '1px solid grey', margin: '10px 0px' }} /> */}
           <ContextArea
             placeholder="쓰고 싶은 내용을 자유롭게 남겨주세요"
             onChange={contextChange}
-            value={context}
+            value={contextValue}
           ></ContextArea>
         </TitleAndContext>
       </Modal>
@@ -498,6 +548,7 @@ const ContextArea = styled.textarea`
   background-color: white;
   outline: none;
 `;
+
 const SubmitBtn = styled.button`
   flex: 1;
   width: 100px;
