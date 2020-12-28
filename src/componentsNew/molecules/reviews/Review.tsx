@@ -41,7 +41,8 @@ interface Props {
   handleUpdate: (
     reviewId: number,
     calendarId: number,
-    scheduleTime: { hour: number; min: number },
+    scheduleDate: string,
+    scheduleTime: string,
     title: string,
     context: string,
     imageUrl: string,

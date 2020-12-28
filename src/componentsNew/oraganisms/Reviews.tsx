@@ -51,7 +51,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
   const handleUpdate = (
     reviewId: number,
     calendarId: number,
-    scheduleTime: { hour: number; min: number },
+    scheduleDate: string,
+    scheduleTime: string,
     title: string,
     context: string,
     imageUrl: string,
@@ -66,7 +67,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
           title,
           context,
           imageUrl,
-          scheduleTime: JSON.stringify(scheduleTime), // required
+          scheduleDate,
+          scheduleTime: scheduleTime, // required
           calendarId, // required
           tags,
         },
