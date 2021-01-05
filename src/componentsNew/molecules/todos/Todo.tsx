@@ -182,11 +182,11 @@ export default function Todo({
   return (
     <>
       <TodoWrap onClick={() => setDisplayFixOrDelTodoModal(true)}>
-        <div style={{ display: 'flex', flex: 1, margin: '10px', fontSize: '15px' }}>{title}</div>
+        <div style={{ display: 'flex', flex: 2.5, margin: '10px', fontSize: '15px' }}>{title}</div>
         <div
           style={{
             display: 'flex',
-            flex: 2,
+            flex: 1.5,
             justifyContent: 'flex-end',
             flexWrap: 'wrap',
             marginRight: '5px',

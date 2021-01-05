@@ -13,6 +13,16 @@ export default function sendReview(
   calendarId: number,
   tags: number[],
 ) {
+  if (title === '' || context === '') {
+    alert('제목 또는 내용이 입력되지 않았습니다.');
+    return;
+  }
+
+  if (calendarId === NaN) {
+    alert('캘린더가 선택되지 않았습니다.');
+    return;
+  }
+
   // dispatch(calendarStart());
   // return 이 없어도 axios는 잘 작동되는데 return이 필요한 이유?
   // 현재 유저를 매번 리덕스에서 확인하는 방식이 맞나..?

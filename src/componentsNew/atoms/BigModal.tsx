@@ -14,6 +14,7 @@ import DatePicker from 'react-datepicker';
 export default function BigModal(props: any) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const { shareCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const { tags } = useSelector((state: RootState) => state.handleTags);
   const { today } = useSelector((state: RootState) => state.handleToday);
   const [startDate, setStartDate] = useState(
@@ -49,22 +50,14 @@ export default function BigModal(props: any) {
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
   // const [timeChange, settimeChange] = React.useState(false);
 
-  let defaultmyCalendersForSelectOptions;
-  let myCalendersForSelectOptions;
-
-  if (myCalendar === []) {
-    defaultmyCalendersForSelectOptions = '';
-    myCalendersForSelectOptions = <option>먼저 캘린더를 만들어 주세요.</option>;
-  } else {
-    defaultmyCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
-    myCalendersForSelectOptions = myCalendar.map(calendar => {
-      return (
-        <option key={calendar.id} value={calendar.id}>
-          {calendar.name}
-        </option>
-      );
-    });
-  }
+  let defaultCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
+  let calendersForSelectOptions = [...myCalendar, ...shareCalendar].map(calendar => {
+    return (
+      <option key={calendar.id} value={calendar.id}>
+        {calendar.name}
+      </option>
+    );
+  });
 
   const handleSelectOption = (
     e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
@@ -310,8 +303,8 @@ export default function BigModal(props: any) {
             <span style={{ marginLeft: '2px' }}>리뷰를 남길 캘린더</span>
           </CalText>
           <SelectCal onChange={handleSelectOption}>
-            {defaultmyCalendersForSelectOptions}
-            {myCalendersForSelectOptions}
+            {defaultCalendersForSelectOptions}
+            {calendersForSelectOptions}
           </SelectCal>
           {/* TagSelectOption : 여기가 태그 넣는 부분입니다. 위치 수정하시면 됩니다. */}
           <TagSelectOption>
