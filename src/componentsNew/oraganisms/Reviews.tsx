@@ -29,6 +29,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
+  const [currentHour, setCurrentHour] = useState(getToday().hour);
+  const [currentMin, setCurrentMin] = useState(getToday().min);
 
   const handleDel = (reviewId: any, calendarId: any) => {
     return axios
@@ -163,6 +165,11 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
     });
   }
 
+  useEffect(() => {
+    let currentTime = getToday();
+    setCurrentHour(currentTime.hour);
+    setCurrentMin(currentTime.min);
+  }, [modalShow]);
 
   return (
     <Box>
@@ -172,6 +179,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
             TIL-오늘 하루종일 무얼했나?{'  '}
             <AddReviewBtn
               onClick={() => {
+                setCurrentHour(getToday().hour);
+                setCurrentMin(getToday().min);
                 setModalShow(true);
               }}
             >
@@ -184,7 +193,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
           show={modalShow}
           onHide={() => setModalShow(false)}
           setNewPosted={setNewPosted}
-          time={getToday()}
+          currentHour={currentHour}
+          currentMin={currentMin}
           today={today}
         ></BigModal>
       </ReviewContainer>

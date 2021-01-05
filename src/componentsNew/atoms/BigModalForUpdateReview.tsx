@@ -164,17 +164,14 @@ export default function BigModalForUpdateReview({
   };
 
   const handleCloseBtn = () => {
-    setShow(false);
-    setHour(0);
-    onHide();
+    handleOnBlurHour();
+    handleOnBlurMin();
     setCheckedTagArray([]);
     setTitleValue('');
     setContextValue('');
+    setShow(false);
+    onHide();
   };
-
-  // useEffect(() => {
-  //   setHour(String(getToday().hour));
-  // }, []);
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitleValue(e.target.value);
@@ -196,9 +193,9 @@ export default function BigModalForUpdateReview({
     setInputHour(true);
   };
 
-  const handleOnBlur = () => {
-    setDivHour(false);
-    setInputHour(true);
+  const handleOnBlurHour = () => {
+    setDivHour(true);
+    setInputHour(false);
   };
 
   const renderInputMin = () => {
@@ -206,6 +203,10 @@ export default function BigModalForUpdateReview({
     setInputMin(true);
   };
 
+  const handleOnBlurMin = () => {
+    setDivMin(true);
+    setInputMin(false);
+  };
   const handleCheckedTags = (tagId: number, isChecked: boolean) => {
     let checkedTagIndex = newArrayOfTagsId.indexOf(tagId);
     if (checkedTagIndex === -1 && isChecked === true) {
@@ -332,17 +333,23 @@ export default function BigModalForUpdateReview({
 
           {/* 시간 */}
           <TimeHeader>
+            <HourInput value={hour} onClick={renderInputHour} show={divHour} readOnly></HourInput>
             <HourInput
+              show={inputHour}
               value={hour}
-              onClick={renderInputHour}
-              onBlur={handleOnBlur}
-              show={divHour}
-              readOnly
+              onBlur={handleOnBlurHour}
+              onChange={handleHour}
+              style={{ color: 'lightgrey' }}
             ></HourInput>
-            <HourInput show={inputHour} onChange={handleHour}></HourInput>
             <SpaceTime>시</SpaceTime>
             <MinInput value={min} onClick={renderInputMin} show={divMin} readOnly></MinInput>
-            <MinInput show={inputMin} onChange={handleMin}></MinInput>
+            <MinInput
+              show={inputMin}
+              value={min}
+              onBlur={handleOnBlurMin}
+              onChange={handleMin}
+              style={{ color: 'lightgrey' }}
+            ></MinInput>
             <span>분</span>
           </TimeHeader>
           {/* 에러메세지 */}

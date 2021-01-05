@@ -25,22 +25,20 @@ export default function BigModal(props: any) {
   const [month, setMonth] = useState(props.today.month);
   const [day, setDay] = useState(props.today.day);
 
-  const [hour, setHour] = useState(getToday().hour);
-  const [min, setMin] = useState(getToday().min);
+  const [hour, setHour] = useState(props.currentHour);
+  const [min, setMin] = useState(props.currentMin);
 
   // 창을 열었을 때마다 최초값을 다시 설정하기 위한 것
   useEffect(() => {
-    setHour(getToday().hour);
-    setMin(getToday().min);
-  });
+    setHour(props.currentHour);
+    setMin(props.currentMin);
+  }, [props.show]);
 
   const handleDate = (date: Date | null) => {
     if (date !== null) {
       setStartDate(date);
       setMonth(date.getMonth() + 1);
       setDay(date.getDate());
-      setHour(getToday().hour);
-      setMin(getToday().min);
     }
   };
 
@@ -118,17 +116,14 @@ export default function BigModal(props: any) {
   };
 
   const handleCloseBtn = () => {
-    setShow(false);
-    setHour(0);
-    props.onHide();
+    handleOnBlurHour();
+    handleOnBlurMin();
     setCheckedTagArray([]);
     setTitle('');
     setContext('');
+    setShow(false);
+    props.onHide();
   };
-
-  // useEffect(() => {
-  //   setHour(String(getToday().hour));
-  // }, []);
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -157,14 +152,19 @@ export default function BigModal(props: any) {
     setInputHour(true);
   };
 
-  const handleOnBlur = () => {
-    setDivHour(false);
-    setInputHour(true);
+  const handleOnBlurHour = () => {
+    setDivHour(true);
+    setInputHour(false);
   };
 
   const renderInputMin = () => {
     setDivMin(false);
     setInputMin(true);
+  };
+
+  const handleOnBlurMin = () => {
+    setDivMin(true);
+    setInputMin(false);
   };
 
   const handleCheckedTags = (tagId: number, isChecked: boolean) => {
@@ -274,24 +274,23 @@ export default function BigModal(props: any) {
 
           {/* 시간 */}
           <TimeHeader>
+            <HourInput value={hour} onClick={renderInputHour} show={divHour} readOnly></HourInput>
             <HourInput
-              // value={`${getToday().hour}`}
+              show={inputHour}
               value={hour}
-              onClick={renderInputHour}
-              onBlur={handleOnBlur}
-              show={divHour}
-              readOnly
+              onBlur={handleOnBlurHour}
+              onChange={handleHour}
+              style={{ color: 'lightgrey' }}
             ></HourInput>
-            <HourInput show={inputHour} onChange={handleHour}></HourInput>
             <SpaceTime>시</SpaceTime>
+            <MinInput value={min} onClick={renderInputMin} show={divMin} readOnly></MinInput>
             <MinInput
-              // value={`${getToday().min}`}
+              show={inputMin}
               value={min}
-              onClick={renderInputMin}
-              show={divMin}
-              readOnly
+              onBlur={handleOnBlurMin}
+              onChange={handleMin}
+              style={{ color: 'lightgrey' }}
             ></MinInput>
-            <MinInput show={inputMin} onChange={handleMin}></MinInput>
             <span>분</span>
           </TimeHeader>
           {/* 에러메세지 */}
@@ -351,7 +350,8 @@ export default function BigModal(props: any) {
                   month: startDate.getMonth() + 1,
                   day: startDate.getDate(),
                 };
-                const scheduleTime = { hour: getToday().hour, min: getToday().min };
+                // 이렇게 하면 내가 몇시라고 수정해도 항상 현재시간이 나가게 된다. 사용자 의도와 다를 수 있음.
+                const scheduleTime = { hour, min };
                 const imageUrl = 'www.';
                 const calendarId = selectedCalendar;
                 await sendReview(
