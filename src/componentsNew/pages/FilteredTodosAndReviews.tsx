@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
+
 import {
   handle_filteredTodosAndReviews_Start,
   handle_filteredTodosAndReviews_Success,
@@ -81,14 +82,11 @@ export default function FilteredTodosAndReviews() {
     <FilteredTodosAndReviewsWrap>
       <FilteredTodosAndReviewsHeader>
         {/* <Link to="/calendar/day">/calendar/day 로 돌아가기(임시)</Link> */}
-        <Link to="/calendar/day">
-          <img
-            src="/img/cat.jpeg"
-            height="90"
-            width="110"
-            style={{ borderRadius: '50%', margin: '5px' }}
-          />
-        </Link>
+        <TILlogo>
+          <Link to="/calendar/day" style={{ textDecoration: 'none', color: 'white' }}>
+            TIL
+          </Link>
+        </TILlogo>
       </FilteredTodosAndReviewsHeader>
       <FilteredTodosAndReviewsMain>
         <FilteredTodosAndReviewsSidebar>
@@ -145,8 +143,9 @@ const FilteredTodosAndReviewsHeader = styled.div`
   display: flex;
   /* border: 1px solid red; */
   border-bottom: 2px solid lightgrey;
-  width: 100%;
-  height: 100px;
+  width: 100vw;
+  height: 8vh;
+  background-color: black;
 `;
 
 const FilteredTodosAndReviewsMain = styled.div`
@@ -199,4 +198,14 @@ const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const TILlogo = styled.div`
+  font-size: 45px;
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  width: 280px;
+  text-align: left;
+  margin-left: 20px;
 `;
