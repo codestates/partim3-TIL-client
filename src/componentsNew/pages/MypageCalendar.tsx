@@ -212,7 +212,7 @@ const CalendarContainer = styled.div`
   width: 40vw;
   display: flex;
   flex-direction: column;
-  /* margin: 1.5vh; */
+  margin: 1.5vw;
 `;
 
 const CurCal = styled.div`

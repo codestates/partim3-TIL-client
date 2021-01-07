@@ -252,13 +252,6 @@ export default function BigModal(props: any) {
     setDay(today.day);
   }, [today]);
 
-  // background-color: #f2f2f2;
-  // &:hover {
-  //   outline: none;
-  //   background-color: #f0f2f1;// 흐릿한 회색
-  //   color: black;
-  // }
-  //#1a73e8 버튼 하늘색
   return (
     <ModalMask show={props.show}>
       <Modal>
@@ -382,50 +375,6 @@ export default function BigModal(props: any) {
     </ModalMask>
   );
 }
-
-const BtnArea = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const TagBtn = styled.button`
-  outline: none;
-  border: 0px;
-  background-color: white;
-  &:hover {
-    color: #1a73e8;
-  }
-`;
-
-const CalText = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 18px;
-`;
-
-const ErrModal = styled.span<{ show?: boolean }>`
-  border-bottom: 2px solid red;
-  padding-top: 3px;
-  padding-left: 5px;
-  text-align: left;
-  background: black;
-  color: white;
-  visibility: ${props => (props.show ? 'visible' : 'hidden')};
-`;
-
-const ModalAndArrow = styled.span`
-  flex: 0.3;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  height: 30px;
-  background: #f2f2f2;
-  color: white;
-`;
 
 const ModalMask = styled.div<{ show?: boolean }>`
   display: ${props => (props.show ? 'grid' : 'none')};
@@ -579,4 +528,48 @@ const TagIcon = styled.div<{ tagColor: string; tagId: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const BtnArea = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const TagBtn = styled.button`
+  outline: none;
+  border: 0px;
+  background-color: white;
+  &:hover {
+    color: #1a73e8;
+  }
+`;
+
+const CalText = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 18px;
+`;
+
+const ErrModal = styled.span<{ show?: boolean }>`
+  border-bottom: 2px solid red;
+  padding-top: 3px;
+  padding-left: 5px;
+  text-align: left;
+  background: black;
+  color: white;
+  visibility: ${props => (props.show ? 'visible' : 'hidden')};
+`;
+
+const ModalAndArrow = styled.span`
+  flex: 0.3;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 30px;
+  background: #f2f2f2;
+  color: white;
 `;
