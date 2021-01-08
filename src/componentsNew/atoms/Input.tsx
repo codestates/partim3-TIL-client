@@ -9,6 +9,7 @@ interface InputProps {
   handleChange(e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement }): void;
   autoFocus?: boolean;
   className?: string;
+  defaultValue?: string;
 }
 
 export default function Input({
@@ -19,6 +20,7 @@ export default function Input({
   placeholder,
   autoFocus,
   className,
+  defaultValue,
 }: InputProps) {
   return (
     <InputWrap
@@ -30,6 +32,7 @@ export default function Input({
       smInput={smInput}
       autoFocus={autoFocus}
       autoComplete={name}
+      defaultValue={defaultValue}
     />
   );
 }

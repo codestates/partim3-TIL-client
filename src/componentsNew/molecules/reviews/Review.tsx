@@ -138,7 +138,7 @@ export default function Review({
             <div
               style={{
                 display: 'flex',
-                flex: 4.5,
+                flex: 2.5,
                 justifyContent: 'flex-end',
                 flexWrap: 'wrap',
                 // marginRight: '5px',
@@ -202,7 +202,7 @@ const Title = styled.div`
   margin-left: 10px;
   font-size: 15px;
   display: flex;
-  flex: 1.5;
+  flex: 3.5;
   color: black;
   flex-direction: column;
   align-items: flex-start;
@@ -233,7 +233,7 @@ const ReviewSetting = styled.div`
 const Edit = styled.span`
   flex: 0.5;
   margin-left: 20px;
-  text-align: flex-end;
+  text-align: center;
   margin-right: 10px;
   cursor: pointer;
   &:hover {

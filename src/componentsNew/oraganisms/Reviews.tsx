@@ -29,6 +29,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
+  const [currentHour, setCurrentHour] = useState(getToday().hour);
+  const [currentMin, setCurrentMin] = useState(getToday().min);
 
   const handleDel = (reviewId: any, calendarId: any) => {
     return axios
@@ -58,6 +60,11 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
     imageUrl: string,
     tags: number[],
   ) => {
+    if (title === '' || context === '') {
+      alert('제목 또는 내용이 입력되지 않았습니다.');
+      return;
+    }
+
     return axios
       .put(
         `${REACT_APP_URL}/calendar/updatereview`,
@@ -163,6 +170,12 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
     });
   }
 
+  useEffect(() => {
+    let currentTime = getToday();
+    setCurrentHour(currentTime.hour);
+    setCurrentMin(currentTime.min);
+  }, [modalShow]);
+
   return (
     <Box>
       <ReviewContainer>
@@ -171,6 +184,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
             TIL-오늘 하루종일 무얼했나?{'  '}
             <AddReviewBtn
               onClick={() => {
+                setCurrentHour(getToday().hour);
+                setCurrentMin(getToday().min);
                 setModalShow(true);
               }}
             >
@@ -183,7 +198,8 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
           show={modalShow}
           onHide={() => setModalShow(false)}
           setNewPosted={setNewPosted}
-          time={getToday()}
+          currentHour={currentHour}
+          currentMin={currentMin}
           today={today}
         ></BigModal>
       </ReviewContainer>
@@ -234,7 +250,8 @@ const ReviwList = styled.div`
   margin-top: 3px;
   margin-bottom: 3px;
   height: 570px;
-  overflow: auto;
+  /* overflow: auto; */
+  // 리뷰 좌측의 timeline과 리뷰 글 자체가 따로 놀아서, 일단 이 속성을 해제함
 `;
 // render review get요청으로 받아와서, 화면에 리뷰들을 뿌려주는 부분을 구현해야함.
 // molecules로 review를 구현

@@ -14,6 +14,7 @@ import DatePicker from 'react-datepicker';
 export default function BigModal(props: any) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
+  const { shareCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const { tags } = useSelector((state: RootState) => state.handleTags);
   const { today } = useSelector((state: RootState) => state.handleToday);
   const [startDate, setStartDate] = useState(
@@ -25,22 +26,20 @@ export default function BigModal(props: any) {
   const [month, setMonth] = useState(props.today.month);
   const [day, setDay] = useState(props.today.day);
 
-  const [hour, setHour] = useState(getToday().hour);
-  const [min, setMin] = useState(getToday().min);
+  const [hour, setHour] = useState(props.currentHour);
+  const [min, setMin] = useState(props.currentMin);
 
   // 창을 열었을 때마다 최초값을 다시 설정하기 위한 것
   useEffect(() => {
-    setHour(getToday().hour);
-    setMin(getToday().min);
-  });
+    setHour(props.currentHour);
+    setMin(props.currentMin);
+  }, [props.show]);
 
   const handleDate = (date: Date | null) => {
     if (date !== null) {
       setStartDate(date);
       setMonth(date.getMonth() + 1);
       setDay(date.getDate());
-      setHour(getToday().hour);
-      setMin(getToday().min);
     }
   };
 
@@ -51,22 +50,14 @@ export default function BigModal(props: any) {
   // 나중에 div테그만 랜더링하게 바꾸고 싶을때. ( 구글 캘린더 처럼 )
   // const [timeChange, settimeChange] = React.useState(false);
 
-  let defaultmyCalendersForSelectOptions;
-  let myCalendersForSelectOptions;
-
-  if (myCalendar === []) {
-    defaultmyCalendersForSelectOptions = '';
-    myCalendersForSelectOptions = <option>먼저 캘린더를 만들어 주세요.</option>;
-  } else {
-    defaultmyCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
-    myCalendersForSelectOptions = myCalendar.map(calendar => {
-      return (
-        <option key={calendar.id} value={calendar.id}>
-          {calendar.name}
-        </option>
-      );
-    });
-  }
+  let defaultCalendersForSelectOptions = <option>캘린더를 선택해 주세요.</option>;
+  let calendersForSelectOptions = [...myCalendar, ...shareCalendar].map(calendar => {
+    return (
+      <option key={calendar.id} value={calendar.id}>
+        {calendar.name}
+      </option>
+    );
+  });
 
   const handleSelectOption = (
     e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
@@ -118,17 +109,14 @@ export default function BigModal(props: any) {
   };
 
   const handleCloseBtn = () => {
-    setShow(false);
-    setHour(0);
-    props.onHide();
+    handleOnBlurHour();
+    handleOnBlurMin();
     setCheckedTagArray([]);
     setTitle('');
     setContext('');
+    setShow(false);
+    props.onHide();
   };
-
-  // useEffect(() => {
-  //   setHour(String(getToday().hour));
-  // }, []);
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -157,14 +145,19 @@ export default function BigModal(props: any) {
     setInputHour(true);
   };
 
-  const handleOnBlur = () => {
-    setDivHour(false);
-    setInputHour(true);
+  const handleOnBlurHour = () => {
+    setDivHour(true);
+    setInputHour(false);
   };
 
   const renderInputMin = () => {
     setDivMin(false);
     setInputMin(true);
+  };
+
+  const handleOnBlurMin = () => {
+    setDivMin(true);
+    setInputMin(false);
   };
 
   const handleCheckedTags = (tagId: number, isChecked: boolean) => {
@@ -267,24 +260,23 @@ export default function BigModal(props: any) {
 
           {/* 시간 */}
           <TimeHeader>
+            <HourInput value={hour} onClick={renderInputHour} show={divHour} readOnly></HourInput>
             <HourInput
-              // value={`${getToday().hour}`}
+              show={inputHour}
               value={hour}
-              onClick={renderInputHour}
-              onBlur={handleOnBlur}
-              show={divHour}
-              readOnly
+              onBlur={handleOnBlurHour}
+              onChange={handleHour}
+              style={{ color: 'lightgrey' }}
             ></HourInput>
-            <HourInput show={inputHour} onChange={handleHour}></HourInput>
             <SpaceTime>시</SpaceTime>
+            <MinInput value={min} onClick={renderInputMin} show={divMin} readOnly></MinInput>
             <MinInput
-              // value={`${getToday().min}`}
+              show={inputMin}
               value={min}
-              onClick={renderInputMin}
-              show={divMin}
-              readOnly
+              onBlur={handleOnBlurMin}
+              onChange={handleMin}
+              style={{ color: 'lightgrey' }}
             ></MinInput>
-            <MinInput show={inputMin} onChange={handleMin}></MinInput>
             <span>분</span>
           </TimeHeader>
           {/* 에러메세지 */}
@@ -304,8 +296,8 @@ export default function BigModal(props: any) {
             <span style={{ marginLeft: '2px' }}>리뷰를 남길 캘린더</span>
           </CalText>
           <SelectCal onChange={handleSelectOption}>
-            {defaultmyCalendersForSelectOptions}
-            {myCalendersForSelectOptions}
+            {defaultCalendersForSelectOptions}
+            {calendersForSelectOptions}
           </SelectCal>
           {/* TagSelectOption : 여기가 태그 넣는 부분입니다. 위치 수정하시면 됩니다. */}
           <TagSelectOption>
@@ -344,7 +336,8 @@ export default function BigModal(props: any) {
                   month: startDate.getMonth() + 1,
                   day: startDate.getDate(),
                 };
-                const scheduleTime = { hour: getToday().hour, min: getToday().min };
+                // 이렇게 하면 내가 몇시라고 수정해도 항상 현재시간이 나가게 된다. 사용자 의도와 다를 수 있음.
+                const scheduleTime = { hour, min };
                 const imageUrl = 'www.';
                 const calendarId = selectedCalendar;
                 await sendReview(

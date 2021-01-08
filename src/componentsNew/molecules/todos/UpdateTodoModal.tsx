@@ -218,6 +218,7 @@ export default function UpdateTodoModal({
             </div>
             <div style={{ width: '210px' }}>
               <Input
+                defaultValue={title}
                 type="text"
                 name="title"
                 placeholder={title}
