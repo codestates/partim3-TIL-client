@@ -77,7 +77,7 @@ export default function SignupContainer() {
         let userId = res.data.userId;
         axios
           .post(
-            `${REACT_APP_URL}/calendar/addcalendar`,
+            `${REACT_APP_URL}/calendar/calendar`,
             {
               userId: userId,
               name: 'basic calendar',

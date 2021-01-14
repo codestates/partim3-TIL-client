@@ -81,7 +81,7 @@ export default function Todo({
       return;
     } else {
       axios
-        .delete(`${REACT_APP_URL}/calendar/deletetodo`, {
+        .delete(`${REACT_APP_URL}/calendar/todo`, {
           data: {
             userId: currentUser,
             todoId: todoId,
@@ -116,7 +116,7 @@ export default function Todo({
     } else {
       axios
         .put(
-          `${REACT_APP_URL}/calendar/updatetodo`,
+          `${REACT_APP_URL}/calendar/todo`,
           {
             userId: currentUser,
             calendarId: newCalendarId,

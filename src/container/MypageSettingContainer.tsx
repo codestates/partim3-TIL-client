@@ -110,7 +110,7 @@ export default function MypageSettingContainer() {
   ) => {
     return axios
       .put(
-        `${REACT_APP_URL}/user/updateuser`,
+        `${REACT_APP_URL}/user/user`,
         {
           userId: currentUser,
           nickname: newNickname,

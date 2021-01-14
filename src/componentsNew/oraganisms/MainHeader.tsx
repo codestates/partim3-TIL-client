@@ -57,7 +57,7 @@ export default function MainHeader() {
 
   const handleRegister = () => {
     axios
-      .get(`${REACT_APP_URL}/user/lastnumber`, { withCredentials: true })
+      .get(`${REACT_APP_URL}/user/lastindex`, { withCredentials: true })
       .then(res => {
         let lastNumber = Number(res.data) + 1;
         let email = `guest${lastNumber}`;
@@ -77,7 +77,7 @@ export default function MainHeader() {
             let userId = res.data.userId;
             axios
               .post(
-                `${REACT_APP_URL}/calendar/addcalendar`,
+                `${REACT_APP_URL}/calendar/calendar`,
                 {
                   userId: userId,
                   name: 'basic calendar',

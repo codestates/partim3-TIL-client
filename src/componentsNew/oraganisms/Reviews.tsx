@@ -34,7 +34,7 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
 
   const handleDel = (reviewId: any, calendarId: any) => {
     return axios
-      .delete(`${REACT_APP_URL}/calendar/deletereview`, {
+      .delete(`${REACT_APP_URL}/calendar/review`, {
         data: {
           userId: currentUser,
           reviewId,
@@ -67,7 +67,7 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
 
     return axios
       .put(
-        `${REACT_APP_URL}/calendar/updatereview`,
+        `${REACT_APP_URL}/calendar/review`,
         {
           userId: currentUser, // required
           reviewId, // required

@@ -32,7 +32,7 @@ export default function MypageCalendarContainer({ match }: any) {
   // console.log('1-2', calName);
   const calNameUpdate = (newValue: string) => {
     return axios
-      .put(`${REACT_APP_URL}/calendar/updatecalender`, {
+      .put(`${REACT_APP_URL}/calendar/calender`, {
         userId: currentUser,
         calendarId: curCalId,
         name: newValue,
@@ -83,7 +83,7 @@ export default function MypageCalendarContainer({ match }: any) {
 
   const calColorUpdate = (newCalcolor: string) => {
     return axios
-      .put(`${REACT_APP_URL}/calendar/updatecalender`, {
+      .put(`${REACT_APP_URL}/calendar/calender`, {
         userId: currentUser,
         calendarId: curCalId,
         name: paramName,
@@ -137,7 +137,7 @@ export default function MypageCalendarContainer({ match }: any) {
   const getcalendarauthorityofcalendar = () => {
     // console.log(curCalId);
     axios
-      .get(`${REACT_APP_URL}/calendar/getcalendarauthorityofcalendar`, {
+      .get(`${REACT_APP_URL}/calendar/calendarauthorityofcalendar`, {
         params: {
           calendarId: curCalId,
         },
