@@ -67,7 +67,7 @@ export default function MypageTagsContainer() {
   ) => {
     axios
       .post(
-        `${REACT_APP_URL}/calendar/addtag`,
+        `${REACT_APP_URL}/calendar/tag`,
         { userId, tagName, tagColor, description },
         { withCredentials: true },
       )
@@ -90,7 +90,7 @@ export default function MypageTagsContainer() {
   ) => {
     axios
       .put(
-        `${REACT_APP_URL}/calendar/updatetag`,
+        `${REACT_APP_URL}/calendar/tag`,
         {
           userId: userId,
           tagId: tagId,
@@ -112,7 +112,7 @@ export default function MypageTagsContainer() {
   // DELETE
   const deleteTag = (userId: number, tagId: number) => {
     axios
-      .delete(`${REACT_APP_URL}/calendar/deletetag`, {
+      .delete(`${REACT_APP_URL}/calendar/tag`, {
         data: { userId, tagId },
         withCredentials: true,
       })

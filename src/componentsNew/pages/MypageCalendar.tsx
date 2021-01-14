@@ -128,7 +128,7 @@ export default function MypageCalendar({
 
   const deletecalendar = () => {
     axios
-      .delete(`${REACT_APP_URL}/calendar/deletecalendar`, {
+      .delete(`${REACT_APP_URL}/calendar/calendar`, {
         data: { userId: currentUser, calendarId: curCalId },
         withCredentials: true,
       })

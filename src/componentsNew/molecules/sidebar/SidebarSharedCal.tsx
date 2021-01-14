@@ -26,7 +26,7 @@ export default function SidebarSharedCal({ setCalDeleted }: SidebarSharedCalProp
     // 일단은 console.log() 함수만 연결해 뒀음
 
     // return axios
-    //   .delete(`${REACT_APP_URL}/calendar/deletecalendar`, {
+    //   .delete(`${REACT_APP_URL}/calendar/calendar`, {
     //     data: {
     //       userId: currentUser,
     //       calendarId: calID,
