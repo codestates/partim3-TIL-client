@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import Review from '../molecules/reviews/Review';
-import ReviewModal from '../molecules/reviews/ReviewModal';
 import BigModal from '../atoms/BigModal';
 import getToday from '../../componentsNew/utils/todayF';
 import styled from 'styled-components';
@@ -16,6 +15,27 @@ import {
 
 import axios from 'axios';
 
+type reviewType = {
+  calendarColor: string;
+  calendarId: number;
+  context: string;
+
+  id: number;
+  imageUrl: string | null;
+  reviewTags: Array<{
+    tag: {
+      description: string;
+      id: number;
+      tagColor: string;
+      tagName: string;
+    };
+  }>;
+  scheduleDate: { year: number; month: number; day: number };
+  scheduleTime: { hour: number; min: number };
+  title: string;
+  totalTime: number;
+};
+
 interface ReviewsProps {
   setNewPosted: (newPosted: boolean) => void;
 }
@@ -26,13 +46,14 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
   const { checkedCalArray } = useSelector((state: RootState) => state.handleCheckedCal);
   const { today } = useSelector((state: RootState) => state.handleToday);
 
+  console.log({ todos });
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
   const [currentHour, setCurrentHour] = useState(getToday().hour);
   const [currentMin, setCurrentMin] = useState(getToday().min);
 
-  const handleDel = (reviewId: any, calendarId: any) => {
+  const handleDel = (reviewId: number, calendarId: number) => {
     return axios
       .delete(`${REACT_APP_URL}/calendar/review`, {
         data: {
@@ -115,19 +136,20 @@ export default function Reviews({ setNewPosted }: ReviewsProps) {
   if (reviews === []) {
     reviewList = '';
   } else {
-    let addTotalTime = reviews.map((el: any) => {
+    let addTotalTime = reviews.map((el: reviewType) => {
       let date = el.scheduleDate;
       let time = el.scheduleTime;
       let total = date.year + '/' + date.month + '/' + date.day + ' ' + time.hour + ':' + time.min;
       let parseTime = Date.parse(total);
-      el['totalTime'] = parseTime;
+      el.totalTime = parseTime;
       return el;
     });
+
     let sortedList = addTotalTime.sort(function (a, b) {
-      return parseFloat(a.totalTime) - parseFloat(b.totalTime);
+      return parseFloat(String(a.totalTime)) - parseFloat(String(b.totalTime));
     });
 
-    reviewList = sortedList.map((el: any) => {
+    reviewList = sortedList.map((el: reviewType) => {
       if (checkedCalArray.indexOf(el.calendarId) !== -1) {
         const {
           id,

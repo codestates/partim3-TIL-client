@@ -37,7 +37,7 @@ interface Props {
     };
   }>;
   defaultArrayOfTagsId: number[];
-  handleDel: any;
+  handleDel: (reviewId: number, calendarId: number) => void;
   handleUpdate: (
     reviewId: number,
     calendarId: number,
@@ -66,11 +66,6 @@ export default function Review({
   const handleDelReview = () => {
     handleDel(id, calendarId);
   };
-
-  // let tags: any = [];
-  // const handleUpdateReview = () => {
-  //   handleUpdate(reviewId, calendarId, scheduleTime, title, context, imageUrl, tags);
-  // };
 
   const [handleModalChoice, setHandleModalChoice] = useState(false);
 

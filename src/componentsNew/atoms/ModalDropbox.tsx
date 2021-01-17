@@ -50,15 +50,27 @@ import AutoSaveInput from './AutoSaveInput';
 
 */
 
+interface ModalDropboxProps {
+  title: string;
+  isVisible: boolean;
+  actionFunction: (select: string) => void;
+  handleCloseModal: () => void;
+  dropboxMenus: string[];
+  dropboxDefaltValue: string;
+  value: string;
+  handleChange: (inputVal: string) => void;
+}
+
 export default function ModalDropbox({
   title,
   isVisible,
   actionFunction,
   handleCloseModal,
   dropboxMenus,
+  dropboxDefaltValue,
   value,
   handleChange,
-}: any) {
+}: ModalDropboxProps) {
   const [isEditMode, setEditMode] = useState(false);
   const [dropboxValue, setDropboxValue] = useState('');
   // useEffect(() => {
@@ -80,13 +92,15 @@ export default function ModalDropbox({
     // console.log('5번 : ', inputVal, '상위로 전달');
     handleChange(inputVal);
   };
-  const getDropboxValue = (e: any) => {
+  const getDropboxValue = (
+    e: React.ChangeEvent<HTMLSelectElement> & { target: HTMLSelectElement },
+  ) => {
     // actionFunction(e.target.value);
     // setEditMode(false);
     setDropboxValue(e.target.value);
   };
 
-  const dropboxlist = dropboxMenus.map((el: any) => {
+  const dropboxlist = dropboxMenus.map((el: string) => {
     return (
       <option key={el} value={el}>
         {el}

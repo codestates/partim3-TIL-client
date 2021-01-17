@@ -1,14 +1,34 @@
+// 이거 안쓰이는 컴포넌트같은데?
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RootState } from '../../modules';
 import { useSelector, useDispatch } from 'react-redux';
 
+interface MypageAddCalendarProps {
+  connectcalendarauthority: (messageId: number, answer: boolean) => void;
+  getMessage: () => void;
+  handleGetMessage: (sth: boolean) => void;
+}
+
+interface messageType {
+  auth: boolean;
+  description: string;
+  fromUser: number;
+  fromUserNickname: string;
+  id: number;
+  read: boolean;
+  shareCalendar: number;
+  shareCalendarName: string;
+  write: boolean;
+}
+
 export default function MypageAddCalendar({
   connectcalendarauthority,
   getMessage,
   handleGetMessage,
-}: any) {
-  const judgeAuth = (message: any) => {
+}: MypageAddCalendarProps) {
+  const judgeAuth = (message: messageType) => {
     if (message.read && message.write && message.auth) {
       return '보기&수정&공유';
     } else if (message.read && message.write && !message.auth) {
@@ -19,7 +39,7 @@ export default function MypageAddCalendar({
   };
   const { messages } = useSelector((state: RootState) => state.mypageCalendarMessagesM);
   const [newMessage, setNewMessage] = useState(messages);
-  let messageList = messages.map((el: any) => {
+  let messageList = messages.map((el: messageType) => {
     return (
       <Userbox key={el.id}>
         <UserBoxSetting>{el.fromUserNickname}</UserBoxSetting>

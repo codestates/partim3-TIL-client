@@ -1,3 +1,6 @@
+// 김규화 0115 any 수정 중 코멘트 남김
+// '실제로 쓰이고 있지 않는 것 같은데, 확인 필요'
+
 /* 1. ActionTypes */
 const SELECTED_CALENDAR: string = 'SELECTED_CALENDAR';
 

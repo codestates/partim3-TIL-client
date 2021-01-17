@@ -10,8 +10,18 @@ import { AiFillTags } from 'react-icons/ai';
 import EachTagForTodoModal from '../molecules/todos/EachTagForTodoModal';
 import { FcCalendar } from 'react-icons/fc';
 import DatePicker from 'react-datepicker';
+import { todayProps } from '../../types';
 
-export default function BigModal(props: any) {
+interface BigModalProps {
+  show: boolean;
+  onHide: () => void;
+  setNewPosted: (newPosted: boolean) => void;
+  currentHour: number;
+  currentMin: number;
+  today: todayProps;
+}
+
+export default function BigModal(props: BigModalProps) {
   const { currentUser } = useSelector((state: RootState) => state.loginOut.status);
   const { myCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
   const { shareCalendar } = useSelector((state: RootState) => state.getAllCalendars.allCalendars);
@@ -69,7 +79,7 @@ export default function BigModal(props: any) {
 
   // 에러를 2번 반복해야 에러메세지가 사라짐.
   // 에러가 한번 일어난 후, 전부 지우면 에러메세지를 지워주기.
-  const handleHour = (e: any) => {
+  const handleHour = (e: React.ChangeEvent<HTMLInputElement>) => {
     //React.ChangeEvent<HTMLInputElement>
     // const regex = /^[0-9]$/;
     // console.log(e.target.value);

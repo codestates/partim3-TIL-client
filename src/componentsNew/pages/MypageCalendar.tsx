@@ -15,6 +15,27 @@ import {
 } from '../../modules/getAllCalendars';
 import { ModalDropbox } from '../atoms';
 
+interface authorityType {
+  auth: boolean;
+  id: number;
+  ownerId: number;
+  ownerNickname: string;
+  read: boolean;
+  user: { nickname: string };
+  write: boolean;
+}
+
+interface MypageCalendarProps {
+  curCal: string;
+  curCalColor: string;
+  handleNewName: (newValue: string) => void;
+  handleNewCalColor: (newColor: string) => void;
+  currentUser: number;
+  curCalId: number;
+  shareId?: number;
+  shareCalName?: string;
+}
+
 export default function MypageCalendar({
   curCal,
   curCalColor,
@@ -24,7 +45,7 @@ export default function MypageCalendar({
   curCalId,
   shareId,
   shareCalName,
-}: any) {
+}: MypageCalendarProps) {
   const history = useHistory();
 
   const [handleModalDropbox, setHandleModalDropbox] = useState(false);
@@ -107,8 +128,7 @@ export default function MypageCalendar({
         console.log(err);
       });
   };
-
-  let shareUsers = calAuth.map((el: any) => {
+  let shareUsers = calAuth.map((el: authorityType) => {
     return el.ownerNickname === el.user.nickname ? (
       <Userbox key={el.id}>
         <UserBoxSetting>{el.user.nickname}: 소유자</UserBoxSetting>
@@ -169,7 +189,7 @@ export default function MypageCalendar({
         <ChangeBoxNameTitle>이름</ChangeBoxNameTitle>
         <AutoSaveInput
           value={curCal}
-          handleChange={async (newValue: any) => {
+          handleChange={async (newValue: string) => {
             handleNewName(newValue);
           }}
         ></AutoSaveInput>

@@ -86,7 +86,7 @@ const SidebarArea = styled.div`
   background-color: #102027;
 `;
 
-const MainArea = styled.div<{ width?: any }>`
+const MainArea = styled.div<{ width?: number }>`
   flex: ${props => props.width};
   background-color: white;
 `;

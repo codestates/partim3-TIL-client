@@ -22,7 +22,13 @@ import {
 } from '../modules/handle_rerenderCalendarDay';
 import { ModalDropbox } from '../componentsNew/atoms';
 
-export default function MypageCalendarContainer({ match }: any) {
+import { RouteComponentProps } from 'react-router-dom';
+
+interface MatchParams {
+  calName: string;
+}
+
+export default function MypageShareCalendar({ match }: RouteComponentProps<MatchParams>) {
   const history = useHistory();
   const { currentUser, nickname } = useSelector((state: RootState) => state.loginOut.status);
 
@@ -45,7 +51,7 @@ export default function MypageCalendarContainer({ match }: any) {
       .catch(err => console.log(err));
   };
 
-  const handleNameChange = (newValue: any) => {
+  const handleNameChange = (newValue: string) => {
     setCalName(newValue);
   };
 
@@ -173,8 +179,8 @@ export default function MypageCalendarContainer({ match }: any) {
       curCalColor={newCalcolor}
       handleNewName={handleNameChange}
       handleNewCalColor={handleNewCalColor}
-      currentUser={currentUser}
-      currnetUserNickname={nickname}
+      currentUser={currentUser!}
+      currnetUserNickname={nickname!}
       curCalId={curCalId}
     ></MypageShareCal>
   );

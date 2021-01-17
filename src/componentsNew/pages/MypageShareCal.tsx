@@ -16,6 +16,30 @@ import {
 import { ModalDropbox } from '../atoms';
 import { format } from 'path';
 
+interface MypageShareCalProps {
+  curCal: string;
+  curCalColor: string;
+  handleNewName: (newValue: string) => void;
+  handleNewCalColor: (newColor: string) => void;
+  currentUser: number;
+  curCalId: number;
+  currnetUserNickname: string;
+  shareId?: number;
+  shareCalName?: string;
+}
+
+interface authorityType {
+  auth: boolean;
+  id: number;
+  ownerId: number;
+  ownerNickname: string;
+  read: boolean;
+  user: { nickname: string };
+  write: boolean;
+}
+
+type authorityArayType = Array<authorityType>;
+
 export default function MypageShareCal({
   curCal,
   curCalColor,
@@ -26,19 +50,19 @@ export default function MypageShareCal({
   currnetUserNickname,
   shareId,
   shareCalName,
-}: any) {
+}: MypageShareCalProps) {
   const history = useHistory();
 
   const [handleModalDropbox, setHandleModalDropbox] = useState(false);
-  const [serchNickName, setSerchNickName] = useState('닉네임 검색');
+  const [searchNickName, setSearchNickName] = useState('닉네임 검색');
   const [dropboxDefaltValue, setDropboxDefaultValue] = useState('캘린더 보기');
-  // console.log('5번 닉네임 변경확인   :', serchNickName);
+  // console.log('5번 닉네임 변경확인   :', searchNickName);
 
   const { calAuth } = useSelector((state: RootState) => state.calendarAuthM);
 
   const handleCloseModal = () => {
     setHandleModalDropbox(false);
-    setSerchNickName('닉네임 검색');
+    setSearchNickName('닉네임 검색');
   };
   const openAddUserModal = () => {
     setHandleModalDropbox(true);
@@ -49,12 +73,12 @@ export default function MypageShareCal({
     setHandleModalDropbox(false);
   };
 
-  const serchUser = (serchNickName: string) => {
+  const searchUser = (searchNickName: string) => {
     axios
       .post(
         `${REACT_APP_URL}/user/isuser`,
         {
-          nickname: serchNickName,
+          nickname: searchNickName,
         },
         { withCredentials: true },
       )
@@ -62,7 +86,7 @@ export default function MypageShareCal({
         // console.log(res.data);
       })
       .catch(err => {
-        setSerchNickName('존재하지 않는 유저입니다.');
+        setSearchNickName('존재하지 않는 유저입니다.');
         console.log(err);
       });
   };
@@ -90,7 +114,7 @@ export default function MypageShareCal({
         `${REACT_APP_URL}/user/message`,
         {
           userId: currentUser,
-          otherNickname: serchNickName,
+          otherNickname: searchNickName,
           read,
           write,
           auth,
@@ -107,7 +131,7 @@ export default function MypageShareCal({
       });
   };
 
-  let shareUsers = calAuth.map((el: any) => {
+  let shareUsers = calAuth.map((el: authorityType) => {
     return el.ownerNickname === el.user.nickname ? (
       <Userbox key={el.id}>
         <UserBoxSetting>{el.user.nickname}: 소유자</UserBoxSetting>
@@ -127,7 +151,7 @@ export default function MypageShareCal({
 
   // 현재 로그인한 유저가 캘린더의 권한 중 일치하는 권한을 찾아야함
 
-  const judgeAuth = (calAuth: any) => {
+  const judgeAuth = (calAuth: authorityArayType) => {
     for (let i of calAuth) {
       if (i.user.nickname === currnetUserNickname) {
         if (i.auth) {
@@ -138,7 +162,7 @@ export default function MypageShareCal({
     return false;
   };
 
-  const judgeWrite = (calAuth: any) => {
+  const judgeWrite = (calAuth: authorityArayType) => {
     for (let i of calAuth) {
       if (i.user.nickname === currnetUserNickname) {
         if (i.write) {
@@ -157,11 +181,11 @@ export default function MypageShareCal({
       handleCloseModal={handleCloseModal}
       dropboxMenus={['캘린더 보기', '보기 & 편집', '보기 & 편집 & 공유']}
       dropboxDefaltValue={dropboxDefaltValue}
-      value={serchNickName}
+      value={searchNickName}
       handleChange={async (inputVal: string) => {
         // console.log('6번 :', inputVal, '최종전달지로 받음');
-        await setSerchNickName(inputVal);
-        await serchUser(inputVal);
+        await setSearchNickName(inputVal);
+        await searchUser(inputVal);
       }}
     />
   );
@@ -178,7 +202,7 @@ export default function MypageShareCal({
         {judgeWrite(calAuth) ? (
           <AutoSaveInput
             value={curCal}
-            handleChange={async (newValue: any) => {
+            handleChange={async (newValue: string) => {
               handleNewName(newValue);
             }}
           ></AutoSaveInput>

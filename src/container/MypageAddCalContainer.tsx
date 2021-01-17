@@ -13,6 +13,12 @@ import {
 } from '../modules/handle_rerenderCalendarDay';
 import mypageCalendarMessagesM from '../modules';
 
+interface authorityType {
+  color: string;
+  id: number;
+  name: string;
+}
+
 export default function MypageAddCalContainer() {
   //캘린더 추가 버튼을 클릭하면 라우팅이 됨
   //캘린더 페이지로 넘어와서 컨테이너 랜더링
@@ -76,7 +82,7 @@ export default function MypageAddCalContainer() {
   //요청은 하위에서 나가지 않고, 하위의 state값 변경에 따라 상위에서 서버로 나간다.
 
   const [messageStatus, setMessageStatus] = useState(false);
-  const handleGetMessage = (sth: any) => {
+  const handleGetMessage = (sth: boolean) => {
     setMessageStatus(sth);
   };
 
@@ -103,6 +109,7 @@ export default function MypageAddCalContainer() {
 
   //API수정예정
   //물어봐야할듯.
+
   const calendarauthority = () => {
     axios
       .get(`${REACT_APP_URL}/calendar/calendarauthority`, {
@@ -112,12 +119,12 @@ export default function MypageAddCalContainer() {
         withCredentials: true,
       })
       .then(res => {
-        console.log(res.data);
-        let { authorities } = res.data;
-        console.log(authorities);
-        let users = authorities.map((el: any) => {
-          console.log(el.user);
-        });
+        // console.log(res.data);
+        // let { authorities } = res.data;
+        // console.log(authorities);
+        // let users = authorities.map((el: any) => {
+        //   console.log(el.user);
+        // });
       })
       .catch(err => {
         console.log(err);
