@@ -63,6 +63,7 @@ function CalendarDayContainer() {
       })
       .then(res => {
         const { myMessages } = res.data;
+        console.log({ myMessages });
         //state를 쓰니 무한 반복됨. shareCalMessage 변수명을 같게 해주어서 무한 반복되는 것이었음.
         //캘린더의 상태값을 다양한 곳에서 필요로 할 것 같아서 리덕스 사용
         dispatch(mypageCalendarMessageSuccess(myMessages));

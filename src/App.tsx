@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import MainContainer from './container/MainContainer';
 
-import Mypage from './componentsNew/pages/Mypage';
 import MypageSettingContainer from './container/MypageSettingContainer';
 import MypageTagsContainer from './container/MypageTagsContainer';
 import MypageCalendarContainer from './container/MypageCalendarContainer';

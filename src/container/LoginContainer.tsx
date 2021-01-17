@@ -6,7 +6,6 @@ import REACT_APP_URL from '../config';
 
 // import { RootState } from '../modules';
 
-// import ButtonBoot from '../componentsNew/atoms/ButtonBoot';
 import { loginStart, loginSuccess, loginFailure } from '../modules/loginOut';
 
 import { handleTodayStart, handleTodaySuccess, handleTodayFailure } from '../modules/handleToday';

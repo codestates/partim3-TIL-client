@@ -1,14 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 
-export default function AutoSaveInput({ handleChange, value }: any) {
-  const inputEl = useRef<any>(null);
+interface AutoSaveInputProps {
+  value: string;
+  handleChange: (newValue: string) => void;
+  padding?: string;
+}
+
+export default function AutoSaveInput({ value, handleChange }: AutoSaveInputProps) {
+  const inputEl = useRef<HTMLInputElement>(null);
   const [isEditMode, setEditMode] = useState(false);
   const [isErrMode, setisErrMode] = useState(false);
   const [newValue, setNewValue] = useState(value);
 
   useEffect(() => {
-    if (isEditMode) {
+    // '컴포넌트 내에서 useRef의 반환값을 사용할 땐 null check가 필수입니다.'
+    // 출처: https://kjwsx23.tistory.com/469 [香格里拉]
+    if (isEditMode && inputEl && inputEl.current) {
       // console.log('1번: isEditMode');
       // console.log('2번:', newValue);
       inputEl.current.focus();
@@ -36,7 +44,9 @@ export default function AutoSaveInput({ handleChange, value }: any) {
     }
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (
+    e: React.KeyboardEvent<HTMLInputElement> & { target: HTMLInputElement },
+  ) => {
     console.log('3번 :', e.target.value);
     setNewValue(e.target.value);
   };
@@ -60,7 +70,7 @@ export default function AutoSaveInput({ handleChange, value }: any) {
   );
 }
 
-const InputContainer = styled.div<{ padding?: any }>`
+const InputContainer = styled.div<{ padding?: number }>`
   flex: 2;
   display: flex;
   flex-direction: column;
@@ -68,7 +78,7 @@ const InputContainer = styled.div<{ padding?: any }>`
   padding: ${props => props.padding};
 `;
 
-const Input = styled.input<{ isErrMode?: any }>`
+const Input = styled.input<{ isErrMode?: boolean }>`
   flex: 1;
   outline: none;
   border: 0px;

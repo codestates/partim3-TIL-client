@@ -15,28 +15,41 @@ interface scheduleTimeI {
   min: number;
 }
 
+type tagsType_TodoAndReview = Array<{
+  tag: {
+    id: number;
+    tagName: string;
+    tagColor: string;
+    description: string;
+  };
+}>;
+
+type todosType = Array<{
+  id: number;
+  title: string;
+  scheduleDate: string;
+  todoTags: tagsType_TodoAndReview;
+  calendarId: number;
+  calendarColor: string;
+}>;
+
+type reviewsType = Array<{
+  id: number;
+  title: string;
+  context: string;
+  imageUrl: string | null;
+  totalTime: number;
+  reviewTags: tagsType_TodoAndReview;
+  scheduleDate: scheduleDateI;
+  scheduleTime: scheduleTimeI;
+  calendarId: number;
+  calendarColor: string;
+}>;
+
 interface calendarDayI {
   type: string;
-  todos: Array<{
-    id: number;
-    title: string;
-    scheduleDate: string;
-    todoTags: Array<{
-      tag: { id: number; tagName: string; tagColor: string; description: string };
-    }>;
-    calendarId: number;
-    calendarColor: string;
-  }>;
-  reviews: Array<{
-    title: string;
-    context: string;
-    imageUrl: string | null;
-    scheduleDate: scheduleDateI;
-    scheduleTime: scheduleTimeI;
-    id: number;
-    calendarId: number;
-    calendarColor: string;
-  }>;
+  todos: todosType;
+  reviews: reviewsType;
 }
 
 export function calendarStart() {
@@ -63,26 +76,8 @@ export function calendarFailure() {
 /* 3. initialState 및 reducer 함수 */
 
 interface todosAndReviewsI {
-  todos: Array<{
-    id: number;
-    title: string;
-    scheduleDate: string;
-    todoTags: Array<{
-      tag: { id: number; tagName: string; tagColor: string; description: string };
-    }>;
-    calendarId: number;
-    calendarColor: string;
-  }>;
-  reviews: Array<{
-    title: string;
-    context: string;
-    imageUrl: string | null;
-    scheduleDate: scheduleDateI;
-    scheduleTime: scheduleTimeI;
-    id: number;
-    calendarId: number;
-    calendarColor: string;
-  }>;
+  todos: todosType;
+  reviews: reviewsType;
 }
 
 interface initialStateType {

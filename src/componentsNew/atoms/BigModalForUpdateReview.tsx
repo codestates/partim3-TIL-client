@@ -124,7 +124,7 @@ export default function BigModalForUpdateReview({
 
   // 에러를 2번 반복해야 에러메세지가 사라짐.
   // 에러가 한번 일어난 후, 전부 지우면 에러메세지를 지워주기.
-  const handleHour = (e: any) => {
+  const handleHour = (e: React.ChangeEvent<HTMLInputElement>) => {
     //React.ChangeEvent<HTMLInputElement>
     // const regex = /^[0-9]$/;
     // console.log(e.target.value);
@@ -164,14 +164,17 @@ export default function BigModalForUpdateReview({
   };
 
   const handleCloseBtn = () => {
-    handleOnBlurHour();
-    handleOnBlurMin();
+    setShow(false);
+    setHour(0);
+    onHide();
     setCheckedTagArray([]);
     setTitleValue('');
     setContextValue('');
-    setShow(false);
-    onHide();
   };
+
+  // useEffect(() => {
+  //   setHour(String(getToday().hour));
+  // }, []);
 
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitleValue(e.target.value);
@@ -339,7 +342,6 @@ export default function BigModalForUpdateReview({
               value={hour}
               onBlur={handleOnBlurHour}
               onChange={handleHour}
-              style={{ color: 'lightgrey' }}
             ></HourInput>
             <SpaceTime>시</SpaceTime>
             <MinInput value={min} onClick={renderInputMin} show={divMin} readOnly></MinInput>
@@ -348,7 +350,6 @@ export default function BigModalForUpdateReview({
               value={min}
               onBlur={handleOnBlurMin}
               onChange={handleMin}
-              style={{ color: 'lightgrey' }}
             ></MinInput>
             <span>분</span>
           </TimeHeader>

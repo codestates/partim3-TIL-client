@@ -1,3 +1,5 @@
+import { myCalendarType, shareCalendarType } from '../types';
+
 /* 1. ActionTypes - GET_CALENDARS */
 const GET_CALENDARS_START = 'AUTH_LOGIN_START';
 const GET_CALENDARS_SUCCESS = 'GET_CALENDARS_SUCCESS';
@@ -7,40 +9,8 @@ const GET_CALENDARS_FAILURE = 'AUTH_LOGIN_FAILURE';
 
 interface actionType {
   type: string;
-  myCalendar: Array<{
-    id: number;
-    name: string;
-    color: string;
-    todos: Array<{
-      title: string;
-      scheduleTime: string;
-      id: number;
-    }>;
-    reviews: Array<{
-      title: string;
-      context: string;
-      imageUrl: string | null;
-      scheduleTime: string;
-      id: number;
-    }>;
-  }>;
-  shareCalendar: Array<{
-    id: number;
-    name: string;
-    color: string;
-    todos: Array<{
-      title: string;
-      scheduleTime: string;
-      id: number;
-    }>;
-    reviews: Array<{
-      title: string;
-      context: string;
-      imageUrl: string | null;
-      scheduleTime: string;
-      id: number;
-    }>;
-  }>;
+  myCalendar: myCalendarType;
+  shareCalendar: shareCalendarType;
 }
 
 export function getCalendarsStart() {
@@ -49,7 +19,7 @@ export function getCalendarsStart() {
   };
 }
 
-export function getCalendarsSuccess(myCalendar: Array<object>, shareCalendar: Array<object>) {
+export function getCalendarsSuccess(myCalendar: myCalendarType, shareCalendar: shareCalendarType) {
   return {
     type: GET_CALENDARS_SUCCESS,
     myCalendar,
@@ -64,46 +34,9 @@ export function getCalendarsFailure() {
   };
 }
 
-interface AllCalendarsType {
-  myCalendar: Array<{
-    id: number;
-    name: string;
-    color: string;
-    todos: Array<{
-      title: string;
-      scheduleTime: string;
-      id: number;
-    }>;
-    reviews: Array<{
-      title: string;
-      context: string;
-      imageUrl: string | null;
-      scheduleTime: string;
-      id: number;
-    }>;
-  }>;
-  shareCalendar: Array<{
-    id: number;
-    name: string;
-    color: string;
-    todos: Array<{
-      title: string;
-      scheduleTime: string;
-      id: number;
-    }>;
-    reviews: Array<{
-      title: string;
-      context: string;
-      imageUrl: string | null;
-      scheduleTime: string;
-      id: number;
-    }>;
-  }>;
-}
-
 interface initialStateType {
   status: string;
-  allCalendars: AllCalendarsType;
+  allCalendars: { myCalendar: myCalendarType; shareCalendar: shareCalendarType };
 }
 
 /* 3. initialState 및 reducer 함수 */

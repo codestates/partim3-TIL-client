@@ -3,17 +3,59 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../modules';
-import { calendarSelected } from '../../modules/selectedCalM';
+// import { calendarSelected } from '../../modules/selectedCalM'; // 안쓰이는 모듈같음
+import { myCalendarType, shareCalendarType } from '../../types';
 
 import MypageCalendar from '../pages/MypageCalendar';
 
-export default function MypageCalSidebar({ myCalendar, shareCalendar }: any) {
+interface MypageCalSidebarProps {
+  myCalendar: myCalendarType;
+  shareCalendar: shareCalendarType;
+}
+
+type myCalendarEachElementType = {
+  id: number;
+  name: string;
+  color: string;
+  todos: Array<{
+    title: string;
+    scheduleTime: string;
+    id: number;
+  }>;
+  reviews: Array<{
+    title: string;
+    context: string;
+    imageUrl: string | null;
+    scheduleTime: string;
+    id: number;
+  }>;
+};
+
+type shareCalendarEachElementType = {
+  id: number;
+  name: string;
+  color: string;
+  todos: Array<{
+    title: string;
+    scheduleTime: string;
+    id: number;
+  }>;
+  reviews: Array<{
+    title: string;
+    context: string;
+    imageUrl: string | null;
+    scheduleTime: string;
+    id: number;
+  }>;
+};
+
+export default function MypageCalSidebar({ myCalendar, shareCalendar }: MypageCalSidebarProps) {
   //curComponent가 mypageCalendar일때 캘린더들의 리스트를 랜더링
 
   const history = useHistory();
   //동기적으로 처리해주기 위해서 useEffect사용.
 
-  let myCalList = myCalendar.map((el: any) => {
+  let myCalList = myCalendar.map((el: myCalendarEachElementType) => {
     return (
       <EachCal
         key={el.id}
@@ -29,7 +71,7 @@ export default function MypageCalSidebar({ myCalendar, shareCalendar }: any) {
     );
   });
 
-  let shareCalList = shareCalendar.map((el: any) => {
+  let shareCalList = shareCalendar.map((el: shareCalendarEachElementType) => {
     return (
       <EachCal
         key={el.id}
