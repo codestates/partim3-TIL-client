@@ -39,12 +39,12 @@ export default function Login({ handleChange, postLoginReq }: LoginProps) {
 
         <div>
           {/* 가로선 */}
-          <hr style={{ height: 1, width: '280px', background: '#dadce0', margin: '5px 0px' }}></hr>
+          {/* <hr style={{ height: 1, width: '280px', background: '#dadce0', margin: '5px 0px' }}></hr> */}
         </div>
 
         <div style={{ margin: '10px 0px', width: '100%' }}>
           {/* 소셜 로그인 : 네이버, 구글 */}
-          <LoginSocial />
+          {/* <LoginSocial /> */}
         </div>
 
         <div

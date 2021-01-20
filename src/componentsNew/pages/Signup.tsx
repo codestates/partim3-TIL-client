@@ -37,12 +37,10 @@ export default function Signup({ handleChange, postSignupReq }: SignupProps) {
 
         <div>
           {/* 가로선 */}
-          <hr style={{ height: 1, width: '280px', background: '#dadce0', margin: '5px 0px' }}></hr>
+          {/* <hr style={{ height: 1, width: '280px', background: '#dadce0', margin: '5px 0px' }}></hr> */}
         </div>
 
-        <div style={{ margin: '10px 0px', width: '100%' }}>
-          <SignupSocial />
-        </div>
+        <div style={{ margin: '10px 0px', width: '100%' }}>{/* <SignupSocial /> */}</div>
 
         <div
           style={{
